@@ -1,12 +1,22 @@
+#ifndef __WHITE_RENDERER__
+#define __WHITE_RENDERER__
+
 #include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "GLFWhelper.h"
+#include "Window.h"
 
 class Renderer
 {
   private:
-    GLFWwindow *window;
+    Window *window;
   public:
     Renderer();
     void render();
 };
+
+Renderer::Renderer()
+{
+  this->window = new Window();
+}
+
+#endif

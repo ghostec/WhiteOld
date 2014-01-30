@@ -16,6 +16,6 @@ include_directories(${GLFW_INCLUDE_DIRS})
 link_directories(${GLFW_LIBRARY_DIRS})
 add_definitions(${GLFW_DEFINITIONS})
 
-add_executable(White main.cpp Renderer.cpp)
+add_executable(White main.cpp)
 
-target_link_libraries(White ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} )
+target_link_libraries(White ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY})
