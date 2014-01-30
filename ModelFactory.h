@@ -8,20 +8,23 @@ class ModelFactory
 {
   private:
   public:
-    virtual Model* createModel() = 0;
+    virtual Model* createModel( ModelFileType model_file_type,
+                                std::string file_path ) = 0;
 };
 
 class ModelFactoryOpenGL : public ModelFactory
 {
   private:
   public:
-    Model* createModel();
+    Model* createModel( ModelFileType model_file_type,
+                        std::string file_path );
 };
 
-Model* ModelFactoryOpenGL::createModel()
+Model* ModelFactoryOpenGL::createModel( ModelFileType model_file_type,
+                                        std::string file_path )
 {
   std::cout << "Placeholder ModelFactoryOpenGL::createModel()" << std::endl;
-  return new ModelOpenGL();
+  return new ModelOpenGL( model_file_type, file_path );
 }
 
 #endif

@@ -2,7 +2,11 @@
 #define __WHITE_MODEL__
 
 #include <iostream>
+#include <string>
 #include "Math.h"
+#include "ModelHelper.h"
+
+typedef enum _ModelFileType { OBJ } ModelFileType;
 
 class Model
 {
@@ -17,11 +21,18 @@ class ModelOpenGL : public Model
 {
   private:
   public:
+    ModelOpenGL( ModelFileType model_file_type, std::string file_path );
     void draw();
     void translate( Vector3 vector );
     void scale( Vector3 vector );
     void rotate( float degrees, Vector3 vector );
 };
+
+ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
+                          std::string file_path )
+{
+  if( model_file_type == OBJ ) ModelHelper::ImportOBJ();
+}
 
 void ModelOpenGL::draw()
 {
