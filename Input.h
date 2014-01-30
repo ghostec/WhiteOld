@@ -6,32 +6,39 @@
 
 #define Key int
 
-typedef struct _InputContext
-{
-  Window *window;
-} InputContext;
-
 class Input
 {
-  private:
-    InputContext context;
   public:
-    Input( InputContext ic );
+    virtual bool isKeyPressed ( Key key ) = 0;
+};
+
+typedef struct _GLFWcontext
+{
+  Window *window;
+} GLFWcontext;
+
+class InputGLFW : public Input
+{
+  private:
+    GLFWcontext context;
     void setWindow( Window *window );
+  public:
+    InputGLFW( GLFWcontext context );
     bool isKeyPressed( Key key );
 };
 
-Input::Input( InputContext ic )
-{
-  this->setWindow( ic.window );
-}
 
-void Input::setWindow( Window *window )
+void InputGLFW::setWindow( Window *window )
 {
   this->context.window = window;
 }
 
-bool Input::isKeyPressed( Key key )
+InputGLFW::InputGLFW( GLFWcontext context )
+{
+  this->setWindow( context.window );
+}
+
+bool InputGLFW::isKeyPressed( Key key )
 {
   return GLFWhelper::isKeyPressed( this->context.window->getWindow(), key );
 }

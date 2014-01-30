@@ -10,16 +10,16 @@
 int main()
 {
   Window w;
-
-  InputContext ic;
-  ic.window = &w;
-  Input i( ic );
-
+  // Input
+  GLFWcontext glfwc;
+  glfwc.window = &w;
+  Input *i = new InputGLFW( glfwc );
+  // Renderer
   RendererContext rc;
   rc.window = &w;
-  rc.input = &i;
+  rc.input = i;
   Renderer r( rc );
-
+  // Start rendering
   r.render();
   return 0;
 }
