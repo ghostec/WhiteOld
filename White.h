@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Renderer.h"
+#include "ModelFactory.h"
 
 class Singleton
 {
@@ -37,14 +38,17 @@ class White
     void setWindowOSX();
     void setInputOSX();
     void setRendererOSX();
+    void setModelFactoryOSX();
     Window *WWindow;
     Input *WInput;
     Renderer *WRenderer;
+    ModelFactory *WModelFactory;
   public:
     void setArchitecture( Architecture architecture );
     Window* getWindow();
     Input* getInput();
     Renderer* getRenderer();
+    ModelFactory* getModelFactory();
 };
 
 void White::setArchitecture( Architecture architecture )
@@ -59,6 +63,7 @@ void White::setArchitectureOSX()
   setWindowOSX();
   setInputOSX();
   setRendererOSX();
+  setModelFactoryOSX();
 }
 
 void White::setWindowOSX()
@@ -81,6 +86,11 @@ void White::setRendererOSX()
   WRenderer = new Renderer( rc );
 }
 
+void White::setModelFactoryOSX()
+{
+  this->WModelFactory = new ModelFactoryOpenGL();
+}
+
 Window* White::getWindow()
 {
   return this->WWindow;
@@ -94,6 +104,11 @@ Input* White::getInput()
 Renderer* White::getRenderer()
 {
   return this->WRenderer;
+}
+
+ModelFactory* White::getModelFactory()
+{
+  return this->WModelFactory;
 }
 
 #endif
