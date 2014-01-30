@@ -31,7 +31,19 @@ namespace GLFWhelper
     glewExperimental = GL_TRUE;
     glewInit();
 
+    // OpenGL
+    glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+
     return window;
+  }
+
+  bool isKeyPressed( GLFWwindow *window, int key )
+  {
+    if( glfwGetKey( window, key ) == GLFW_PRESS )
+      return true;
+    else
+      return false;
   }
 }
 
