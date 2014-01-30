@@ -10,11 +10,16 @@
 int main()
 {
   Window w;
-  Renderer r;
-  Input i;
-  i.setWindow( &w );
-  r.setWindow( &w );
-  r.setInput( &i );
+
+  InputContext ic;
+  ic.window = &w;
+  Input i( ic );
+
+  RendererContext rc;
+  rc.window = &w;
+  rc.input = &i;
+  Renderer r( rc );
+
   r.render();
   return 0;
 }

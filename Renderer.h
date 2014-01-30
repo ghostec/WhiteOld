@@ -6,31 +6,43 @@
 #include "Window.h"
 #include "Input.h"
 
+typedef struct _RendererContext
+{
+  Window *window;
+  Input *input;
+} RendererContext;
+
 class Renderer
 {
   private:
-    Window *window;
-    Input *input;
-  public:
+    RendererContext context;
     void setWindow( Window *window );
     void setInput( Input *input );
+  public:
+    Renderer( RendererContext rc );
     void render();
 };
 
+Renderer::Renderer( RendererContext rc )
+{
+  this->setWindow( rc.window );
+  this->setInput( rc.input );
+}
+
 void Renderer::setWindow( Window *window )
 {
-  this->window = window;
+  this->context.window = window;
 }
 
 void Renderer::setInput( Input *input )
 {
-  this->input = input;
+  this->context.input = input;
 }
 
 void Renderer::render()
 {
-  while ( not glfwWindowShouldClose( this->window->getWindow() ) &&
-          not input->isKeyPressed( GLFW_KEY_ESCAPE ) )
+  while ( not glfwWindowShouldClose( this->context.window->getWindow() ) &&
+          not context.input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
     // Clear the screen to black
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -38,7 +50,7 @@ void Renderer::render()
 
     // Draw a rectangle from the 2 triangles using 6 indices
 
-    glfwSwapBuffers( this->window->getWindow() );
+    glfwSwapBuffers( this->context.window->getWindow() );
     glfwPollEvents();
   }
 }
