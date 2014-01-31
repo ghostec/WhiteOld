@@ -20,7 +20,6 @@ int main()
   ModelFactory *model_factory = white.getModelFactory();
 
   Model *model = model_factory->createModel( OBJ, "file_path" );
-  model->draw();
 
   renderer->setModel( model );
   // Start rendering

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Model.h"
+#include "ModelOpenGL.h"
 
 class ModelFactory
 {
