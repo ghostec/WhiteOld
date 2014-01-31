@@ -22,6 +22,7 @@ int main()
   Model *model = model_factory->createModel( OBJ, "file_path" );
   model->draw();
 
+  renderer->setModel( model );
   // Start rendering
   renderer->render();
   return 0;

@@ -6,10 +6,10 @@
 namespace ModelHelper
 {
 
-void ImportOBJ()
-{
-  std::cout << "Placeholder ModelHelper::ImportOBJ" << std::endl;
-}
+  void ImportOBJ()
+  {
+    std::cout << "Placeholder ModelHelper::ImportOBJ" << std::endl;
+  }
 
 }
 
