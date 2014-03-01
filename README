@@ -3,3 +3,14 @@ White's Lab
 This is my attempt to create a working game engine.
 
 At first I am going to develop the necessary tool set to make a (generic) platformer game.
+
+Requirements:
+
+Libraries: GLEW, GLFW3 and OpenGL.
+
+On OSX you can install BREW and hit
+
+brew install glew
+brew install glfw (you will probably need to use brew tap)
+
+OpenGL is provided by the OS.

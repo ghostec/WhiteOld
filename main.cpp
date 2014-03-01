@@ -9,6 +9,8 @@
 #include "Input.h"
 #include "ModelFactory.h"
 #include "Model.h"
+#include "Scene.h"
+#include "Mesh.h"
 
 int main()
 {
@@ -21,7 +23,12 @@ int main()
 
   Model *model = model_factory->createModel( OBJ, "file_path" );
 
-  renderer->setModel( model );
+  Mesh mesh( model );
+
+  Scene scene;
+  scene.addMesh( &mesh );
+
+  renderer->setCurrentScene( &scene );
   // Start rendering
   renderer->render();
   return 0;

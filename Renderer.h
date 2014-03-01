@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Model.h"
+#include "Scene.h"
 
 typedef struct _RendererContext
 {
@@ -17,13 +18,13 @@ class Renderer
 {
   private:
     RendererContext context;
-    Model* model;
+    Scene* current_scene;
     void setWindow( Window* window );
     void setInput( Input* input );
   public:
     Renderer( RendererContext rc );
     void render();
-    void setModel( Model* model );
+    void setCurrentScene( Scene* scene );
 };
 
 Renderer::Renderer( RendererContext rc )
@@ -51,17 +52,16 @@ void Renderer::render()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Draw a rectangle from the 2 triangles using 6 indices
-    this->model->draw();
+    this->current_scene->draw();
 
     glfwSwapBuffers( this->context.window->getWindow() );
     glfwPollEvents();
   }
 }
 
-void Renderer::setModel( Model* model )
+void Renderer::setCurrentScene( Scene* scene )
 {
-  this->model = model;
+  this->current_scene = scene;
 }
 
 #endif

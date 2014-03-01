@@ -2,6 +2,7 @@
 #define __WHITE_MODELOPENGL__
 
 #include <iostream>
+#include <string>
 #include "Model.h"
 #include "ModelHelper.h"
 #include "ApplicationHelper.h"
@@ -10,6 +11,8 @@ class ModelOpenGL : public Model
 {
   private:
     GLuint vao, vbo, shader_program;
+    void setVertexAttribute( GLuint shader_program,
+                              std::string attrib_name );
   public:
     ModelOpenGL( ModelFileType model_file_type, std::string file_path );
     void draw();
@@ -27,7 +30,7 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
   glGenVertexArrays(1, &this->vao);
   glBindVertexArray(vao);
 
-  // Create a Vertex Buffer Object and copy the vertex data to it
+  // Create a Vertex Buffer Object
   glGenBuffers(1, &this->vbo);
 
   GLfloat vertices[] = {
@@ -43,13 +46,17 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
                           "../shaders/vertex_shader.glsl",
                           "../shaders/fragment_shader.glsl" );
 
-  // Link the vertex and fragment shader into a shader program
   glUseProgram(shader_program);
-
   // Specify the layout of the vertex data
-  GLint posAttrib = glGetAttribLocation(shader_program, "position");
+  setVertexAttribute( shader_program, "position" );
+}
+
+void ModelOpenGL::setVertexAttribute( GLuint shader_program,
+                                      std::string attrib_name )
+{
+  GLint posAttrib = glGetAttribLocation(shader_program, attrib_name.c_str() );
   glEnableVertexAttribArray(posAttrib);
-  glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0); 
+  glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void ModelOpenGL::draw()
