@@ -51,10 +51,12 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
   // Specify the layout of the vertex data
   setVertexAttribute( shader_program, "position" );
 
-  Math::mat4 trans;
+  Math::mat4 s = Math::scale( Math::vec3( 0.2f, 0.2f, 0.0f ) );
+  Math::mat4 t = Math::translate( Math::vec3( 0.5f, 0.7f, 0.0f ) );
+  Math::mat4 trans = t * s;
 
   GLint uniTrans = glGetUniformLocation(shader_program, "t");
-  glUniformMatrix4fv( uniTrans, 1, GL_FALSE, Math::value_ptr( &trans ) );
+  glUniformMatrix4fv( uniTrans, 1, GL_TRUE, Math::value_ptr( &trans ) );
 }
 
 void ModelOpenGL::setVertexAttribute( GLuint shader_program,
