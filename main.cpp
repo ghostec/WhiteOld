@@ -17,19 +17,16 @@ int main()
   White white;
   white.setArchitecture( OSX );
 
-  Renderer *renderer = white.getRenderer();
-
   ModelFactory *model_factory = white.getModelFactory();
-
   Model *model = model_factory->createModel( OBJ, "file_path" );
-
   Mesh mesh( model );
 
   Scene scene;
   scene.addMesh( &mesh );
 
+  Renderer *renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );
-  // Start rendering
   renderer->render();
+
   return 0;
 }

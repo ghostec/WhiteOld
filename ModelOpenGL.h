@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "ModelHelper.h"
 #include "ApplicationHelper.h"
+#include "Math.h"
 
 class ModelOpenGL : public Model
 {
@@ -16,9 +17,9 @@ class ModelOpenGL : public Model
   public:
     ModelOpenGL( ModelFileType model_file_type, std::string file_path );
     void draw();
-    void translate( Vector3 vector );
-    void scale( Vector3 vector );
-    void rotate( float degrees, Vector3 vector );
+    void translate( Math::vec3 vector );
+    void scale( Math::vec3 vector );
+    void rotate( float degrees, Math::vec3 vector );
 };
 
 ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
@@ -42,13 +43,18 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
   glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-  GLuint shader_program = ModelHelper::OpenGL::CreateShaderProgram(
+  this->shader_program = ModelHelper::OpenGL::CreateShaderProgram(
                           "../shaders/vertex_shader.glsl",
                           "../shaders/fragment_shader.glsl" );
 
   glUseProgram(shader_program);
   // Specify the layout of the vertex data
   setVertexAttribute( shader_program, "position" );
+
+  Math::mat4 trans;
+
+  GLint uniTrans = glGetUniformLocation(shader_program, "t");
+  glUniformMatrix4fv( uniTrans, 1, GL_FALSE, Math::value_ptr( &trans ) );
 }
 
 void ModelOpenGL::setVertexAttribute( GLuint shader_program,
@@ -64,17 +70,17 @@ void ModelOpenGL::draw()
   glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void ModelOpenGL::translate( Vector3 vector )
+void ModelOpenGL::translate( Math::vec3 vector )
 {
   std::cout << "Placeholder ModelOpenGL::translate()" << std::endl;
 }
 
-void ModelOpenGL::scale( Vector3 vector )
+void ModelOpenGL::scale( Math::vec3 vector )
 {
   std::cout << "Placeholder ModelOpenGL::scale()" << std::endl;
 }
 
-void ModelOpenGL::rotate( float degrees, Vector3 vector )
+void ModelOpenGL::rotate( float degrees, Math::vec3 vector )
 {
   std::cout << "Placeholder ModelOpenGL::rotate()" << std::endl;
 }

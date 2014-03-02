@@ -12,9 +12,9 @@ class Model
 {
   public:
     virtual void draw() = 0;
-    virtual void translate( Vector3 vector ) = 0;
-    virtual void scale( Vector3 vector ) = 0;
-    virtual void rotate( float degrees, Vector3 vector ) = 0;
+    virtual void translate( Math::vec3 vector ) = 0;
+    virtual void scale( Math::vec3 vector ) = 0;
+    virtual void rotate( float degrees, Math::vec3 vector ) = 0;
 };
 
 #endif
