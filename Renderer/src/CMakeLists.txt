@@ -1,9 +1,3 @@
-cmake_minimum_required (VERSION 2.8)
-
-project(White)
-
-subdirs(Renderer Input WMath)
-
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
@@ -19,6 +13,7 @@ include_directories(${GLFW_INCLUDE_DIRS})
 link_directories(${GLFW_LIBRARY_DIRS})
 add_definitions(${GLFW_DEFINITIONS})
 
-add_executable(White main.cpp ApplicationHelper.cpp)
+include_directories(${White_SOURCE_DIR}/Renderer/inc)
+add_library(Renderer Renderer.cpp ModelFactory.cpp ModelOpenGL.cpp ModelHelper.cpp Mesh.cpp Scene.cpp Window.cpp GLFWhelper.cpp)
 
-target_link_libraries(White ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} Renderer Input WMath)
+target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY})

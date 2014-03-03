@@ -1,8 +1,8 @@
 #ifndef __WHITE_INPUT__
 #define __WHITE_INPUT__
 
-#include "GLFWhelper.h"
-#include "Window.h"
+#include "../../Renderer/inc/GLFWhelper.h"
+#include "../../Renderer/inc/Window.h"
 
 #define Key int
 
@@ -26,21 +26,5 @@ class InputGLFW : public Input
     InputGLFW( GLFWcontext context );
     bool isKeyPressed( Key key );
 };
-
-
-void InputGLFW::setWindow( Window *window )
-{
-  this->context.window = window;
-}
-
-InputGLFW::InputGLFW( GLFWcontext context )
-{
-  this->setWindow( context.window );
-}
-
-bool InputGLFW::isKeyPressed( Key key )
-{
-  return GLFWhelper::isKeyPressed( this->context.window->getWindow(), key );
-}
 
 #endif

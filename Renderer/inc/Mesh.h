@@ -12,14 +12,4 @@ class Mesh
     void draw();
 };
 
-Mesh::Mesh( Model* model )
-{
-  this->model = model;
-}
-
-void Mesh::draw()
-{
-  this->model->draw();
-}
-
 #endif

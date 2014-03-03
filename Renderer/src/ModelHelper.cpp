@@ -1,9 +1,4 @@
-#ifndef __WHITE_MODELHELPER__
-#define __WHITE_MODELHELPER__
-
-#include <iostream>
-#include <string>
-#include "ApplicationHelper.h"
+#include <ModelHelper.h>
 
 namespace ModelHelper
 {
@@ -55,16 +50,16 @@ namespace ModelHelper
     }
 
     GLuint CreateShaderProgram( std::string vertex_shader_file_path,
-                                std::string fragment_shader_file_path )
+        std::string fragment_shader_file_path )
     {
       GLuint vertex_shader = CreateShader( GL_VERTEX_SHADER,
-                                            vertex_shader_file_path );
+          vertex_shader_file_path );
       GLuint fragment_shader = CreateShader( GL_FRAGMENT_SHADER,
-                                              fragment_shader_file_path );
+          fragment_shader_file_path );
       return CreateShaderProgram( vertex_shader, fragment_shader );
     }
 
-  }
-}
 
-#endif
+  }
+
+}

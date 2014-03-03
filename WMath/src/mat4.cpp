@@ -1,20 +1,7 @@
-#ifndef __WHITE_MATH__
-#define __WHITE_MATH__
+#include <WMath.h>
 
-#include <iostream>
-#include <cmath>
-
-#define PI 3.14159265
-
-namespace Math
+namespace WMath
 {
-  class mat4
-  {
-    public:
-      float mat[4][4];
-      mat4();
-      mat4 operator*(mat4 m1);
-  };
 
   mat4::mat4()
   {
@@ -25,20 +12,6 @@ namespace Math
         mat[i][j] = 0.0f;
 
     mat[0][0] = mat[1][1] = mat[2][2] = mat[3][3] = 1.0f;
-  }
-
-  class vec3
-  {
-    public:
-      float x, y, z;
-      vec3( float x = 0.0, float y = 0.0, float z = 0.0 );
-  };
-
-  vec3::vec3( float x, float y, float z )
-  {
-    this->x = x;
-    this->y = y;
-    this->z = z;
   }
 
   mat4 translate( vec3 vector )
@@ -93,5 +66,5 @@ namespace Math
   {
     return &m->mat[0][0];
   }
+
 }
-#endif

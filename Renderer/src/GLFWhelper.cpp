@@ -1,9 +1,4 @@
-#ifndef __WHITE_GLFWHELPER__
-#define __WHITE_GLFWHELPER__
-
-#include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <GLFWhelper.h>
 
 namespace GLFWhelper
 {
@@ -46,5 +41,3 @@ namespace GLFWhelper
       return false;
   }
 }
-
-#endif
