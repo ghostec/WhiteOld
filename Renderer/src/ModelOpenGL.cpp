@@ -31,7 +31,8 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
 
   WMath::mat4 s = WMath::scale( WMath::vec3( 0.2f, 0.2f, 0.0f ) );
   WMath::mat4 t = WMath::translate( WMath::vec3( 0.5f, 0.7f, 0.0f ) );
-  WMath::mat4 trans = t * s;
+  WMath::mat4 r = WMath::rotate_z( -90.0f );
+  WMath::mat4 trans = t * r * s;
 
   GLint uniTrans = glGetUniformLocation(shader_program, "t");
   glUniformMatrix4fv( uniTrans, 1, GL_TRUE, WMath::value_ptr( &trans ) );

@@ -26,6 +26,7 @@ namespace WMath
   mat4 translate( vec3 vector );
   mat4 scale( vec3 vector );
   mat4 rotate_x( float degree );
+  mat4 rotate_z( float degree );
 
   float* value_ptr( mat4 *m );
 }
