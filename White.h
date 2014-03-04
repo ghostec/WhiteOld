@@ -6,28 +6,10 @@
 #ifndef __WHITE_WHITE__
 #define __WHITE_WHITE__
 
-#include "Window.h"
-#include "Input.h"
-#include "Renderer.h"
-#include "ModelFactory.h"
-
-class Singleton
-{
-  private:
-    Singleton() {}; // Constructor? (the {} brackets) are needed here.
-    // Dont forget to declare these two. You want to make sure they
-    // are unaccessable otherwise you may accidently get copies of
-    // your singleton appearing.
-    Singleton(Singleton const&);        // Don't Implement
-    void operator=(Singleton const&);   // Don't implement
-  public:
-    static Singleton& getInstance()
-    {
-      static Singleton instance; 	// Guaranteed to be destroyed.
-      // Instantiated on first use.
-      return instance;
-    }
-};
+#include "Renderer/inc/Window.h"
+#include "Input/inc/Input.h"
+#include "Renderer/inc/Renderer.h"
+#include "Renderer/inc/ModelFactory.h"
 
 typedef enum _Architecture { OSX } Architecture;
 

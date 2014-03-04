@@ -42,6 +42,16 @@ namespace WMath
     return m;
   }
 
+  mat4 rotate_z( float degree )
+  {
+    mat4 m;
+    m.mat[0][0] = cos( degree * PI / 180.0 );
+    m.mat[0][1] = - sin( degree * PI / 180.0 );
+    m.mat[1][0] = sin( degree * PI / 180.0 );
+    m.mat[1][1] = cos( degree * PI / 180.0 );
+    return m;
+  }
+
   mat4 mat4::operator*(mat4 m1)
   {
     mat4 m;
@@ -55,9 +65,7 @@ namespace WMath
           sum += this->mat[i][k] * m1.mat[k][j];
         }
         m.mat[i][j] = sum;
-        std::cout << sum << " ";
       }
-      std::cout << std::endl;
     }
     return m;
   }
