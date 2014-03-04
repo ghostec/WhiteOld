@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <GL/glew.h>
-#include "../../ApplicationHelper.h"
+#include "ApplicationHelper.h"
 
 namespace ModelHelper
 {

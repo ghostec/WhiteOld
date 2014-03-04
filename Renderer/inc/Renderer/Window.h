@@ -1,7 +1,7 @@
 #ifndef __WHITE_WINDOW__
 #define __WHITE_WINDOW__
 
-#include "GLFWhelper.h"
+#include "Renderer/GLFWhelper.h"
 
 #define WindowVar GLFWwindow
 

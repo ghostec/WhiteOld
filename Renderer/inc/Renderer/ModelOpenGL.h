@@ -3,10 +3,10 @@
 
 #include <iostream>
 #include <string>
-#include "Model.h"
-#include "ModelHelper.h"
-#include "../../ApplicationHelper.h"
-#include "../../WMath/inc/WMath.h"
+#include "Renderer/Model.h"
+#include "Renderer/ModelHelper.h"
+#include "WMath/WMath.h"
+#include "ApplicationHelper.h"
 
 class ModelOpenGL : public Model
 {

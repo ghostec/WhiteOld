@@ -2,11 +2,11 @@
 #define __WHITE_RENDERER__
 
 #include <iostream>
-#include "GLFWhelper.h"
-#include "Window.h"
-#include "../../Input/inc/Input.h"
-#include "Model.h"
-#include "Scene.h"
+#include "Renderer/GLFWhelper.h"
+#include "Renderer/Window.h"
+#include "Renderer/Model.h"
+#include "Renderer/Scene.h"
+#include "Input/Input.h"
 
 typedef struct _RendererContext
 {

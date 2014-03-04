@@ -2,14 +2,14 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "Renderer/inc/GLFWhelper.h"
 #include "White.h"
-#include "Renderer/inc/Renderer.h"
-#include "Renderer/inc/Window.h"
-#include "Renderer/inc/ModelFactory.h"
-#include "Renderer/inc/Model.h"
-#include "Renderer/inc/Scene.h"
-#include "Renderer/inc/Mesh.h"
+#include "Renderer/GLFWhelper.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/Window.h"
+#include "Renderer/ModelFactory.h"
+#include "Renderer/Model.h"
+#include "Renderer/Scene.h"
+#include "Renderer/Mesh.h"
 
 int main()
 {

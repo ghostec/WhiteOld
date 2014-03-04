@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <string>
-#include "WMath.h"
-#include "ModelHelper.h"
+#include "WMath/WMath.h"
+#include "Renderer/ModelHelper.h"
 
 typedef enum _ModelFileType { OBJ } ModelFileType;
 

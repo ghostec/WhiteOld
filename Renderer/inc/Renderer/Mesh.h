@@ -1,7 +1,7 @@
 #ifndef __WHITE_MESH__
 #define __WHITE_MESH__
 
-#include "Model.h"
+#include "Renderer/Model.h"
 
 class Mesh
 {

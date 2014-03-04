@@ -1,4 +1,4 @@
-#include <ModelOpenGL.h>
+#include "Renderer/ModelOpenGL.h"
 
 ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
                           std::string file_path )

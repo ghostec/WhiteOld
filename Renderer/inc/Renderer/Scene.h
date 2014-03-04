@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include "Mesh.h"
+#include "Renderer/Mesh.h"
 
 class Scene
 {

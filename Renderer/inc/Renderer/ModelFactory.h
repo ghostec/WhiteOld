@@ -2,8 +2,8 @@
 #define __WHITE_MODELFACTORY__
 
 #include <iostream>
-#include "Model.h"
-#include "ModelOpenGL.h"
+#include "Renderer/Model.h"
+#include "Renderer/ModelOpenGL.h"
 
 class ModelFactory
 {

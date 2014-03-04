@@ -1,4 +1,4 @@
-#include <ModelFactory.h>
+#include "Renderer/ModelFactory.h"
 
 Model* ModelFactoryOpenGL::createModel( ModelFileType model_file_type,
                                         std::string file_path )

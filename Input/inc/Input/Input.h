@@ -1,8 +1,8 @@
 #ifndef __WHITE_INPUT__
 #define __WHITE_INPUT__
 
-#include "../../Renderer/inc/GLFWhelper.h"
-#include "../../Renderer/inc/Window.h"
+#include "Renderer/GLFWhelper.h"
+#include "Renderer/Window.h"
 
 #define Key int
 
