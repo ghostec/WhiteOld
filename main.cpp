@@ -9,7 +9,6 @@
 #include "Renderer/ModelFactory.h"
 #include "Renderer/Model.h"
 #include "Renderer/Scene.h"
-#include "Renderer/Mesh.h"
 
 int main()
 {
@@ -18,10 +17,9 @@ int main()
 
   ModelFactory *model_factory = white.getModelFactory();
   Model *model = model_factory->createModel( OBJ, "file_path" );
-  Mesh mesh( model );
 
   Scene scene;
-  scene.addMesh( &mesh );
+  scene.addModel( model );
 
   Renderer *renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );

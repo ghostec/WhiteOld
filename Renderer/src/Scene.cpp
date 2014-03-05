@@ -2,14 +2,14 @@
 
 void Scene::draw()
 {
-  int vector_meshes_size = this->meshes.size();
-  for( int i = 0; i < vector_meshes_size; i++ )
+  int vector_models_size = this->models.size();
+  for( int i = 0; i < vector_models_size; i++ )
   {
-    this->meshes.at(i)->draw();
+    this->models.at(i)->draw();
   }
 }
 
-void Scene::addMesh( Mesh* mesh )
+void Scene::addModel( Model* model )
 {
-  this->meshes.push_back( mesh );
+  this->models.push_back( model );
 }

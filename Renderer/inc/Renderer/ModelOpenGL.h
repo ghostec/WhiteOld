@@ -15,6 +15,7 @@ class ModelOpenGL : public Model
     void setVertexAttribute( GLuint shader_program,
                               std::string attrib_name );
   public:
+    WMath::mat4 transformation;
     ModelOpenGL( ModelFileType model_file_type, std::string file_path );
     void draw();
     void translate( WMath::vec3 vector );

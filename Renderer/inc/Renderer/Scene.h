@@ -3,15 +3,15 @@
 
 #include <iostream>
 #include <vector>
-#include "Renderer/Mesh.h"
+#include "Renderer/Model.h"
 
 class Scene
 {
   private:
-    std::vector<Mesh*> meshes;
+    std::vector<Model*> models;
   public:
     void draw();
-    void addMesh( Mesh* mesh );
+    void addModel( Model* model );
 };
 
 #endif

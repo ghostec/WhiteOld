@@ -29,13 +29,12 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
   // Specify the layout of the vertex data
   setVertexAttribute( shader_program, "position" );
 
-  WMath::mat4 s = WMath::scale( WMath::vec3( 0.2f, 0.2f, 0.0f ) );
-  WMath::mat4 t = WMath::translate( WMath::vec3( 0.5f, 0.7f, 0.0f ) );
-  WMath::mat4 r = WMath::rotate_z( -90.0f );
-  WMath::mat4 trans = t * r * s;
-
   GLint uniTrans = glGetUniformLocation(shader_program, "t");
-  glUniformMatrix4fv( uniTrans, 1, GL_TRUE, WMath::value_ptr( &trans ) );
+  glUniformMatrix4fv( uniTrans, 1, GL_TRUE, WMath::value_ptr( &this->transformation ) );
+  glUseProgram(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
 }
 
 void ModelOpenGL::setVertexAttribute( GLuint shader_program,
@@ -48,12 +47,23 @@ void ModelOpenGL::setVertexAttribute( GLuint shader_program,
 
 void ModelOpenGL::draw()
 {
+  glBindVertexArray( this->vao );
+  glUseProgram( this->shader_program );
+
   glDrawArrays(GL_TRIANGLES, 0, 3);
+
+  glUseProgram(0);
+  glBindVertexArray(0);
 }
 
 void ModelOpenGL::translate( WMath::vec3 vector )
 {
-  std::cout << "Placeholder ModelOpenGL::translate()" << std::endl;
+  this->transformation = this->transformation * WMath::translate( vector );
+
+  glUseProgram( this->shader_program );
+  GLint uniTrans = glGetUniformLocation(shader_program, "t");
+  glUniformMatrix4fv( uniTrans, 1, GL_TRUE, WMath::value_ptr( &this->transformation ) );
+  glUseProgram(0);
 }
 
 void ModelOpenGL::scale( WMath::vec3 vector )
