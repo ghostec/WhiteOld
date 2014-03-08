@@ -14,6 +14,24 @@ namespace WMath
     mat[0][0] = mat[1][1] = mat[2][2] = mat[3][3] = 1.0f;
   }
 
+  mat4 mat4::operator*(mat4 m1)
+  {
+    mat4 m;
+    for( int i=0; i<4; i++ )
+    {
+      for( int j=0; j<4; j++ )
+      {
+        float sum = 0.0;
+        for( int k=0; k<4; k++ )
+        {
+          sum += this->mat[i][k] * m1.mat[k][j];
+        }
+        m.mat[i][j] = sum;
+      }
+    }
+    return m;
+  }
+
   mat4 translate( vec3 vector )
   {
     mat4 m;
@@ -49,24 +67,6 @@ namespace WMath
     m.mat[0][1] = - sin( degree * PI / 180.0 );
     m.mat[1][0] = sin( degree * PI / 180.0 );
     m.mat[1][1] = cos( degree * PI / 180.0 );
-    return m;
-  }
-
-  mat4 mat4::operator*(mat4 m1)
-  {
-    mat4 m;
-    for( int i=0; i<4; i++ )
-    {
-      for( int j=0; j<4; j++ )
-      {
-        float sum = 0.0;
-        for( int k=0; k<4; k++ )
-        {
-          sum += this->mat[i][k] * m1.mat[k][j];
-        }
-        m.mat[i][j] = sum;
-      }
-    }
     return m;
   }
 

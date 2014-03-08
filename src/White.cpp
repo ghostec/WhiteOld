@@ -39,23 +39,3 @@ void White::setModelFactoryOSX()
 {
   this->WModelFactory = new ModelFactoryOpenGL();
 }
-
-Window* White::getWindow()
-{
-  return this->WWindow;
-}
-
-Input* White::getInput()
-{
-  return this->WInput;
-}
-
-Renderer* White::getRenderer()
-{
-  return this->WRenderer;
-}
-
-ModelFactory* White::getModelFactory()
-{
-  return this->WModelFactory;
-}

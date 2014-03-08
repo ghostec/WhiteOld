@@ -21,16 +21,16 @@ class White
     void setInputOSX();
     void setRendererOSX();
     void setModelFactoryOSX();
-    Window *WWindow;
-    Input *WInput;
-    Renderer *WRenderer;
-    ModelFactory *WModelFactory;
+    Window*WWindow;
+    Input* WInput;
+    Renderer* WRenderer;
+    ModelFactory* WModelFactory;
   public:
     void setArchitecture( Architecture architecture );
-    Window* getWindow();
-    Input* getInput();
-    Renderer* getRenderer();
-    ModelFactory* getModelFactory();
+    Window* getWindow() { return this->WWindow; }
+    Input* getInput() { return this->WInput; }
+    Renderer* getRenderer() { return this-> WRenderer; }
+    ModelFactory* getModelFactory() { return this->WModelFactory; }
 };
 
 #endif
