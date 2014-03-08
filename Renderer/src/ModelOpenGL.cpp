@@ -68,7 +68,12 @@ void ModelOpenGL::translate( WMath::vec3 vector )
 
 void ModelOpenGL::scale( WMath::vec3 vector )
 {
-  std::cout << "Placeholder ModelOpenGL::scale()" << std::endl;
+  this->transformation = this->transformation * WMath::scale( vector );
+
+  glUseProgram( this->shader_program );
+  GLint uniTrans = glGetUniformLocation(shader_program, "t");
+  glUniformMatrix4fv( uniTrans, 1, GL_TRUE, WMath::value_ptr( &this->transformation ) );
+  glUseProgram(0);
 }
 
 void ModelOpenGL::rotate( float degrees, WMath::vec3 vector )

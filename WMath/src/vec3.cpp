@@ -8,7 +8,7 @@ namespace WMath
     vec[0] = vec[1] = vec[2] = 0.0f;
   }
 
-  vec3::vec3( float a );
+  vec3::vec3( float a )
   {
     vec[0] = vec[1] = vec[2] = a;
   }
@@ -27,6 +27,15 @@ namespace WMath
   float& vec3::operator[] ( int index )
   {
     return this->vec[index];
+  }
+
+  vec3 operator*( const float& f, const vec3& v )
+  {
+    return vec3( f * v[0], f * v[1], f * v[2] );
+  }
+  vec3 operator*( const vec3& v, const float& f )
+  {
+    return vec3( f * v[0], f * v[1], f * v[2] );
   }
 
   float dot( vec3 v1, vec3 v2 )

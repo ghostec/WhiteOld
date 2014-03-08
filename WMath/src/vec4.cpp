@@ -8,7 +8,7 @@ namespace WMath
     vec[0] = vec[1] = vec[2] = vec[3] = 0.0f;
   }
 
-  vec4::vec4( float a );
+  vec4::vec4( float a )
   {
     vec[0] = vec[1] = vec[2] = vec[3] = a;
   }

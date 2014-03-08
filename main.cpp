@@ -26,7 +26,7 @@ int main()
   model1->translate( WMath::vec3( -0.3f, -0.3f, 0.0f ) );
   model2->translate( WMath::vec3( 0.3f, 0.3f, 0.0f ) );
 
-  Renderer *renderer = white.getRenderer();
+  Renderer* renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );
   renderer->render();
 
