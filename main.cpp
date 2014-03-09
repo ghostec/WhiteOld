@@ -23,7 +23,7 @@ int main()
 
   model1->rotate( 30.0f );
   model1->scale( WMath::vec3( 0.5f, 0.5f, 0.5f ) );
-  model1->translate( WMath::vec3( 0.0f, 0.0f, -2.0f ) );
+  model1->translate( WMath::vec3( 0.0f, 0.0f, 0.0f ) );
 
   Renderer* renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );
