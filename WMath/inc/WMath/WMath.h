@@ -44,6 +44,8 @@ namespace WMath
 
   vec3 operator*( const float& f, const vec3& v );
   vec3 operator*( const vec3& v, const float& f );
+  vec3 operator+( const vec3& v1, const vec3& v2 );
+  vec3 operator-( const vec3& v1, const vec3& v2 );
 
   vec4 operator*( const mat4& m, const vec4& v );
   vec4 operator*( const vec4& v, const mat4& m );
@@ -52,13 +54,18 @@ namespace WMath
   mat4 translate( vec3 vector );
   mat4 scale( vec3 vector );
   mat4 rotate_x( float degree );
+  mat4 rotate_y( float degree );
   mat4 rotate_z( float degree );
+  mat4 lookAtRH( vec3 eye, vec3 target, vec3 up );
+  mat4 OpenGlFrustum( float l, float r, float b, float t, float n, float f );
+  mat4 OpenGlPerspective( float angle, float imageAspectRatio, float n, float f );
 
   float dot( vec4 v1, vec4 v2 );
   vec4 normalize( vec4 v );
 
   float dot( vec3 v1, vec3 v2 );
   vec3 normalize( vec3 v );
+  vec3 cross( vec3 v1, vec3 v2 );
 
   float* value_ptr( mat4 *m );
 }

@@ -97,9 +97,83 @@ namespace WMath
     return m;
   }
 
+  mat4 rotate_y( float degree )
+  {
+    mat4 m;
+    m[0][0] = cos( degree * PI / 180.0 );
+    m[0][2] = - sin( degree * PI / 180.0 );
+    m[2][0] = sin( degree * PI / 180.0 );
+    m[2][2] = cos( degree * PI / 180.0 );
+    return m;
+  }
+
+  mat4 lookAtRH( vec3 eye, vec3 target, vec3 up )
+  {
+    vec3 zaxis = normalize( eye - target );       // The "forward" vector.
+    vec3 xaxis = normalize( cross( up, zaxis ) ); // The "right" vector.
+    vec3 yaxis = cross( zaxis, xaxis );           // The "up" vector.
+    // Create a 4x4 orientation matrix from the right, up, and forward vectors
+    // This is transposed which is equivalent to performing an inverse 
+    // if the matrix is orthonormalized (in this case, it is).
+    mat4 orientation(
+      vec4( xaxis[0], yaxis[0], zaxis[0], 0 ),
+      vec4( xaxis[1], yaxis[1], zaxis[1], 0 ),
+      vec4( xaxis[2], yaxis[2], zaxis[2], 0 ),
+      vec4(   0,       0,       0,     1 )
+      );
+    // Create a 4x4 translation matrix.
+    // The eye position is negated which is equivalent
+    // to the inverse of the translation matrix.
+    // T(v)^-1 == T(-v)
+    mat4 translation(
+      vec4(   1,      0,      0,   0 ),
+      vec4(   0,      1,      0,   0 ),
+      vec4(   0,      0,      1,   0 ),
+      vec4(-eye[0], -eye[1], -eye[2], 1 )
+      );
+    // Combine the orientation and translation to compute 
+    // the final view matrix
+    return ( orientation * translation );
+  }
+
   float* value_ptr( mat4 *m )
   {
     return &m->columns[0][0];
+  }
+
+  mat4 OpenGlFrustum( float l, float r, float b, float t, float n, float f )
+  {
+    mat4 mat;
+
+    mat[0][0] = 2.0f * n / (r - l);
+    mat[0][1] = 0;
+    mat[0][2] = 0;
+    mat[0][3] = 0;
+
+    mat[1][0] = 0;
+    mat[1][1] = 2.0f * n / (t - b);
+    mat[1][2] = 0;
+    mat[1][3] = 0;
+
+    mat[2][0] = (r + l) / (r - l);
+    mat[2][1] = (t + b) / (t - b);
+    mat[2][2] = -(f + n) / (f - n);
+    mat[2][3] = -1.0f;
+
+    mat[3][0] = 0.0f;
+    mat[3][1] = 0.0f;
+    mat[3][2] = -2.0f * f * n / (f - n);
+    mat[3][3] = 0.0f;
+
+    return mat;
+  }
+
+  mat4 OpenGlPerspective( float angle, float imageAspectRatio, float n, float f )
+  {
+    float scale = tan( angle * 0.5 * PI / 180.0f ) * n;
+    float r = imageAspectRatio * scale, l = -r;
+    float t = scale, b = -t;
+    return OpenGlFrustum( l, r, b, t, n, f );
   }
 
 }

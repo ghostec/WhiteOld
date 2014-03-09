@@ -20,7 +20,7 @@ class ModelOpenGL : public Model
     void draw();
     void translate( WMath::vec3 vector );
     void scale( WMath::vec3 vector );
-    void rotate( float degrees, WMath::vec3 vector );
+    void rotate( float degrees );
 };
 
 #endif

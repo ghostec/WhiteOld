@@ -1,6 +1,10 @@
 #version 150 core
-in vec2 position;
+in vec3 position;
+out vec3 color;
 uniform mat4 t;
+uniform mat4 view;
+uniform mat4 proj;
 void main() {
-  gl_Position = t * vec4(position, 0.0, 1.0);
+  color = position;
+  gl_Position = proj * t * vec4(position, 1.0);
 }

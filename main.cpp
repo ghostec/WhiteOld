@@ -17,14 +17,13 @@ int main()
 
   ModelFactory* model_factory = white.getModelFactory();
   Model* model1 = model_factory->createModel( OBJ, "file_path" );
-  Model* model2 = model_factory->createModel( OBJ, "file_path" );
 
   Scene scene;
   scene.addModel( model1 );
-  scene.addModel( model2 );
 
-  model1->translate( WMath::vec3( -0.3f, -0.3f, 0.0f ) );
-  model2->translate( WMath::vec3( 0.3f, 0.3f, 0.0f ) );
+  model1->rotate( 30.0f );
+  model1->scale( WMath::vec3( 0.5f, 0.5f, 0.5f ) );
+  model1->translate( WMath::vec3( 0.0f, 0.0f, -2.0f ) );
 
   Renderer* renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );

@@ -14,7 +14,7 @@ class Model
     virtual void draw() = 0;
     virtual void translate( WMath::vec3 vector ) = 0;
     virtual void scale( WMath::vec3 vector ) = 0;
-    virtual void rotate( float degrees, WMath::vec3 vector ) = 0;
+    virtual void rotate( float degrees ) = 0;
 };
 
 #endif
