@@ -5,6 +5,7 @@
 #include <string>
 #include "Renderer/Model.h"
 #include "Renderer/ModelHelper.h"
+#include "Renderer/CameraOpenGL.h"
 #include "WMath/WMath.h"
 #include "ApplicationHelper.h"
 
@@ -14,6 +15,8 @@ class ModelOpenGL : public Model
     GLuint vao, vbo, shader_program;
     void setVertexAttribute( GLuint shader_program,
                               std::string attrib_name );
+    void before_draw();
+    void after_draw();
   public:
     WMath::mat4 transformation;
     ModelOpenGL( ModelFileType model_file_type, std::string file_path );

@@ -78,8 +78,13 @@ void ModelOpenGL::setVertexAttribute( GLuint shader_program,
   glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
+void ModelOpenGL::before_draw()
+{
+}
+
 void ModelOpenGL::draw()
 {
+  this->before_draw();
   glBindVertexArray( this->vao );
   glUseProgram( this->shader_program );
 
@@ -87,15 +92,21 @@ void ModelOpenGL::draw()
 
   glUseProgram(0);
   glBindVertexArray(0);
+  this->after_draw();
+}
+
+void ModelOpenGL::after_draw()
+{
 }
 
 void ModelOpenGL::translate( WMath::vec3 vector )
 {
   this->transformation = this->transformation * WMath::translate( vector );
 
-  WMath::mat4 view = WMath::lookAtRH( WMath::vec3(0.0f, 3.0f, 2.0f),
-      WMath::vec3(0.0f, 0.0f, 0.0f),
-      WMath::vec3(0.0f, 1.0f, 0.0f) );
+  CameraOpenGL camera( WMath::vec3(0.0f, 3.0f, 2.0f),
+      WMath::vec3(0.0f, 0.0f, 0.0f) );
+
+  WMath::mat4 view = camera.getView();
 
   WMath::mat4 proj = WMath::OpenGlPerspective( 45.0f, 800.0f/600.0f, 0.1f, 100.0f );
 

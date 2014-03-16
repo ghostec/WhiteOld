@@ -8,6 +8,7 @@
 #include "Renderer/Window.h"
 #include "Renderer/ModelFactory.h"
 #include "Renderer/Model.h"
+#include "Renderer/CameraFactory.h"
 #include "Renderer/Scene.h"
 
 int main()
@@ -17,6 +18,11 @@ int main()
 
   ModelFactory* model_factory = white.getModelFactory();
   Model* model1 = model_factory->createModel( OBJ, "file_path" );
+
+  CameraFactory* camera_factory = white.getCameraFactory();
+  Camera* camera = camera_factory->createCamera(
+                                  WMath::vec3(0.0f, 3.0f, 2.0f),
+                                  WMath::vec3(0.0f, 0.0f, 0.0f) );
 
   Scene scene;
   scene.addModel( model1 );
