@@ -6,15 +6,18 @@
 #include "Renderer/Model.h"
 #include "Renderer/ModelHelper.h"
 #include "Renderer/CameraOpenGL.h"
+#include "Renderer/ShaderGLSL.h"
 #include "WMath/WMath.h"
 #include "ApplicationHelper.h"
 
 class ModelOpenGL : public Model
 {
   private:
-    GLuint vao, vbo, shader_program;
+    GLuint vao, vbo;
+    ShaderGLSL shader;
     void setVertexAttribute( GLuint shader_program,
                               std::string attrib_name );
+    void setUniformMatrix4fv( std::string name, const GLfloat *value );
     void before_draw();
     void after_draw();
   public:
