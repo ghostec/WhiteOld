@@ -16,6 +16,6 @@ link_directories(${GLFW_LIBRARY_DIRS})
 add_definitions(${GLFW_DEFINITIONS})
 
 include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/inc)
-add_library(Renderer Renderer.cpp ShaderFactory.cpp ShaderGLSL.cpp ModelFactory.cpp ModelOpenGL.cpp ModelHelper.cpp CameraFactory.cpp CameraOpenGL.cpp Scene.cpp Window.cpp GLFWhelper.cpp)
+add_library(Renderer Renderer.cpp ShaderFactory.cpp ShaderGLSL.cpp ModelFactory.cpp ModelOpenGL.cpp ModelHelper.cpp Camera.cpp Scene.cpp Window.cpp GLFWhelper.cpp)
 
 target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} WMath)

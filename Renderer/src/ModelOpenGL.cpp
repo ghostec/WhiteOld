@@ -85,8 +85,8 @@ void ModelOpenGL::translate( WMath::vec3 vector )
 {
   this->transformation = this->transformation * WMath::translate( vector );
 
-  CameraOpenGL camera( WMath::vec3(0.0f, 3.0f, 2.0f),
-      WMath::vec3(0.0f, 0.0f, 0.0f) );
+  Camera camera( WMath::vec3(0.0f, 3.0f, 2.0f),
+                  WMath::vec3(0.0f, 0.0f, 0.0f) );
 
   WMath::mat4 view = camera.getView();
 

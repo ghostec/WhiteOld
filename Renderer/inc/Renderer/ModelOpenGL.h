@@ -5,7 +5,7 @@
 #include <string>
 #include "Renderer/Model.h"
 #include "Renderer/ModelHelper.h"
-#include "Renderer/CameraOpenGL.h"
+#include "Renderer/Camera.h"
 #include "Renderer/ShaderGLSL.h"
 #include "WMath/WMath.h"
 #include "ApplicationHelper.h"

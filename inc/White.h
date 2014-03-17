@@ -9,7 +9,6 @@
 #include "Renderer/Window.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/ModelFactory.h"
-#include "Renderer/CameraFactory.h"
 #include "Input/Input.h"
 
 typedef enum _Architecture { OSX } Architecture;
@@ -22,19 +21,16 @@ class White
     void setInputOSX();
     void setRendererOSX();
     void setModelFactoryOSX();
-    void setCameraFactoryOSX();
     Window*WWindow;
     Input* WInput;
     Renderer* WRenderer;
     ModelFactory* WModelFactory;
-    CameraFactory* WCameraFactory;
   public:
     void setArchitecture( Architecture architecture );
     Window* getWindow() { return this->WWindow; }
     Input* getInput() { return this->WInput; }
     Renderer* getRenderer() { return this-> WRenderer; }
     ModelFactory* getModelFactory() { return this->WModelFactory; }
-    CameraFactory* getCameraFactory() { return this->WCameraFactory; }
 };
 
 #endif
