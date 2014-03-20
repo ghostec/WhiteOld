@@ -26,9 +26,20 @@ void ShaderGLSL::setVertexAttribute( std::string name, int count )
   glUseProgram(0);
 }
 
+void ShaderGLSL::setUniform3f( std::string name,
+    GLfloat v0,
+    GLfloat v1,
+    GLfloat v2 )
+{
+  glUseProgram(this->shader);
+  GLint uniform = glGetUniformLocation( this->shader , name.c_str() );
+  glUniform3f( uniform, v0, v1, v2 );
+  glUseProgram(0);
+}
+
 void ShaderGLSL::setUniformMatrix4fv( std::string name,
-                                      const GLfloat *value,
-                                      GLboolean transpose )
+    const GLfloat *value,
+    GLboolean transpose )
 {
   glUseProgram(this->shader);
   GLint uniform = glGetUniformLocation( this->shader , name.c_str() );

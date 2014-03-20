@@ -3,13 +3,25 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <cstdio>
 #include <GL/glew.h>
+#include "WMath/WMath.h"
 #include "ApplicationHelper.h"
 
 namespace ModelHelper
 {
 
-  void ImportOBJ();
+  void ImportOBJ(
+      std::string filePath,
+      std::vector< WMath::vec3 >* vertices,
+      std::vector< WMath::vec3 >* normals,
+      std::vector< GLuint >* vertexIndices,
+      std::vector< GLuint >* normalIndices,
+      std::vector< GLuint >* uvIndices
+      );
 
   namespace OpenGL
   {
@@ -19,7 +31,7 @@ namespace ModelHelper
     GLuint CreateShaderProgram( GLuint vertex_shader, GLuint fragment_shader );
 
     GLuint CreateShaderProgram( std::string vertex_shader_file_path,
-                                std::string fragment_shader_file_path );
+        std::string fragment_shader_file_path );
 
   }
 }

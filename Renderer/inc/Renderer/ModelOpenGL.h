@@ -15,6 +15,7 @@ class ModelOpenGL : public Model
   private:
     GLuint vao, vbo;
     ShaderGLSL shader;
+    int vertices_count;
     void setVertexAttribute( GLuint shader_program,
                               std::string attrib_name );
     void setUniformMatrix4fv( std::string name, const GLfloat *value );
