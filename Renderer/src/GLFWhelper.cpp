@@ -4,7 +4,7 @@ namespace GLFWhelper
 {
   GLFWwindow* CreateWindow()
   {
-    if( not glfwInit() )
+    if( ! glfwInit() )
       std::cout << "couldn't initialize GLFW" << std::endl;
 
     glfwWindowHint(GLFW_SAMPLES, 4);

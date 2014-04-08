@@ -112,7 +112,7 @@ namespace ModelHelper
       {
         char buffer[512];
         glGetShaderInfoLog(shader, 512, NULL, buffer);
-        std::cout << buffer << std::endl;
+        //std::cout << buffer << std::endl;
         return 0; // CHECK!!!!!
       }
       else

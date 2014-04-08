@@ -15,7 +15,44 @@ include_directories(${GLFW_INCLUDE_DIRS})
 link_directories(${GLFW_LIBRARY_DIRS})
 add_definitions(${GLFW_DEFINITIONS})
 
-include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/inc)
-add_library(Renderer Renderer.cpp ShaderFactory.cpp ShaderGLSL.cpp ModelFactory.cpp ModelOpenGL.cpp ModelHelper.cpp Camera.cpp Scene.cpp Window.cpp GLFWhelper.cpp)
+include_directories(${White_SOURCE_DIR}/WMath/inc/${White_SOURCE_DIR}/Renderer/inc)
+
+SET(
+  Renderer_SRCs
+  Renderer.cpp
+  ShaderFactory.cpp
+  ShaderGLSL.cpp
+  ModelFactory.cpp
+  ModelOpenGL.cpp 
+  ModelHelper.cpp
+  Camera.cpp
+  Scene.cpp
+  Window.cpp
+  GLFWhelper.cpp
+)
+
+SET( Renderer_Hs_DIR ../inc/Renderer )
+
+SET(
+  Renderer_Hs
+  Camera.h
+  GLFWhelper.h
+  Model.h
+  ModelFactory.h
+  ModelHelper.h
+  ModelOpenGL.h
+  Renderer.h
+  Scene.h
+  Shader.h
+  ShaderFactory.h
+  ShaderGLSL.h
+  Window.h
+)
+
+FOREACH(Renderer_H ${Renderer_Hs})
+  LIST(APPEND Renderer_Hs_PATHs "${Renderer_Hs_DIR}/${Renderer_H}")
+ENDFOREACH() 
+
+add_library( Renderer ${Renderer_SRCs} ${Renderer_Hs_PATHs} )
 
 target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} WMath)

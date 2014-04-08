@@ -62,7 +62,6 @@ namespace WMath
   {
     float norm = 0.0f;
     norm = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
-    std::cout << norm << std::endl;
     v[0] = v[0] / norm;
     v[1] = v[1] / norm;
     v[2] = v[2] / norm;

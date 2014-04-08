@@ -24,6 +24,30 @@ include_directories(${White_SOURCE_DIR}/Input/inc)
 include_directories(${White_SOURCE_DIR}/WMath/inc)
 include_directories(${White_SOURCE_DIR}/Renderer/inc)
 
-add_executable(White main.cpp src/ApplicationHelper.cpp src/White.cpp)
+SET( SRCs_DIR src )
+
+SET(
+  SRCs
+  White.cpp
+  ApplicationHelper.cpp
+)
+
+FOREACH(SRC ${SRCs})
+  LIST(APPEND SRCs_PATHs "${SRCs_DIR}/${SRC}")
+ENDFOREACH()
+
+SET( Hs_DIR inc )
+
+SET(
+  Hs
+  White.h
+  ApplicationHelper.h
+)
+
+FOREACH(H ${Hs})
+  LIST(APPEND Hs_PATHs "${Hs_DIR}/${H}")
+ENDFOREACH()
+
+add_executable(White main.cpp ${SRCs_PATHs} ${Hs_PATHs})
 
 target_link_libraries(White ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} Input WMath Renderer)

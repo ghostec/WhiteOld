@@ -18,8 +18,8 @@ void Renderer::setInput( Input *input )
 
 void Renderer::render()
 {
-  while ( not glfwWindowShouldClose( this->context.window->getWindow() ) &&
-          not context.input->isKeyPressed( GLFW_KEY_ESCAPE ) )
+  while ( ! glfwWindowShouldClose( this->context.window->getWindow() ) &&
+          ! context.input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
     // Clear the screen to black
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
