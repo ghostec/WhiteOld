@@ -70,28 +70,28 @@ void ModelOpenGL::draw()
 
 void ModelOpenGL::translate( WMath::vec3 vector )
 {
-  this->transformation = this->transformation * WMath::translate( vector );
+  WMath::translate( &this->transformation, vector );
 
-  Camera camera( WMath::vec3(0.0f, 3.0f, 2.0f),
-      WMath::vec3(0.0f, 0.0f, 0.0f) );
+  Camera camera(WMath::vec3(0.0f, 3.0f, 2.0f),
+    WMath::vec3(0.0f, 0.0f, 0.0f));
 
   WMath::mat4 view = camera.getView();
 
-  WMath::mat4 proj = WMath::OpenGlPerspective( 45.0f, 800.0f/600.0f, 0.1f, 100.0f );
+  WMath::mat4 proj = WMath::OpenGlPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
 
-  this->shader.setUniformMatrix4fv( "t",
-      WMath::value_ptr( &this->transformation ) , GL_TRUE);
+  this->shader.setUniformMatrix4fv("t",
+    WMath::value_ptr(&this->transformation), GL_TRUE);
 
-  this->shader.setUniformMatrix4fv( "proj",
-      WMath::value_ptr( &proj ), GL_FALSE);
+  this->shader.setUniformMatrix4fv("proj",
+    WMath::value_ptr(&proj), GL_FALSE);
 
-  this->shader.setUniformMatrix4fv( "view",
-      WMath::value_ptr( &view ), GL_FALSE);
+  this->shader.setUniformMatrix4fv("view",
+    WMath::value_ptr(&view), GL_FALSE);
 }
 
 void ModelOpenGL::scale( WMath::vec3 vector )
 {
-  this->transformation = this->transformation * WMath::scale( vector );
+  WMath::scale( &this->transformation, vector );
 
   this->shader.setUniformMatrix4fv( "t",
       WMath::value_ptr( &this->transformation ), GL_TRUE);
@@ -99,7 +99,7 @@ void ModelOpenGL::scale( WMath::vec3 vector )
 
 void ModelOpenGL::rotate( float degrees )
 {
-  this->transformation = this->transformation * WMath::rotate_y( degrees );
+  WMath::rotate_y( &this->transformation, degrees );
 
   this->shader.setUniformMatrix4fv( "t",
       WMath::value_ptr( &this->transformation ), GL_TRUE);

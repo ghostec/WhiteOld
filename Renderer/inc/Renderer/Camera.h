@@ -2,6 +2,7 @@
 #define __WHITE_CAMERA_
 
 #include "WMath/WMath.h"
+#include "WMath/transformations.h"
 
 class Camera
 {

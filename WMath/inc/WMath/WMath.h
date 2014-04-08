@@ -51,11 +51,6 @@ namespace WMath
   vec4 operator*( const vec4& v, const mat4& m );
   mat4 operator*( const mat4& m1, const mat4& m2 );
 
-  mat4 translate( vec3 vector );
-  mat4 scale( vec3 vector );
-  mat4 rotate_x( float degree );
-  mat4 rotate_y( float degree );
-  mat4 rotate_z( float degree );
   mat4 lookAtRH( vec3 eye, vec3 target, vec3 up );
   mat4 OpenGlFrustum( float l, float r, float b, float t, float n, float f );
   mat4 OpenGlPerspective( float angle, float imageAspectRatio, float n, float f );

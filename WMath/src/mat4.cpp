@@ -58,25 +58,7 @@ namespace WMath
     return mat4( X, Y, Z, W );
   }
 
-  mat4 translate( vec3 vector )
-  {
-    mat4 m;
-    m[0][3] = vector[0];
-    m[1][3] = vector[1];
-    m[2][3] = vector[2];
-    return m;
-  }
-
-  mat4 scale( vec3 vector )
-  {
-    mat4 m;
-    m[0][0] = vector[0];
-    m[1][1] = vector[1];
-    m[2][2] = vector[2];
-    m[3][3] = 1.0f;
-    return m;
-  }
-
+  /*
   mat4 rotate_x( float degree )
   {
     mat4 m;
@@ -96,16 +78,7 @@ namespace WMath
     m[1][1] = cos( degree * PI / 180.0 );
     return m;
   }
-
-  mat4 rotate_y( float degree )
-  {
-    mat4 m;
-    m[0][0] = cos( degree * PI / 180.0 );
-    m[0][2] = - sin( degree * PI / 180.0 );
-    m[2][0] = sin( degree * PI / 180.0 );
-    m[2][2] = cos( degree * PI / 180.0 );
-    return m;
-  }
+  */
 
   mat4 lookAtRH( vec3 eye, vec3 target, vec3 up )
   {

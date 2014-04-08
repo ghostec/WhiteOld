@@ -8,6 +8,7 @@
 #include "Renderer/Camera.h"
 #include "Renderer/ShaderGLSL.h"
 #include "WMath/WMath.h"
+#include "WMath/transformations.h"
 #include "ApplicationHelper.h"
 
 class ModelOpenGL : public Model

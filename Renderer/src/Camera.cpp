@@ -22,11 +22,11 @@ void Camera::setTarget( WMath::vec3 target )
 void Camera::translate( WMath::vec3 vector )
 {
   vector = WMath::vec3(0.0f) - vector;
-  this->view = this->view * WMath::translate( vector );
+  WMath::translate( &this->view, vector);
 }
 
 void Camera::rotate( float degree )
 {
   degree = -degree;
-  this->view = this->view * WMath::rotate_y( degree );
+  WMath::rotate_y( &this->view, degree );
 }
