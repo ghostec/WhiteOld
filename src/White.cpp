@@ -12,7 +12,6 @@ void White::setArchitectureOSX()
   setWindowOSX();
   setInputOSX();
   setRendererOSX();
-  setModelFactoryOSX();
 }
 
 void White::setWindowOSX()
@@ -33,9 +32,4 @@ void White::setRendererOSX()
   rc.window = this->WWindow;
   rc.input = this->WInput;
   WRenderer = new Renderer( rc );
-}
-
-void White::setModelFactoryOSX()
-{
-  this->WModelFactory = new ModelFactoryOpenGL();
 }

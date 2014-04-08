@@ -22,8 +22,7 @@ SET(
   Renderer.cpp
   ShaderFactory.cpp
   ShaderGLSL.cpp
-  ModelFactory.cpp
-  ModelOpenGL.cpp 
+  OpenGL/Model.cpp 
   ModelHelper.cpp
   Camera.cpp
   Scene.cpp
@@ -38,9 +37,8 @@ SET(
   Camera.h
   GLFWhelper.h
   Model.h
-  ModelFactory.h
   ModelHelper.h
-  ModelOpenGL.h
+  OpenGL/Model.h
   Renderer.h
   Scene.h
   Shader.h

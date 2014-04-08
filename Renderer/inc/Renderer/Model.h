@@ -1,20 +1,16 @@
 #ifndef __WHITE_MODEL__
 #define __WHITE_MODEL__
 
-#include <iostream>
-#include <string>
 #include "WMath/WMath.h"
-#include "Renderer/ModelHelper.h"
 
-typedef enum _ModelFileType { OBJ } ModelFileType;
-
-class Model
+typedef struct _ModelCommon
 {
-  public:
-    virtual void draw() = 0;
-    virtual void translate( WMath::vec3 vector ) = 0;
-    virtual void scale( WMath::vec3 vector ) = 0;
-    virtual void rotate( float degrees ) = 0;
-};
+  WMath::mat4 transformation;
+  int vertices_count;
+} ModelCommon;
+
+#ifndef _OPENGL_
+#include "Renderer/OpenGL/Model.h"
+#endif
 
 #endif

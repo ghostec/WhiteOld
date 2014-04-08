@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 2.8)
 
 project(White)
 
+add_definitions(-DOPENGL)
+
 subdirs(WMath Input Renderer)
 
 find_package(OpenGL REQUIRED)

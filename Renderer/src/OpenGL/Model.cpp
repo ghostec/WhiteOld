@@ -1,7 +1,6 @@
-#include "Renderer/ModelOpenGL.h"
+#include "Renderer/OpenGL/Model.h"
 
-ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
-                          std::string file_path )
+Model::Model( std::string file_path )
 {
   // Create Vertex Array Object
   glGenVertexArrays(1, &this->vao);
@@ -11,66 +10,61 @@ ModelOpenGL::ModelOpenGL( ModelFileType model_file_type,
   glGenBuffers(1, &this->vbo);
   glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
 
-  if( model_file_type == OBJ )
-  {
-    std::vector< WMath::vec3 > vertices;
-    std::vector< WMath::vec3 > normals;
-    std::vector< GLuint > vertexIndices;
-    std::vector< GLuint > normalIndices;
-    std::vector< GLuint > uvIndices;
+  std::vector< WMath::vec3 > vertices;
+  std::vector< WMath::vec3 > normals;
+  std::vector< GLuint > vertexIndices;
+  std::vector< GLuint > normalIndices;
+  std::vector< GLuint > uvIndices;
 
-    ModelHelper::ImportOBJ(
-        "cow.obj",
-        &vertices,
-        &normals,
-        &vertexIndices,
-        &normalIndices,
-        &uvIndices
-        );
-
-    std::cout << "NUM_VERTICES: " << vertices.size() << std::endl;
+  ModelHelper::ImportOBJ(
+      "cow.obj",
+      &vertices,
+      &normals,
+      &vertexIndices,
+      &normalIndices,
+      &uvIndices
+      );
 
     std::vector< WMath::vec3 > new_vertices;
     for( int i=0; i < vertexIndices.size(); i++ )
       new_vertices.push_back( vertices.at( vertexIndices.at(i) ) ) ;
 
-    this->vertices_count = vertexIndices.size();
+    this->model_data.vertices_count = vertexIndices.size();
 
     glBufferData(GL_ARRAY_BUFFER, new_vertices.size() * sizeof(WMath::vec3),
                   &new_vertices[0], GL_STATIC_DRAW);
-  }
 
   // Specify the layout of the vertex data
   this->shader.setVertexAttribute( "position", 3 );
-  this->shader.setUniformMatrix4fv( "t", WMath::value_ptr( &this->transformation ), GL_TRUE );
+  this->shader.setUniformMatrix4fv( "t", WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
   this->shader.setUniform3f( "color", 1.0f, 1.0f, 1.0f );
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
 
-void ModelOpenGL::before_draw()
+void Model::before_draw()
 {
   this->shader.before_draw();
   glBindVertexArray( this->vao );
 }
 
-void ModelOpenGL::after_draw()
+void Model::after_draw()
 {
   glBindVertexArray(0);
   this->shader.after_draw();
 }
 
-void ModelOpenGL::draw()
+void Model::draw()
 {
   this->before_draw();
-  glDrawArrays(GL_TRIANGLES, 0, this->vertices_count);
+  glDrawArrays( GL_TRIANGLES, 0, this->model_data.vertices_count );
   this->after_draw();
 }
 
-void ModelOpenGL::translate( WMath::vec3 vector )
+void Model::translate( WMath::vec3 vector )
 {
-  WMath::translate( &this->transformation, vector );
+  WMath::translate( &this->model_data.transformation, vector );
 
   Camera camera(WMath::vec3(0.0f, 3.0f, 2.0f),
     WMath::vec3(0.0f, 0.0f, 0.0f));
@@ -80,7 +74,7 @@ void ModelOpenGL::translate( WMath::vec3 vector )
   WMath::mat4 proj = WMath::OpenGlPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
 
   this->shader.setUniformMatrix4fv("t",
-    WMath::value_ptr(&this->transformation), GL_TRUE);
+    WMath::value_ptr( &this->model_data.transformation), GL_TRUE );
 
   this->shader.setUniformMatrix4fv("proj",
     WMath::value_ptr(&proj), GL_FALSE);
@@ -89,18 +83,18 @@ void ModelOpenGL::translate( WMath::vec3 vector )
     WMath::value_ptr(&view), GL_FALSE);
 }
 
-void ModelOpenGL::scale( WMath::vec3 vector )
+void Model::scale( WMath::vec3 vector )
 {
-  WMath::scale( &this->transformation, vector );
+  WMath::scale( &this->model_data.transformation, vector );
 
   this->shader.setUniformMatrix4fv( "t",
-      WMath::value_ptr( &this->transformation ), GL_TRUE);
+      WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
 }
 
-void ModelOpenGL::rotate( float degrees )
+void Model::rotate( float degrees )
 {
-  WMath::rotate_y( &this->transformation, degrees );
+  WMath::rotate_y( &this->model_data.transformation, degrees );
 
   this->shader.setUniformMatrix4fv( "t",
-      WMath::value_ptr( &this->transformation ), GL_TRUE);
+      WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
 }
