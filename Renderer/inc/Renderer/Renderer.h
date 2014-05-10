@@ -2,7 +2,7 @@
 #define __WHITE_RENDERER__
 
 #include <iostream>
-#include "Renderer/GLFWhelper.h"
+#include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
 #include "Renderer/Model.h"
 #include "Renderer/Scene.h"

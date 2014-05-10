@@ -5,18 +5,14 @@
 #include <vector>
 #include "Renderer/Model.h"
 
-typedef struct _SceneProperties
-{
-  WMath::mat4 view, proj;
-} SceneProperties;
-
 class Scene
 {
   private:
     std::vector<Model*> models;
     Camera* camera;
-    SceneProperties scene_properties;
+    WMath::mat4 view, proj;
   public:
+    Scene();
     void draw();
     void addModel( Model* model );
     void setCamera( Camera* camera );

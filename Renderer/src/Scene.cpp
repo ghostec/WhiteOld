@@ -1,9 +1,12 @@
 #include "Renderer/Scene.h"
 
+Scene::Scene()
+{
+  this->proj = WMath::OpenGlPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+}
+
 void Scene::draw()
 {
-  //this->scene_properties.view = this->camera->getView();
-
   //GLuint light_index = glGetUniformBlockIndex( program, "LightBlock" );
   //glUniformBlockBinding( program, light_index, 0 );
   //glBindBuffer( GL_UNIFORM_BUFFER, light_buffer );
@@ -12,6 +15,8 @@ void Scene::draw()
   int vector_models_size = this->models.size();
   for( int i = 0; i < vector_models_size; i++ )
   {
+    this->models.at(i)->setView( this->view );
+    this->models.at(i)->setProj( this->proj );
     this->models.at(i)->draw();
   }
 }
@@ -24,6 +29,5 @@ void Scene::addModel( Model* model )
 void Scene::setCamera( Camera* camera )
 {
   this->camera = camera;
-  //this->scene_properties.view = camera->getView();
-  //this->scene_properties.proj = WMath::OpenGlPerspective( 45.0f, 800.0f / 600.0f, 0.1f, 100.0f );
+  this->view = camera->getView();
 }

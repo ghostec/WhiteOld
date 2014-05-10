@@ -1,4 +1,4 @@
-#include "Renderer/ModelHelper.h"
+#include "Renderer/Helpers/Model.h"
 
 namespace ModelHelper
 {

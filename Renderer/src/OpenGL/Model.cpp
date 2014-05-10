@@ -17,7 +17,7 @@ Model::Model( std::string file_path )
   std::vector< GLuint > uvIndices;
 
   ModelHelper::ImportOBJ(
-      "cow.obj",
+      file_path,
       &vertices,
       &normals,
       &vertexIndices,
@@ -67,19 +67,6 @@ void Model::draw()
 void Model::translate( WMath::vec3 vector )
 {
   WMath::translate( &this->model_data.transformation, vector );
-
-  Camera camera(WMath::vec3(0.0f, 3.0f, 2.0f),
-    WMath::vec3(0.0f, 0.0f, 0.0f));
-
-  WMath::mat4 view = camera.getView();
-
-  WMath::mat4 proj = WMath::OpenGlPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
-
-  this->shader.setUniformMatrix4fv("proj",
-    WMath::value_ptr(&proj), GL_FALSE);
-
-  this->shader.setUniformMatrix4fv("view",
-    WMath::value_ptr(&view), GL_FALSE);
 }
 
 void Model::scale( WMath::vec3 vector )
@@ -90,4 +77,16 @@ void Model::scale( WMath::vec3 vector )
 void Model::rotate( float degrees )
 {
   WMath::rotate_y( &this->model_data.transformation, degrees );
+}
+
+void Model::setView( WMath::mat4 view )
+{
+  this->shader.setUniformMatrix4fv( "view",
+                                    WMath::value_ptr(&view), GL_FALSE);
+}
+
+void Model::setProj( WMath::mat4 proj )
+{
+  this->shader.setUniformMatrix4fv( "proj",
+                                    WMath::value_ptr(&proj), GL_FALSE);
 }

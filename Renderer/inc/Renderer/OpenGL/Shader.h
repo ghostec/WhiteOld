@@ -2,7 +2,7 @@
 #define __WHITE_OPENGLSHADER__
 
 #include "Renderer/OpenGL/Shader.h"
-#include "Renderer/ModelHelper.h"
+#include "Renderer/Helpers/Model.h"
 
 class Shader
 {

@@ -30,13 +30,24 @@ SET(
 )
 
 SET(
+  Helpers_SRCs
+  Helpers/Model.cpp
+  Helpers/GLFW.cpp
+)
+
+SET(
+  Helpers_Hs
+  Helpers/Model.h
+  Helpers/GLFW.h
+)
+
+SET(
   Renderer_SRCs
   Renderer.cpp
-  ModelHelper.cpp
   Camera.cpp
   Scene.cpp
   Window.cpp
-  GLFWhelper.cpp
+  ${Helpers_SRCs}
   ${OpenGL_SRCs}
 )
 
@@ -45,19 +56,22 @@ SET( Renderer_Hs_DIR ../inc/Renderer )
 SET(
   Renderer_Hs
   Camera.h
-  GLFWhelper.h
   Model.h
-  ModelHelper.h
   Renderer.h
   Scene.h
   Shader.h
   Window.h
+  ${Helpers_Hs}
   ${OpenGL_Hs}
 )
 
 FOREACH(OpenGL_H ${OpenGL_Hs})
   LIST(APPEND OpenGL_Hs_PATHs "${Renderer_Hs_DIR}/${OpenGL_H}")
-ENDFOREACH() 
+ENDFOREACH()
+
+FOREACH(Helper_H ${Helpers_Hs})
+  LIST(APPEND Helpers_Hs_PATHs "${Renderer_Hs_DIR}/${Helper_H}")
+ENDFOREACH()
 
 FOREACH(Renderer_H ${Renderer_Hs})
   LIST(APPEND Renderer_Hs_PATHs "${Renderer_Hs_DIR}/${Renderer_H}")
@@ -66,6 +80,9 @@ ENDFOREACH()
 add_library( Renderer ${Renderer_SRCs} ${Renderer_Hs_PATHs} )
 
 target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} WMath)
+
+source_group("Source Files\\Helpers" FILES ${Helpers_SRCs})
+source_group("Header Files\\Helpers" FILES ${Helpers_Hs_PATHs})
 
 source_group("Source Files\\OpenGL" FILES ${OpenGL_SRCs})
 source_group("Header Files\\OpenGL" FILES ${OpenGL_Hs_PATHs})

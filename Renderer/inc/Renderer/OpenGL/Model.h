@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Renderer/Model.h"
-#include "Renderer/ModelHelper.h"
+#include "Renderer/Helpers/Model.h"
 #include "Renderer/Camera.h"
 #include "Renderer/OpenGL/Shader.h"
 #include "WMath/WMath.h"
@@ -30,6 +30,8 @@ class Model
     void translate( WMath::vec3 vector );
     void scale( WMath::vec3 vector );
     void rotate( float degrees );
+    void setView( WMath::mat4 view );
+    void setProj( WMath::mat4 proj );
 };
 
 #endif

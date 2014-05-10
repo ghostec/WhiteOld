@@ -1,4 +1,4 @@
-#include "Renderer/GLFWhelper.h"
+#include "Renderer/Helpers/GLFW.h"
 
 namespace GLFWhelper
 {
