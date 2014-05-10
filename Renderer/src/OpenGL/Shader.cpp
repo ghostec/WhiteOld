@@ -1,23 +1,23 @@
-#include "Renderer/ShaderGLSL.h"
+#include "Renderer/OpenGL/Shader.h"
 
-ShaderGLSL::ShaderGLSL()
+Shader::Shader()
 {
   this->shader = ModelHelper::OpenGL::CreateShaderProgram(
       "../Renderer/shaders/vertex_shader.glsl",
       "../Renderer/shaders/fragment_shader.glsl" );
 }
 
-void ShaderGLSL::before_draw()
+void Shader::before_draw()
 {
   glUseProgram( this->shader );
 }
 
-void ShaderGLSL::after_draw()
+void Shader::after_draw()
 {
   glUseProgram(0);
 }
 
-void ShaderGLSL::setVertexAttribute( std::string name, int count )
+void Shader::setVertexAttribute( std::string name, int count )
 {
   glUseProgram(this->shader);
   GLint attribute = glGetAttribLocation( this->shader, name.c_str() );
@@ -26,7 +26,7 @@ void ShaderGLSL::setVertexAttribute( std::string name, int count )
   glUseProgram(0);
 }
 
-void ShaderGLSL::setUniform3f( std::string name,
+void Shader::setUniform3f( std::string name,
     GLfloat v0,
     GLfloat v1,
     GLfloat v2 )
@@ -37,7 +37,7 @@ void ShaderGLSL::setUniform3f( std::string name,
   glUseProgram(0);
 }
 
-void ShaderGLSL::setUniformMatrix4fv( std::string name,
+void Shader::setUniformMatrix4fv( std::string name,
     const GLfloat *value,
     GLboolean transpose )
 {

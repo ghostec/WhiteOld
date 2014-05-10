@@ -45,6 +45,8 @@ Model::Model( std::string file_path )
 
 void Model::before_draw()
 {
+  this->shader.setUniformMatrix4fv( "t",
+              WMath::value_ptr( &this->model_data.transformation ), GL_TRUE );
   this->shader.before_draw();
   glBindVertexArray( this->vao );
 }
@@ -73,9 +75,6 @@ void Model::translate( WMath::vec3 vector )
 
   WMath::mat4 proj = WMath::OpenGlPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
 
-  this->shader.setUniformMatrix4fv("t",
-    WMath::value_ptr( &this->model_data.transformation), GL_TRUE );
-
   this->shader.setUniformMatrix4fv("proj",
     WMath::value_ptr(&proj), GL_FALSE);
 
@@ -86,15 +85,9 @@ void Model::translate( WMath::vec3 vector )
 void Model::scale( WMath::vec3 vector )
 {
   WMath::scale( &this->model_data.transformation, vector );
-
-  this->shader.setUniformMatrix4fv( "t",
-      WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
 }
 
 void Model::rotate( float degrees )
 {
   WMath::rotate_y( &this->model_data.transformation, degrees );
-
-  this->shader.setUniformMatrix4fv( "t",
-      WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
 }

@@ -1,8 +1,16 @@
 #version 150 core
 in vec3 position;
-uniform mat4 t;
-uniform mat4 view;
-uniform mat4 proj;
+
+uniform _SceneProperties
+{
+  mat4 view;
+  mat4 proj;
+} SceneProperties;
+
+uniform mat4 transformation;
+
 void main() {
-  gl_Position = proj * view * t * vec4(position, 1.0);
+  gl_Position = SceneProperties.proj *
+                SceneProperties.view * 
+                transformation * vec4(position, 1.0);
 }

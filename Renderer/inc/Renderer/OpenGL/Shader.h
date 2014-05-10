@@ -1,15 +1,15 @@
-#ifndef __WHITE_SHADERGLSL__
-#define __WHITE_SHADERGLSL__
+#ifndef __WHITE_OPENGLSHADER__
+#define __WHITE_OPENGLSHADER__
 
-#include "Renderer/Shader.h"
+#include "Renderer/OpenGL/Shader.h"
 #include "Renderer/ModelHelper.h"
 
-class ShaderGLSL : public Shader
+class Shader
 {
   private:
     GLuint shader;
   public:
-    ShaderGLSL();
+    Shader();
     void before_draw();
     void after_draw();
     void setVertexAttribute( std::string name, int count );

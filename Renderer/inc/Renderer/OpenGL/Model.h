@@ -6,7 +6,7 @@
 #include "Renderer/Model.h"
 #include "Renderer/ModelHelper.h"
 #include "Renderer/Camera.h"
-#include "Renderer/ShaderGLSL.h"
+#include "Renderer/OpenGL/Shader.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 #include "ApplicationHelper.h"
@@ -16,7 +16,7 @@ class Model
   private:
     // OpenGL
     GLuint vao, vbo;
-    ShaderGLSL shader;
+    Shader shader;
     void setVertexAttribute( GLuint shader_program,
                               std::string attrib_name );
     void setUniformMatrix4fv( std::string name, const GLfloat *value );

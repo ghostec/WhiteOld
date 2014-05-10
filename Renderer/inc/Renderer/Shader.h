@@ -4,11 +4,8 @@
 #include <iostream>
 #include <string>
 
-class Shader
-{
-  public:
-    virtual void before_draw() = 0;
-    virtual void after_draw() = 0;
-};
+#ifndef _OPENGL_
+#include "Renderer/OpenGL/Shader.h"
+#endif
 
 #endif
