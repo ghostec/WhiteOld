@@ -9,6 +9,7 @@
 #include "Renderer/Model.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
+#include "Input/Input.h"
 
 void bar()
 {
@@ -21,6 +22,7 @@ int main()
   white.setArchitecture( OSX );
   
   Input* input = white.getInput();
+  active_input = input;
   input->registerObserver( "test", std::bind(bar) );
   input->notify( "test" );
 

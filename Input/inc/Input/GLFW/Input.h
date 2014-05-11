@@ -8,19 +8,17 @@
 
 #define Key int
 
-typedef struct _GLFWcontext
-{
-  Window *window;
-} GLFWcontext;
-
 class Input : public Observable<std::string>
 {
   private:
-    GLFWcontext context;
-    void setWindow( Window *window );
+    GLFWwindow* window;
   public:
-    Input( GLFWcontext context );
+    Input( GLFWwindow* window );
     bool isKeyPressed( Key key );
 };
+
+extern Input* active_input;
+
+void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, int mods );
 
 #endif

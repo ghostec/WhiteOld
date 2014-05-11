@@ -22,6 +22,7 @@ namespace GLFWhelper
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetKeyCallback( window, keyboardCallback );
 
     glewExperimental = GL_TRUE;
     glewInit();

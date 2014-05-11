@@ -21,9 +21,7 @@ void White::setWindowOSX()
 
 void White::setInputOSX()
 {
-  GLFWcontext glfwc;
-  glfwc.window = this->WWindow;
-  this->WInput = new Input( glfwc );
+  this->WInput = new Input( this->WWindow->getWindow() );
 }
 
 void White::setRendererOSX()
