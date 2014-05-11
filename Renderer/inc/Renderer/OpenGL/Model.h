@@ -9,7 +9,7 @@
 #include "Renderer/OpenGL/Shader.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
-#include "ApplicationHelper.h"
+#include "Helpers/Application.h"
 
 class Model
 {

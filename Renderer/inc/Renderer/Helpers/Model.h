@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <GL/glew.h>
 #include "WMath/WMath.h"
-#include "ApplicationHelper.h"
+#include "Helpers/Application.h"
 
 namespace ModelHelper
 {

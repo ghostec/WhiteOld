@@ -29,9 +29,20 @@ include_directories(${White_SOURCE_DIR}/Renderer/inc)
 SET( SRCs_DIR src )
 
 SET(
+  Helpers_SRCs
+  Helpers/Application.cpp
+)
+
+SET(
+  Helpers_Hs
+  Helpers/Application.h
+  Helpers/Observable.h
+)
+
+SET(
   SRCs
   White.cpp
-  ApplicationHelper.cpp
+  ${Helpers_SRCs}
 )
 
 FOREACH(SRC ${SRCs})
@@ -43,7 +54,7 @@ SET( Hs_DIR inc )
 SET(
   Hs
   White.h
-  ApplicationHelper.h
+  ${Helpers_Hs}
 )
 
 FOREACH(H ${Hs})
@@ -52,4 +63,9 @@ ENDFOREACH()
 
 add_executable(White main.cpp ${SRCs_PATHs} ${Hs_PATHs})
 
+source_group("Source Files\\Helpers" FILES ${Helpers_SRCs})
+source_group("Header Files\\Helpers" FILES ${Helpers_Hs})
+
 target_link_libraries(White ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} Input WMath Renderer)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

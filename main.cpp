@@ -15,7 +15,7 @@ int main()
   White white;
   white.setArchitecture( OSX );
 
-  Model model1( "cow.obj" );
+  Model model1( "../assets/models/cow.obj" );
 
   Camera camera( WMath::vec3(0.0f, 3.0f, 2.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );

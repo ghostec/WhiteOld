@@ -36,7 +36,7 @@ Model::Model( std::string file_path )
 
   // Specify the layout of the vertex data
   this->shader.setVertexAttribute( "position", 3 );
-  this->shader.setUniformMatrix4fv( "t", WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
+  this->shader.setUniformMatrix4fv( "transformation", WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
   this->shader.setUniform3f( "color", 1.0f, 1.0f, 1.0f );
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -45,7 +45,7 @@ Model::Model( std::string file_path )
 
 void Model::before_draw()
 {
-  this->shader.setUniformMatrix4fv( "t",
+  this->shader.setUniformMatrix4fv( "transformation",
               WMath::value_ptr( &this->model_data.transformation ), GL_TRUE );
   this->shader.before_draw();
   glBindVertexArray( this->vao );

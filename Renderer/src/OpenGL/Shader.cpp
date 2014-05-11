@@ -3,8 +3,8 @@
 Shader::Shader()
 {
   this->shader = ModelHelper::OpenGL::CreateShaderProgram(
-      "../Renderer/shaders/vertex_shader.glsl",
-      "../Renderer/shaders/fragment_shader.glsl" );
+      "../assets/shaders/vertex_shader.glsl",
+      "../assets/shaders/fragment_shader.glsl" );
 }
 
 void Shader::before_draw()

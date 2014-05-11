@@ -51,7 +51,7 @@ SET(
   ${OpenGL_SRCs}
 )
 
-SET( Renderer_Hs_DIR ../inc/Renderer )
+SET( Renderer_Hs_DIR  ../inc/Renderer )
 
 SET(
   Renderer_Hs
