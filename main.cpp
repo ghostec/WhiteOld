@@ -10,10 +10,19 @@
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
 
+void bar()
+{
+  std::cout << "bartender" << std::endl;
+}
+
 int main()
 {
   White white;
   white.setArchitecture( OSX );
+  
+  Input* input = white.getInput();
+  input->registerObserver( "test", std::bind(bar) );
+  input->notify( "test" );
 
   Model model1( "../assets/models/cow.obj" );
 

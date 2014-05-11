@@ -3,6 +3,8 @@
 
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
+#include "Helpers/Observable.h"
+#include <string>
 
 #define Key int
 
@@ -11,7 +13,7 @@ typedef struct _GLFWcontext
   Window *window;
 } GLFWcontext;
 
-class Input
+class Input : public Observable<std::string>
 {
   private:
     GLFWcontext context;

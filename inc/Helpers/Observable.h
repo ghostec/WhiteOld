@@ -2,6 +2,7 @@
 #include <utility>     // for std::forward and std::move
 #include <map>
 #include <vector>
+#include <algorithm>
 
 template <typename Event>
 class Observable
@@ -17,7 +18,8 @@ public:
   template <typename Observer>
   void registerObserver( Event&& event, Observer&& observer )
   {
-    observers_[std::move( event )].push_back( std::forward<Observer>( observer ) );
+    observers_[std::move( event )]
+      .push_back( std::forward<Observer>( observer ) );
   }
 
   void notify( const Event& event ) const
