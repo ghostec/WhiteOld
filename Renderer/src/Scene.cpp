@@ -16,7 +16,7 @@ void Scene::draw()
   for( int i = 0; i < vector_models_size; i++ )
   {
     this->models.at(i)->setView( this->view );
-    this->models.at(i)->setProj( this->proj );
+    this->models.at(i)->setProj( &this->proj );
     this->models.at(i)->draw();
   }
 }
@@ -28,6 +28,6 @@ void Scene::addModel( Model* model )
 
 void Scene::setCamera( Camera* camera )
 {
-  this->camera = camera;
-  this->view = camera->getView();
+  this->camera  = camera;
+  this->view    = camera->getView();
 }

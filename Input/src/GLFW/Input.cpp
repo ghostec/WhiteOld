@@ -14,5 +14,12 @@ bool Input::isKeyPressed( Key key )
 
 void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
-  active_input->notify( "test" );
+  if( key == GLFW_KEY_UP && action == GLFW_PRESS )
+  {
+    active_input->notify("ARROW_UP_PRESS");
+  }
+  else if( key == GLFW_KEY_DOWN && action == GLFW_PRESS )
+  {
+    active_input->notify( "ARROW_DOWN_PRESS" );
+  }
 }

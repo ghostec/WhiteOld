@@ -31,6 +31,9 @@ int main()
   Camera camera( WMath::vec3(0.0f, 3.0f, 2.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
+  input->registerObserver( "ARROW_UP_PRESS", std::bind( WMath::translate, camera.getView(), WMath::vec3( 0.0f, -0.01f, 0.0f ) ) );
+  input->registerObserver( "ARROW_DOWN_PRESS", std::bind( WMath::translate, camera.getView( ), WMath::vec3( 0.0f, 0.01f, 0.0f ) ) );
+
   Scene scene;
   scene.addModel( &model1 );
   scene.setCamera( &camera );

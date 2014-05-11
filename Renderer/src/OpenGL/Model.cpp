@@ -79,14 +79,14 @@ void Model::rotate( float degrees )
   WMath::rotate_y( &this->model_data.transformation, degrees );
 }
 
-void Model::setView( WMath::mat4 view )
+void Model::setView( WMath::mat4* view )
 {
   this->shader.setUniformMatrix4fv( "view",
-                                    WMath::value_ptr(&view), GL_FALSE);
+                                    WMath::value_ptr(view), GL_FALSE);
 }
 
-void Model::setProj( WMath::mat4 proj )
+void Model::setProj( WMath::mat4* proj )
 {
   this->shader.setUniformMatrix4fv( "proj",
-                                    WMath::value_ptr(&proj), GL_FALSE);
+                                    WMath::value_ptr(proj), GL_FALSE);
 }

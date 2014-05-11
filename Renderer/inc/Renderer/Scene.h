@@ -10,7 +10,7 @@ class Scene
   private:
     std::vector<Model*> models;
     Camera* camera;
-    WMath::mat4 view, proj;
+    WMath::mat4 *view, proj;
   public:
     Scene();
     void draw();

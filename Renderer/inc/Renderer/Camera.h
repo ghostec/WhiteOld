@@ -14,7 +14,7 @@ class Camera
     Camera( WMath::vec3 position, WMath::vec3 target );
     void setPosition( WMath::vec3 position );
     void setTarget( WMath::vec3 target );
-    WMath::mat4 getView() { return this->view; };
+    WMath::mat4* getView() { return &this->view; };
     void translate( WMath::vec3 vector );
     void rotate( float degree );
 };
