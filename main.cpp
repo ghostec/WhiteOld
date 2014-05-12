@@ -23,7 +23,7 @@ int main()
   
   Input* input = white.getInput();
   active_input = input;
-  input->registerObserver( "test", std::bind(bar) );
+  input->registerObserver( "test", std::bind(bar), "0" );
   input->notify( "test" );
 
   Model model1( "../assets/models/cow.obj" );
@@ -31,8 +31,16 @@ int main()
   Camera camera( WMath::vec3(0.0f, 3.0f, 2.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
-  input->registerObserver( "ARROW_UP_PRESS", std::bind( WMath::translate, camera.getView(), WMath::vec3( 0.0f, -0.01f, 0.0f ) ) );
-  input->registerObserver( "ARROW_DOWN_PRESS", std::bind( WMath::translate, camera.getView( ), WMath::vec3( 0.0f, 0.01f, 0.0f ) ) );
+  input->registerObserver(  "ARROW_UP_PRESS", 
+                            std::bind(  WMath::translate, 
+                                        &model1.model_data.transformation, 
+                                        WMath::vec3( 0.0f, 0.01f, 0.0f ) ), 
+                            "model1" );
+  input->registerObserver(  "ARROW_DOWN_PRESS",
+                            std::bind(  WMath::translate,
+                                        &model1.model_data.transformation,
+                                        WMath::vec3( 0.0f, -0.01f, 0.0f ) ),
+                            "model1" );
 
   Scene scene;
   scene.addModel( &model1 );
