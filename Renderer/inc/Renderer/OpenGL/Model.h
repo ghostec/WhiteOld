@@ -11,6 +11,12 @@
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"
 
+typedef struct Movable_
+{
+  bool ARROW_UP     = false;
+  bool ARROW_DOWN   = false;
+} Movable;
+
 class Model
 {
   private:
@@ -25,6 +31,7 @@ class Model
     void after_draw();
   public:
     ModelCommon model_data;
+    Movable moves;
     Model( std::string file_path );
     void draw();
     void translate( WMath::vec3 vector );
@@ -32,6 +39,7 @@ class Model
     void rotate( float degrees );
     void setView( WMath::mat4* view );
     void setProj( WMath::mat4* proj );
+    void move();
 };
 
 #endif

@@ -5,6 +5,8 @@
 #include "Renderer/Window.h"
 #include "Helpers/Observable.h"
 #include <string>
+#include <thread>
+#include <chrono>
 
 #define Key int
 

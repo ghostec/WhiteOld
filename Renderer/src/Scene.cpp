@@ -15,6 +15,7 @@ void Scene::draw()
   int vector_models_size = this->models.size();
   for( int i = 0; i < vector_models_size; i++ )
   {
+    this->models.at(i)->move();
     this->models.at(i)->setView( this->view );
     this->models.at(i)->setProj( &this->proj );
     this->models.at(i)->draw();

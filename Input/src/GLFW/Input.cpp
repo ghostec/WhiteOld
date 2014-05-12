@@ -16,10 +16,18 @@ void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, in
 {
   if( key == GLFW_KEY_UP && action == GLFW_PRESS )
   {
-    active_input->notify("ARROW_UP_PRESS");
+    active_input->notify( "ARROW_UP_PRESS" );
+  }
+  else if( key == GLFW_KEY_UP && action == GLFW_RELEASE )
+  {
+    active_input->notify( "ARROW_UP_RELEASE" );
   }
   else if( key == GLFW_KEY_DOWN && action == GLFW_PRESS )
   {
     active_input->notify( "ARROW_DOWN_PRESS" );
+  }
+  else if( key == GLFW_KEY_DOWN && action == GLFW_RELEASE )
+  {
+    active_input->notify( "ARROW_DOWN_RELEASE" );
   }
 }

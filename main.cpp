@@ -11,11 +11,6 @@
 #include "Renderer/Scene.h"
 #include "Input/Input.h"
 
-void bar()
-{
-  std::cout << "bartender" << std::endl;
-}
-
 int main()
 {
   White white;
@@ -23,23 +18,24 @@ int main()
   
   Input* input = white.getInput();
   active_input = input;
-  input->registerObserver( "test", std::bind(bar), "0" );
-  input->notify( "test" );
 
   Model model1( "../assets/models/cow.obj" );
 
-  Camera camera( WMath::vec3(0.0f, 3.0f, 2.0f),
+  Camera camera(  WMath::vec3(0.0f, 3.0f, 2.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
   input->registerObserver(  "ARROW_UP_PRESS", 
-                            std::bind(  WMath::translate, 
-                                        &model1.model_data.transformation, 
-                                        WMath::vec3( 0.0f, 0.01f, 0.0f ) ), 
+                            std::bind(  [&]() { model1.moves.ARROW_UP = true; } ), 
                             "model1" );
+  input->registerObserver(  "ARROW_UP_RELEASE",
+                            std::bind(  [&] () { model1.moves.ARROW_UP = false; } ),
+                            "model1" );
+
   input->registerObserver(  "ARROW_DOWN_PRESS",
-                            std::bind(  WMath::translate,
-                                        &model1.model_data.transformation,
-                                        WMath::vec3( 0.0f, -0.01f, 0.0f ) ),
+                            std::bind( [&] () { model1.moves.ARROW_DOWN = true; } ),
+                            "model1" );
+  input->registerObserver(  "ARROW_DOWN_RELEASE",
+                            std::bind( [&] () { model1.moves.ARROW_DOWN = false; } ),
                             "model1" );
 
   Scene scene;

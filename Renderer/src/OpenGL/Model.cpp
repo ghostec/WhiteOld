@@ -90,3 +90,11 @@ void Model::setProj( WMath::mat4* proj )
   this->shader.setUniformMatrix4fv( "proj",
                                     WMath::value_ptr(proj), GL_FALSE);
 }
+
+void Model::move()
+{
+  if( this->moves.ARROW_UP )
+    WMath::translate( &this->model_data.transformation, WMath::vec3( 0.0f, 0.005f, 0.0f ) );
+  if( this->moves.ARROW_DOWN )
+    WMath::translate( &this->model_data.transformation, WMath::vec3( 0.0f, -0.005f, 0.0f ) );
+}
