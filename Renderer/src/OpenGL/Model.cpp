@@ -64,21 +64,6 @@ void Model::draw()
   this->after_draw();
 }
 
-void Model::translate( WMath::vec3 vector )
-{
-  WMath::translate( &this->model_data.transformation, vector );
-}
-
-void Model::scale( WMath::vec3 vector )
-{
-  WMath::scale( &this->model_data.transformation, vector );
-}
-
-void Model::rotate( float degrees )
-{
-  WMath::rotate_y( &this->model_data.transformation, degrees );
-}
-
 void Model::setView( WMath::mat4* view )
 {
   this->shader.setUniformMatrix4fv( "view",

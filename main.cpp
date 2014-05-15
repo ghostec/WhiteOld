@@ -42,9 +42,9 @@ int main()
   scene.addModel( &model1 );
   scene.setCamera( &camera );
 
-  model1.rotate( 30.0f );
-  model1.scale( WMath::vec3( 1.5f, 1.5f, 1.5f ) );
-  model1.translate( WMath::vec3( 0.0f, 0.0f, 0.0f ) );
+  WMath::rotate_y( &model1.model_data.transformation, 30.0f );
+  WMath::scale( &model1.model_data.transformation, 
+                WMath::vec3( 1.5f, 1.5f, 1.5f ) );
 
   Renderer* renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );

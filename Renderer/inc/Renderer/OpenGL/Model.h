@@ -34,9 +34,6 @@ class Model
     Movable moves;
     Model( std::string file_path );
     void draw();
-    void translate( WMath::vec3 vector );
-    void scale( WMath::vec3 vector );
-    void rotate( float degrees );
     void setView( WMath::mat4* view );
     void setProj( WMath::mat4* proj );
     void move();

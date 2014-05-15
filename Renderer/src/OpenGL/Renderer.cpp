@@ -1,9 +1,8 @@
-#include "Renderer/Renderer.h"
+#include "Renderer/OpenGL/Renderer.h"
 
 Renderer::Renderer( RendererContext rc )
 {
   this->setWindow( rc.window );
-  this->setInput( rc.input );
 }
 
 void Renderer::setWindow( Window *window )
@@ -11,15 +10,10 @@ void Renderer::setWindow( Window *window )
   this->context.window = window;
 }
 
-void Renderer::setInput( Input *input )
-{
-  this->context.input = input;
-}
-
 void Renderer::render()
 {
   while ( ! glfwWindowShouldClose( this->context.window->getWindow() ) &&
-          ! context.input->isKeyPressed( GLFW_KEY_ESCAPE ) )
+          ! active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
     // Clear the screen to black
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

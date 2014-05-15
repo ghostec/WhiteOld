@@ -21,12 +21,14 @@ SET(
   OpenGL_SRCs
   OpenGL/Model.cpp 
   OpenGL/Shader.cpp
+  OpenGL/Renderer.cpp
 )
 
 SET(
   OpenGL_Hs
   OpenGL/Model.h
   OpenGL/Shader.h
+  OpenGL/Renderer.h
 )
 
 SET(
@@ -43,7 +45,6 @@ SET(
 
 SET(
   Renderer_SRCs
-  Renderer.cpp
   Camera.cpp
   Scene.cpp
   Window.cpp

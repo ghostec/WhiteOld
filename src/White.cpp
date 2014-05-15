@@ -28,6 +28,5 @@ void White::setRendererOSX()
 {
   RendererContext rc;
   rc.window = this->WWindow;
-  rc.input = this->WInput;
   WRenderer = new Renderer( rc );
 }
