@@ -8,6 +8,10 @@
 
 namespace WMath
 {
+
+  class vec3;
+  class vec4;
+
   class vec3
   {
     public:
@@ -15,6 +19,7 @@ namespace WMath
       vec3();
       vec3( float a );
       vec3( float x, float y, float z );
+      vec3( vec4 v );
       const float& operator[] ( int index ) const;
       float& operator[] ( int index );
   };

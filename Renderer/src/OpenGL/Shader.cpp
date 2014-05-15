@@ -17,12 +17,14 @@ void Shader::after_draw()
   glUseProgram(0);
 }
 
-void Shader::setVertexAttribute( std::string name, int count )
+void Shader::setVertexAttribute(  std::string name, int count, int stride,
+                                  int offset )
 {
   glUseProgram(this->shader);
   GLint attribute = glGetAttribLocation( this->shader, name.c_str() );
   glEnableVertexAttribArray( attribute );
-  glVertexAttribPointer( attribute, count, GL_FLOAT, GL_FALSE, 0, 0 );
+  glVertexAttribPointer(  attribute, count, GL_FLOAT, GL_FALSE, stride,
+                          (void*) offset );
   glUseProgram(0);
 }
 

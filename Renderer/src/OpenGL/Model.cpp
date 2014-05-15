@@ -10,34 +10,53 @@ Model::Model( std::string file_path )
   glGenBuffers(1, &this->vbo);
   glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
 
-  std::vector< WMath::vec3 > vertices;
+  std::vector< WMath::vec4 > vertices;
   std::vector< WMath::vec3 > normals;
-  std::vector< GLuint > vertexIndices;
-  std::vector< GLuint > normalIndices;
-  std::vector< GLuint > uvIndices;
+  std::vector< GLushort > elements;
 
   ModelHelper::ImportOBJ(
-      file_path,
-      &vertices,
-      &normals,
-      &vertexIndices,
-      &normalIndices,
-      &uvIndices
+      file_path.c_str(),
+      vertices,
+      normals,
+      elements
       );
 
-    std::vector< WMath::vec3 > new_vertices;
-    for( int i=0; i < vertexIndices.size(); i++ )
-      new_vertices.push_back( vertices.at( vertexIndices.at(i) ) ) ;
+  float max = 0.0f;
+  for( int i = 0; i < vertices.size(); i++ )
+  {
+    for( int j = 0; j < 3; j++ )
+    {
+      if( vertices[i][j] > max ) max = vertices[i][j];
+    }
+  }
+  for( int i = 0; i < vertices.size( ); i++ )
+  {
+    for( int j = 0; j < 3; j++ )
+    {
+      vertices[i][j] /= max;
+    }
+  }
 
-    this->model_data.vertices_count = vertexIndices.size();
+  std::vector< WMath::vec3 > new_vertices;
+  for( int i = 0; i < elements.size(); i++ )
+  {
+    new_vertices.push_back( WMath::vec3( vertices.at( elements.at( i ) ) ) );
+    new_vertices.push_back( normals.at( elements.at( i ) ) );
+  }
 
-    glBufferData(GL_ARRAY_BUFFER, new_vertices.size() * sizeof(WMath::vec3),
-                  &new_vertices[0], GL_STATIC_DRAW);
+  this->model_data.vertices_count = elements.size();
+
+  glBufferData( GL_ARRAY_BUFFER, elements.size() * ( sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ) ),
+                &new_vertices[0], GL_STATIC_DRAW);
 
   // Specify the layout of the vertex data
-  this->shader.setVertexAttribute( "position", 3 );
-  this->shader.setUniformMatrix4fv( "transformation", WMath::value_ptr( &this->model_data.transformation ), GL_TRUE);
-  this->shader.setUniform3f( "color", 1.0f, 1.0f, 1.0f );
+  this->shader.setVertexAttribute(  "position", 4, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
+                                    0);
+  this->shader.setVertexAttribute(  "normal", 3, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
+                                    sizeof( WMath::vec3 ) );
+  this->shader.setUniformMatrix4fv( "transformation", WMath::value_ptr(
+                                          &this->model_data.transformation ),
+                                    GL_TRUE );
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);

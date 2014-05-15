@@ -14,14 +14,7 @@
 namespace ModelHelper
 {
 
-  void ImportOBJ(
-      std::string filePath,
-      std::vector< WMath::vec3 >* vertices,
-      std::vector< WMath::vec3 >* normals,
-      std::vector< GLuint >* vertexIndices,
-      std::vector< GLuint >* normalIndices,
-      std::vector< GLuint >* uvIndices
-      );
+  void ImportOBJ( const char* filename, std::vector<WMath::vec4> &vertices, std::vector<WMath::vec3> &normals, std::vector<GLushort> &elements );
 
   namespace OpenGL
   {

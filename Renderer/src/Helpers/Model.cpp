@@ -2,91 +2,38 @@
 
 namespace ModelHelper
 {
-  void ImportOBJ(
-      std::string filePath,
-      std::vector< WMath::vec3 >* vertices,
-      std::vector< WMath::vec3 >* normals,
-      std::vector< GLuint >* vertexIndices,
-      std::vector< GLuint >* normalIndices,
-      std::vector< GLuint >* uvIndices
-      )
+  void ImportOBJ( const char* filename, std::vector<WMath::vec4> &vertices, std::vector<WMath::vec3> &normals, std::vector<GLushort> &elements ) 
   {
-    FILE* file = std::fopen(filePath.c_str(), "r");
-    std::vector< WMath::vec3 > tmp_normals;
-    if( file == NULL )
-    {
-      printf("Impossible to open the file !\n");
-      return;
-    }
-    char lineHeader[512];
-    int res = fscanf(file, "%s", lineHeader);
-    float max = 0.0f, max_tmp;
-    float sum[] = { 0.0f, 0.0f, 0.0f };
-    while( res != EOF ){
-      // Vertex
-      if ( strcmp( lineHeader, "v" ) == 0 )
-      {
-        WMath::vec3 vertex;
-        fscanf(file, "%f %f %f\n", &vertex[0], &vertex[1], &vertex[2] );
-        vertices->push_back(vertex);
-        if( vertex[0] > vertex[1] )
-          max_tmp = vertex[0];
-        else
-          max_tmp = vertex[1];
-        if( vertex[2] > max_tmp )
-          max_tmp = vertex[2];
-        if( max_tmp > max )
-          max = max_tmp;
-        //sum[0] += vertex[0]; sum[1] += vertex[1]; sum[2] += vertex[2];
+    std::ifstream in( filename, std::ios::in );
+    if( !in ) { std::cerr << "Cannot open " << filename << std::endl; exit( 1 ); }
+
+    std::string line;
+    while( getline( in, line ) ) {
+      if( line.substr( 0, 2 ) == "v " ) {
+        std::istringstream s( line.substr( 2 ) );
+        WMath::vec4 v; s >> v[0]; s >> v[1]; s >> v[2]; v[3] = 1.0f;
+        vertices.push_back( v );
       }
-      // Face
-      else if ( strcmp( lineHeader, "f" ) == 0 )
-      {
-        std::string vertex1, vertex2, vertex3;
-        unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-        int matches = fscanf(file, "%d %d %d\n",
-            &vertexIndex[0],
-            &vertexIndex[1],
-            &vertexIndex[2] );
-        if (matches != 3)
-        {
-          printf("File can't be read by our simple parser :( ");
-          printf("Try exporting with other options\n");
-          return;
-        }
-        vertexIndices->push_back(vertexIndex[0] - 1);
-        vertexIndices->push_back(vertexIndex[1] - 1);
-        vertexIndices->push_back(vertexIndex[2] - 1);
+      else if( line.substr( 0, 2 ) == "f " ) {
+        std::istringstream s( line.substr( 2 ) );
+        GLushort a, b, c;
+        s >> a; s >> b; s >> c;
+        a--; b--; c--;
+        elements.push_back( a ); elements.push_back( b ); elements.push_back( c );
       }
-      res = fscanf(file, "%s", lineHeader);
+      else if( line[0] == '#' ) { /* ignoring this line */ }
+      else { /* ignoring this line */ }
     }
-    for( int i=0 ; i < vertices->size(); i++ )
-    {
-      vertices->at(i)[0] = vertices->at(i)[0] / max;
-      vertices->at(i)[1] = vertices->at(i)[1] / max;
-      vertices->at(i)[2] = vertices->at(i)[2] / max;
-      tmp_normals.push_back( WMath::vec3(0.0f) );
-    }
-    // Calculating surface normals
-    for( int i =0; i < vertexIndices->size(); i+=3 )
-    {
-      WMath::vec3 normal, u, v;
-      int v0, v1, v2;
-      v0 = vertexIndices->at(i);
-      v1 = vertexIndices->at(i+1);
-      v2 = vertexIndices->at(i+2);
-      // p1 - p0, p2 - p1
-      u = vertices->at( v1 ) - vertices->at( v0 );
-      v = vertices->at( v2 ) - vertices->at( v0 );
-      normal = WMath::cross(u, v);
-      tmp_normals.at( v0 ) = tmp_normals.at( v0 ) + normal;
-      tmp_normals.at( v1 ) = tmp_normals.at( v1 ) + normal;
-      tmp_normals.at( v2 ) = tmp_normals.at( v2 ) + normal;
-    }
-    for( int i =0; i < vertexIndices->size(); i++ )
-    {
-      WMath::vec3 normal_normalized = WMath::normalize( tmp_normals.at( vertexIndices->at(i) ) );
-      normals->push_back( normal_normalized );
+
+    normals.resize( vertices.size( ), WMath::vec3( 0.0, 0.0, 0.0 ) );
+    for( int i = 0; i < elements.size( ); i += 3 ) {
+      GLushort ia = elements[i];
+      GLushort ib = elements[i + 1];
+      GLushort ic = elements[i + 2];
+      WMath::vec3 normal = WMath::normalize( WMath::cross(
+        WMath::vec3( vertices[ib] ) - WMath::vec3( vertices[ia] ),
+        WMath::vec3( vertices[ic] ) - WMath::vec3( vertices[ia] ) ) );
+      normals[ia] = normals[ib] = normals[ic] = normal;
     }
   }
 
@@ -112,7 +59,7 @@ namespace ModelHelper
       {
         char buffer[512];
         glGetShaderInfoLog(shader, 512, NULL, buffer);
-        //std::cout << buffer << std::endl;
+        std::cout << buffer << std::endl;
         return 0; // CHECK!!!!!
       }
       else

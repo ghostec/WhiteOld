@@ -12,7 +12,8 @@ class Shader
     Shader();
     void before_draw();
     void after_draw();
-    void setVertexAttribute( std::string name, int count );
+    void setVertexAttribute(  std::string name, int count, int stride,
+                              int offset );
     void setUniform3f( std::string name,
                         GLfloat v0,
                         GLfloat v1,

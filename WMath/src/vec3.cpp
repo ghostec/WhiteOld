@@ -20,6 +20,13 @@ namespace WMath
     vec[2] = z;
   }
 
+  vec3::vec3( vec4 v )
+  {
+    vec[0] = v[0];
+    vec[1] = v[1];
+    vec[2] = v[2];
+  }
+
   const float& vec3::operator[] ( int index ) const
   {
     return this->vec[index];
