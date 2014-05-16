@@ -50,7 +50,7 @@ Model::Model( std::string file_path )
                 &new_vertices[0], GL_STATIC_DRAW);
 
   // Specify the layout of the vertex data
-  this->shader.setVertexAttribute(  "position", 4, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
+  this->shader.setVertexAttribute(  "position", 3, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
                                     0);
   this->shader.setVertexAttribute(  "normal", 3, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
                                     sizeof( WMath::vec3 ) );
