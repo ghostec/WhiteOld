@@ -19,9 +19,9 @@ int main()
   Input* input = white.getInput();
   active_input = input;
 
-  Model model1( "../assets/models/teapot.obj" );
+  Model model1( "../assets/models/cube.obj" );
 
-  Camera camera(  WMath::vec3(0.0f, 3.0f, 2.0f),
+  Camera camera(  WMath::vec3(0.0f, 0.0f, 5.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
   input->registerObserver(  "ARROW_UP_PRESS", 
@@ -42,9 +42,9 @@ int main()
   scene.addModel( &model1 );
   scene.setCamera( &camera );
 
-  //WMath::rotate_y( &model1.model_data.transformation, 30.0f );
+  //WMath::rotate_y( &model1.model_data.transformation, 90.0f );
   //WMath::scale( &model1.model_data.transformation, 
-  //              WMath::vec3( 1.5f, 1.5f, 1.5f ) );
+  //              WMath::vec3( 2.0f, 2.0f, 2.0f ) );
 
   Renderer* renderer = white.getRenderer();
   renderer->setCurrentScene( &scene );

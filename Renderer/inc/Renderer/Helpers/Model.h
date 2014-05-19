@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdio>
+#include <regex>
 #include <GL/glew.h>
 #include "WMath/WMath.h"
 #include "Helpers/Application.h"
@@ -14,7 +15,14 @@
 namespace ModelHelper
 {
 
-  void ImportOBJ( const char* filename, std::vector<WMath::vec4> &vertices, std::vector<WMath::vec3> &normals, std::vector<GLushort> &elements );
+  void ImportOBJ( const char* filename, std::vector<WMath::vec3> &vertices,
+                  std::vector<WMath::vec3>& uvs,
+                  std::vector<WMath::vec3>& normals,
+                  std::vector<GLushort> &elements );
+
+  std::vector< WMath::vec3 >
+    CalculateNormalsAveraged( std::vector< WMath::vec3 >& vertices,
+                              std::vector < GLushort >& elements );
 
   namespace OpenGL
   {
