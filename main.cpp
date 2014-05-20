@@ -21,7 +21,7 @@ int main()
 
   Model model1( "../assets/models/cube.obj" );
 
-  Camera camera(  WMath::vec3(0.0f, 0.0f, 5.0f),
+  Camera camera(  WMath::vec3(-2.0f, 3.0f, 5.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
   input->registerObserver(  "ARROW_UP_PRESS", 
