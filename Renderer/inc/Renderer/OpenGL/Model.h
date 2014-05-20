@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <SOIL/SOIL.h>
 #include "Renderer/Model.h"
 #include "Renderer/Helpers/Model.h"
 #include "Renderer/Camera.h"

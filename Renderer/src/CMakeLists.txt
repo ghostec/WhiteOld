@@ -80,7 +80,7 @@ ENDFOREACH()
 
 add_library( Renderer ${Renderer_SRCs} ${Renderer_Hs_PATHs} )
 
-target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} WMath)
+target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} ${White_SOURCE_DIR}/Renderer/src/SOIL/SOIL.lib WMath)
 
 source_group("Source Files\\Helpers" FILES ${Helpers_SRCs})
 source_group("Header Files\\Helpers" FILES ${Helpers_Hs_PATHs})

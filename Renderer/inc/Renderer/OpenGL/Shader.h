@@ -7,9 +7,10 @@
 class Shader
 {
   private:
-    GLuint shader;
+    
   public:
     Shader();
+    GLuint shader;
     void before_draw();
     void after_draw();
     void setVertexAttribute(  std::string name, int count, int stride,

@@ -42,6 +42,25 @@ Model::Model( std::string file_path )
                                           &this->model_data.transformation ),
                                     GL_TRUE );
 
+  // Load textures
+  GLuint textures[2];
+  glGenTextures( 2, textures );
+
+  int width, height;
+  unsigned char* image;
+
+  glActiveTexture( GL_TEXTURE0 );
+  glBindTexture( GL_TEXTURE_2D, textures[0] );
+  image = SOIL_load_image( "../assets/textures/wooden-crate.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+  SOIL_free_image_data( image );
+  glUniform1i( glGetUniformLocation( this->shader.shader, "tex" ), 0 );
+
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
