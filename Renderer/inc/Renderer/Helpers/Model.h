@@ -8,6 +8,7 @@
 #include <sstream>
 #include <cstdio>
 #include <regex>
+#include <array>
 #include <GL/glew.h>
 #include "WMath/WMath.h"
 #include "Helpers/Application.h"
@@ -18,11 +19,11 @@ namespace ModelHelper
   void ImportOBJ( const char* filename, std::vector<WMath::vec3> &vertices,
                   std::vector<WMath::vec3>& uvs,
                   std::vector<WMath::vec3>& normals,
-                  std::vector<GLushort> &elements );
+                  std::vector< std::array<GLushort, 3> > &elements );
 
   std::vector< WMath::vec3 >
-    CalculateNormalsAveraged( std::vector< WMath::vec3 >& vertices,
-                              std::vector < GLushort >& elements );
+    CalculateNormalsAveraged( std::vector<WMath::vec3>& vertices,
+                              std::vector< std::array<GLushort, 3> >& elements );
 
   namespace OpenGL
   {

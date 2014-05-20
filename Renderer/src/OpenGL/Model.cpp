@@ -13,7 +13,7 @@ Model::Model( std::string file_path )
   std::vector< WMath::vec3 > vertices;
   std::vector< WMath::vec3 > uvs;
   std::vector< WMath::vec3 > normals;
-  std::vector< GLushort > elements;
+  std::vector< std::array<GLushort, 3> > elements;
 
   ModelHelper::ImportOBJ( file_path.c_str(), vertices, uvs, normals, elements );
   normals = ModelHelper::CalculateNormalsAveraged( vertices, elements );
@@ -21,20 +21,23 @@ Model::Model( std::string file_path )
   std::vector< WMath::vec3 > new_vertices;
   for( int i = 0; i < elements.size(); i++ )
   {
-    new_vertices.push_back( vertices.at( elements.at( i ) ) );
-    new_vertices.push_back( normals.at( elements.at( i ) ) );
+    new_vertices.push_back( vertices.at( elements.at( i )[0] ) );
+    new_vertices.push_back( uvs.at( elements.at( i )[1] ) );
+    new_vertices.push_back( normals.at( elements.at( i )[0] ) );
   }
 
   this->model_data.vertices_count = elements.size();
 
-  glBufferData( GL_ARRAY_BUFFER, elements.size() * ( sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ) ),
+  glBufferData( GL_ARRAY_BUFFER, elements.size() * ( 3 * sizeof( WMath::vec3 ) ),
                 &new_vertices[0], GL_STATIC_DRAW);
 
   // Specify the layout of the vertex data
-  this->shader.setVertexAttribute(  "vPosition", 3, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
+  this->shader.setVertexAttribute(  "vPosition", 3, 3 * sizeof( WMath::vec3 ),
                                     0);
-  this->shader.setVertexAttribute(  "vNormal", 3, sizeof( WMath::vec3 ) + sizeof( WMath::vec3 ),
-                                    sizeof( WMath::vec3 ) );
+  this->shader.setVertexAttribute( "vUV", 3, 3 * sizeof( WMath::vec3 ),
+                                   sizeof( WMath::vec3 ) );
+  this->shader.setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
+                                    2 * sizeof( WMath::vec3 ) );
   this->shader.setUniformMatrix4fv( "Model", WMath::value_ptr(
                                           &this->model_data.transformation ),
                                     GL_TRUE );

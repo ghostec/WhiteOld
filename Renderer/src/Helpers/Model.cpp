@@ -3,9 +3,7 @@
 namespace ModelHelper
 {
   void parseFaceOBJ(  std::istringstream& s,
-                      std::vector<WMath::vec3>& uvs,
-                      std::vector<WMath::vec3>& normals,
-                      std::vector<GLushort>& elements )
+                      std::vector< std::array<GLushort, 3> >& elements )
   {
     std::tr1::cmatch values;
     std::string text;
@@ -18,33 +16,39 @@ namespace ModelHelper
     for( int i = 0; i < 3; i++ )
     {
       s >> text;
+      std::array<GLushort, 3> elem;
       if( std::regex_match( text, rx_v ) )
       {
         std::tr1::regex_search( text.c_str( ), values, rx_v );
-        elements.push_back( atoi( values[0].str().c_str() ) - 1 );
+        elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
       }
       else if( std::regex_match( text, rx_vt ) )
       {
         std::tr1::regex_search( text.c_str( ), values, rx_vt );
-        elements.push_back( atoi( values[1].str( ).c_str( ) ) - 1 );
+        elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
+        elem[1] = atoi( values[2].str( ).c_str( ) ) - 1;
       }
       else if( std::regex_match( text, rx_vn ) )
       {
         std::tr1::regex_search( text.c_str( ), values, rx_vt );
-        elements.push_back( atoi( values[1].str( ).c_str( ) ) - 1 );
+        elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
+        elem[2] = atoi( values[2].str( ).c_str( ) ) - 1;
       }
       else if( std::regex_match( text, rx_vtn ) )
       {
         std::tr1::regex_search( text.c_str( ), values, rx_vt );
-        elements.push_back( atoi( values[1].str( ).c_str( ) ) - 1 );
+        elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
+        elem[1] = atoi( values[2].str( ).c_str( ) ) - 1;
+        elem[2] = atoi( values[3].str( ).c_str( ) ) - 1;
       }
+      elements.push_back( elem );
     }
   }
 
   void ImportOBJ( const char* filename, std::vector<WMath::vec3>& vertices,
                   std::vector<WMath::vec3>& uvs, 
                   std::vector<WMath::vec3>& normals,
-                  std::vector<GLushort> &elements )
+                  std::vector< std::array<GLushort, 3> > &elements )
   {
     std::ifstream in( filename, std::ios::in );
     if( !in ) { std::cerr << "Cannot open " << filename << std::endl; exit( 1 ); }
@@ -55,13 +59,19 @@ namespace ModelHelper
       if( line.substr( 0, 2 ) == "v " ) 
       {
         std::istringstream s( line.substr( 2 ) );
-        WMath::vec4 v; s >> v[0]; s >> v[1]; s >> v[2];
+        WMath::vec3 v; s >> v[0]; s >> v[1]; s >> v[2];
         vertices.push_back( v );
+      }
+      if( line.substr( 0, 3 ) == "vt " )
+      {
+        std::istringstream s( line.substr( 3 ) );
+        WMath::vec3 uv; s >> uv[0]; s >> uv[1]; uv[2] = 0.0f;
+        uvs.push_back( uv );
       }
       else if( line.substr( 0, 2 ) == "f " ) 
       {
         std::istringstream s( line.substr( 2 ) );
-        parseFaceOBJ( s, uvs, normals, elements );
+        parseFaceOBJ( s, elements );
       }
       else if( line[0] == '#' ) { /* ignoring this line */ }
       else { /* ignoring this line */ }
@@ -78,7 +88,7 @@ namespace ModelHelper
 
   std::vector< WMath::vec3 > 
     CalculateNormalsAveraged( std::vector< WMath::vec3 >& vertices,
-                              std::vector < GLushort >& elements )
+                              std::vector < std::array<GLushort, 3> >& elements )
   {
     std::vector< WMath::vec3 > normals;
     std::vector< int > nb_seen;
@@ -87,9 +97,9 @@ namespace ModelHelper
     nb_seen.resize( vertices.size( ), 0 );
     for( int i = 0; i < elements.size( ); i += 3 )
     {
-      GLushort ia = elements[i];
-      GLushort ib = elements[i + 1];
-      GLushort ic = elements[i + 2];
+      GLushort ia = elements[i][0];
+      GLushort ib = elements[i + 1][0];
+      GLushort ic = elements[i + 2][0];
       WMath::vec3 normal = WMath::normalize( WMath::cross(
         WMath::vec3( vertices[ib] ) - WMath::vec3( vertices[ia] ),
         WMath::vec3( vertices[ic] ) - WMath::vec3( vertices[ia] ) ) );

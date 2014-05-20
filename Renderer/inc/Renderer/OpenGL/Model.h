@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <array>
 #include "Renderer/Model.h"
 #include "Renderer/Helpers/Model.h"
 #include "Renderer/Camera.h"
