@@ -41,6 +41,10 @@ Model::Model( std::string file_path )
   this->shader.setUniformMatrix4fv( "Model", WMath::value_ptr(
                                           &this->model_data.transformation ),
                                     GL_TRUE );
+  this->shader.setUniform3f( "light.position", 0.0f, 0.0f, -2.0f );
+  this->shader.setUniform3f( "light.intensities", 1.0f, 1.0f, 1.0f );
+  this->shader.setUniform1f( "light.attenuation", 0.2f );
+  this->shader.setUniform1f( "light.ambientCoefficient", 0.005f );
 
   // Load textures
   GLuint textures[2];
@@ -54,7 +58,7 @@ Model::Model( std::string file_path )
   image = SOIL_load_image( "../assets/textures/wooden-crate.jpg", &width, &height, 0, SOIL_LOAD_RGB );
   glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
   SOIL_free_image_data( image );
-  glUniform1i( glGetUniformLocation( this->shader.shader, "tex" ), 0 );
+  glUniform1i( glGetUniformLocation( this->shader.shader, "materialTex" ), 0 );
 
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
