@@ -6,6 +6,7 @@
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
+#include "Renderer/Shader.h"
 #include "Renderer/ModelAsset.h"
 #include "Renderer/ModelInstance.h"
 #include "Renderer/Camera.h"
@@ -21,7 +22,10 @@ int main()
   Input* input = white.getInput();
   active_input = input;
 
-  ModelAsset model_asset( "../assets/models/cube.obj" );
+  Shader shader;
+
+  ModelAsset model_asset( "../assets/models/cube.obj", &shader );
+
   ModelInstance model_instance( &model_asset );
   ModelInstance model_instance2( &model_asset );
 
