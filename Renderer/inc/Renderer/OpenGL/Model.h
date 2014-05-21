@@ -38,8 +38,6 @@ class Model
     Model( std::string file_path );
     void draw();
     Shader* getShader() { return &this->shader; };
-    void setView( WMath::mat4* view );
-    void setProj( WMath::mat4* proj );
     void move();
 };
 

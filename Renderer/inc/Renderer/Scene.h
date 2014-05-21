@@ -12,14 +12,13 @@ class Scene
     std::vector<Model*> models;
     std::vector<Light*> lights;
     Camera* camera;
-    WMath::mat4 *view, proj;
   public:
-    Scene();
     void draw();
     void addModel( Model* model );
     void addLight( Light* light );
-    void setLights();
+    void updateLights();
     void setCamera( Camera* camera );
+    void updateCamera();
 };
 
 #endif

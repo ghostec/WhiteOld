@@ -2,6 +2,7 @@
 #define __WHITE_OPENGLSHADER__
 
 #include "Renderer/Light.h"
+#include "Renderer/Camera.h"
 #include "Renderer/OpenGL/Shader.h"
 #include "Renderer/Helpers/Model.h"
 
@@ -25,6 +26,7 @@ class Shader
                               const GLfloat *value,
                               GLboolean transpose);
     void setLight( Light* light );
+    void setCamera( Camera* camera );
 };
 
 #endif

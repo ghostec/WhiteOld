@@ -86,18 +86,6 @@ void Model::draw()
   this->after_draw();
 }
 
-void Model::setView( WMath::mat4* view )
-{
-  this->shader.setUniformMatrix4fv( "camera.view",
-                                    WMath::value_ptr(view), GL_FALSE);
-}
-
-void Model::setProj( WMath::mat4* proj )
-{
-  this->shader.setUniformMatrix4fv( "camera.proj",
-                                    WMath::value_ptr(proj), GL_FALSE);
-}
-
 void Model::move()
 {
   if( this->moves.ARROW_UP )

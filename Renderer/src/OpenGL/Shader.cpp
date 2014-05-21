@@ -65,3 +65,11 @@ void Shader::setLight( Light* light )
   this->setUniform1f( "light.attenuation", 0.2f );
   this->setUniform1f( "light.ambientCoefficient", 0.005f );
 }
+
+void Shader::setCamera( Camera* camera )
+{
+  this->setUniformMatrix4fv( "camera.view",
+    WMath::value_ptr( camera->getView() ), GL_FALSE );
+  this->setUniformMatrix4fv( "camera.proj",
+    WMath::value_ptr( camera->getProj() ), GL_FALSE );
+}

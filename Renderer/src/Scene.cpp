@@ -1,10 +1,5 @@
 #include "Renderer/Scene.h"
 
-Scene::Scene()
-{
-  this->proj = WMath::OpenGlPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
-}
-
 void Scene::draw()
 {
   //GLuint light_index = glGetUniformBlockIndex( program, "LightBlock" );
@@ -16,8 +11,6 @@ void Scene::draw()
   for( int i = 0; i < vector_models_size; i++ )
   {
     this->models.at(i)->move();
-    this->models.at(i)->setView( this->view );
-    this->models.at(i)->setProj( &this->proj );
     this->models.at(i)->draw();
   }
 }
@@ -31,7 +24,7 @@ void Scene::addLight( Light* light )
 {
   this->lights.push_back( light );
   light->registerObserver(  "DIRTY",
-                            std::bind( &Scene::setLights, this ),
+                            std::bind( &Scene::updateLights, this ),
                             "SCENE" );
   int vector_models_size = this->models.size( );
   for( int i = 0; i < vector_models_size; i++ )
@@ -40,7 +33,7 @@ void Scene::addLight( Light* light )
   }
 }
 
-void Scene::setLights()
+void Scene::updateLights()
 {
   int vector_models_size = this->models.size( );
   for( int i = 0; i < vector_models_size; i++ )
@@ -51,6 +44,23 @@ void Scene::setLights()
 
 void Scene::setCamera( Camera* camera )
 {
+  // TODO: If this->camera != null, unregister old camera.
   this->camera  = camera;
-  this->view    = camera->getView();
+  this->camera->registerObserver( "DIRTY",
+                                  std::bind( &Scene::updateCamera, this ),
+                                  "SCENE" );
+  int vector_models_size = this->models.size( );
+  for( int i = 0; i < vector_models_size; i++ )
+  {
+    this->models.at( i )->getShader( )->setCamera( this->camera );
+  }
+}
+
+void Scene::updateCamera()
+{
+  int vector_models_size = this->models.size( );
+  for( int i = 0; i < vector_models_size; i++ )
+  {
+    this->models.at( i )->getShader( )->setCamera( this->camera );
+  }
 }
