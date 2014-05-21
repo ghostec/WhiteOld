@@ -1,10 +1,10 @@
-#ifndef __WHITE_OPENGLSHADER__
-#define __WHITE_OPENGLSHADER__
+#ifndef __RENDERER_OPENGLSHADER__
+#define __RENDERER_OPENGLSHADER__
 
 #include "Renderer/Light.h"
 #include "Renderer/Camera.h"
 #include "Renderer/OpenGL/Shader.h"
-#include "Renderer/Helpers/Model.h"
+#include "Renderer/Helpers/ModelAssetHelper.h"
 
 class Shader
 {

@@ -6,7 +6,8 @@
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
-#include "Renderer/Model.h"
+#include "Renderer/ModelAsset.h"
+#include "Renderer/ModelInstance.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
 #include "Renderer/Light.h"
@@ -20,7 +21,9 @@ int main()
   Input* input = white.getInput();
   active_input = input;
 
-  Model model( "../assets/models/cube.obj" );
+  ModelAsset model_asset( "../assets/models/cube.obj" );
+  ModelInstance model_instance( &model_asset );
+  ModelInstance model_instance2( &model_asset );
 
   Camera camera(  WMath::vec3(2.0f, 3.0f, -10.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
@@ -29,25 +32,28 @@ int main()
                 WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
 
   input->registerObserver(  "ARROW_UP_PRESS", 
-                            std::bind(  [&]() { model.moves.ARROW_UP = true; } ), 
-                            "model1" );
+                            std::bind(  [&]() { model_instance.moves.ARROW_UP = true; } ), 
+                            "model" );
   input->registerObserver(  "ARROW_UP_RELEASE",
-                            std::bind(  [&] () { model.moves.ARROW_UP = false; } ),
-                            "model1" );
+                            std::bind( [&] ( ) { model_instance.moves.ARROW_UP = false; } ),
+                            "model" );
 
   input->registerObserver(  "ARROW_DOWN_PRESS",
-                            std::bind( [&] () { model.moves.ARROW_DOWN = true; } ),
-                            "model1" );
+                            std::bind( [&] ( ) { model_instance.moves.ARROW_DOWN = true; } ),
+                            "model" );
   input->registerObserver(  "ARROW_DOWN_RELEASE",
-                            std::bind( [&] () { model.moves.ARROW_DOWN = false; } ),
-                            "model1" );
+                            std::bind( [&] ( ) { model_instance.moves.ARROW_DOWN = false; } ),
+                            "model" );
 
   Scene scene;
-  scene.addModel( &model );
+  scene.addModel( &model_instance );
+  scene.addModel( &model_instance2 );
   scene.addLight( &light );
   scene.setCamera( &camera );
 
   light.setPosition( WMath::vec3( 0.0f, 0.0f, -2.0f ) );
+
+  WMath::translate( model_instance2.getTransform( ), WMath::vec3( 0.0f, 3.0f, 0.0f ) );
 
   //WMath::rotate_y( &model1.model_data.transformation, 90.0f );
   //WMath::scale( &model1.model_data.transformation, 

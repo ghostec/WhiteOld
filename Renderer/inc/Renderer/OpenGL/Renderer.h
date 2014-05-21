@@ -1,10 +1,10 @@
-#ifndef __WHITE_OPENGLRENDERER__
-#define __WHITE_OPENGLRENDERER__
+#ifndef __RENDERER_OPENGLRENDERER__
+#define __RENDERER_OPENGLRENDERER__
 
 #include <iostream>
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
-#include "Renderer/Model.h"
+#include "Renderer/ModelAsset.h"
 #include "Renderer/Scene.h"
 #include "Input/Input.h"
 

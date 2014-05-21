@@ -3,18 +3,18 @@
 
 #include <iostream>
 #include <vector>
-#include "Renderer/Model.h"
+#include "Renderer/ModelInstance.h"
 #include "Renderer/Light.h"
 
 class Scene
 {
   private:
-    std::vector<Model*> models;
+    std::vector<ModelInstance*> models;
     std::vector<Light*> lights;
     Camera* camera;
   public:
     void draw();
-    void addModel( Model* model );
+    void addModel( ModelInstance* model );
     void addLight( Light* light );
     void updateLights();
     void setCamera( Camera* camera );

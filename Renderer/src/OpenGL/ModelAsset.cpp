@@ -1,6 +1,6 @@
-#include "Renderer/OpenGL/Model.h"
+#include "Renderer/OpenGL/ModelAsset.h"
 
-Model::Model( std::string file_path )
+ModelAsset::ModelAsset( std::string file_path )
 {
   // Create Vertex Array Object
   glGenVertexArrays(1, &this->vao);
@@ -15,8 +15,8 @@ Model::Model( std::string file_path )
   std::vector< WMath::vec3 > normals;
   std::vector< std::array<GLushort, 3> > elements;
 
-  ModelHelper::ImportOBJ( file_path.c_str(), vertices, uvs, normals, elements );
-  normals = ModelHelper::CalculateNormalsAveraged( vertices, elements );
+  ModelAssetHelper::ImportOBJ( file_path.c_str(), vertices, uvs, normals, elements );
+  normals = ModelAssetHelper::CalculateNormalsAveraged( vertices, elements );
 
   std::vector< WMath::vec3 > new_vertices;
   for( int i = 0; i < elements.size(); i++ )
@@ -26,7 +26,7 @@ Model::Model( std::string file_path )
     new_vertices.push_back( normals.at( elements.at( i )[0] ) );
   }
 
-  this->model_data.vertices_count = elements.size();
+  this->vertices_count = elements.size();
 
   glBufferData( GL_ARRAY_BUFFER, elements.size() * ( 3 * sizeof( WMath::vec3 ) ),
                 &new_vertices[0], GL_STATIC_DRAW);
@@ -38,9 +38,6 @@ Model::Model( std::string file_path )
                                    sizeof( WMath::vec3 ) );
   this->shader.setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
                                     2 * sizeof( WMath::vec3 ) );
-  this->shader.setUniformMatrix4fv( "Model", WMath::value_ptr(
-                                          &this->model_data.transformation ),
-                                    GL_TRUE );
 
   // Load textures
   GLuint textures[2];
@@ -65,31 +62,21 @@ Model::Model( std::string file_path )
   glBindVertexArray(0);
 }
 
-void Model::before_draw()
+void ModelAsset::before_draw()
 {
-  this->shader.setUniformMatrix4fv( "Model",
-              WMath::value_ptr( &this->model_data.transformation ), GL_TRUE );
   this->shader.before_draw();
   glBindVertexArray( this->vao );
 }
 
-void Model::after_draw()
+void ModelAsset::after_draw()
 {
   glBindVertexArray(0);
   this->shader.after_draw();
 }
 
-void Model::draw()
+void ModelAsset::draw()
 {
   this->before_draw();
-  glDrawArrays( GL_TRIANGLES, 0, this->model_data.vertices_count );
+  glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
   this->after_draw();
-}
-
-void Model::move()
-{
-  if( this->moves.ARROW_UP )
-    WMath::translate( &this->model_data.transformation, WMath::vec3( 0.0f, 0.005f, 0.0f ) );
-  if( this->moves.ARROW_DOWN )
-    WMath::translate( &this->model_data.transformation, WMath::vec3( 0.0f, -0.005f, 0.0f ) );
 }

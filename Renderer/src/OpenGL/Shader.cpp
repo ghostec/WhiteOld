@@ -2,7 +2,7 @@
 
 Shader::Shader()
 {
-  this->shader = ModelHelper::OpenGL::CreateShaderProgram(
+  this->shader = ModelAssetHelper::OpenGL::CreateShaderProgram(
       "../assets/shaders/vertex_shader.glsl",
       "../assets/shaders/fragment_shader.glsl" );
 }
@@ -60,10 +60,10 @@ void Shader::setUniformMatrix4fv( std::string name,
 void Shader::setLight( Light* light )
 {
   WMath::vec3 pos = light->getPosition( );
-  this->setUniform3f( "light.position", pos[0], pos[1], pos[2] );
-  this->setUniform3f( "light.intensities", 1.0f, 1.0f, 1.0f );
-  this->setUniform1f( "light.attenuation", 0.2f );
-  this->setUniform1f( "light.ambientCoefficient", 0.005f );
+  this->setUniform3f( "lights[0].position", pos[0], pos[1], pos[2] );
+  this->setUniform3f( "lights[0].intensities", 1.0f, 1.0f, 1.0f );
+  this->setUniform1f( "lights[0].attenuation", 0.2f );
+  this->setUniform1f( "lights[0].ambientCoefficient", 0.005f );
 }
 
 void Shader::setCamera( Camera* camera )

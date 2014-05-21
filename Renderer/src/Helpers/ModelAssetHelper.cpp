@@ -1,6 +1,6 @@
-#include "Renderer/Helpers/Model.h"
+#include "Renderer/Helpers/ModelAssetHelper.h"
 
-namespace ModelHelper
+namespace ModelAssetHelper
 {
   void parseFaceOBJ(  std::istringstream& s,
                       std::vector< std::array<GLushort, 3> >& elements )

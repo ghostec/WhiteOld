@@ -1,12 +1,12 @@
-#ifndef __WHITE_MODELOPENGL__
-#define __WHITE_MODELOPENGL__
+#ifndef __RENDERER_MODELASSETOPENGL__
+#define __RENDERER_MODELASSETOPENGL__
 
 #include <iostream>
 #include <string>
 #include <array>
 #include <SOIL/SOIL.h>
-#include "Renderer/Model.h"
-#include "Renderer/Helpers/Model.h"
+#include "Renderer/ModelAsset.h"
+#include "Renderer/Helpers/ModelAssetHelper.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Light.h"
 #include "Renderer/OpenGL/Shader.h"
@@ -14,13 +14,7 @@
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"
 
-typedef struct Movable_
-{
-  bool ARROW_UP     = false;
-  bool ARROW_DOWN   = false;
-} Movable;
-
-class Model
+class ModelAsset
 {
   private:
     // OpenGL
@@ -30,15 +24,13 @@ class Model
                               std::string attrib_name );
     void setUniformMatrix4fv( std::string name, const GLfloat *value );
     // Model
+    int vertices_count;
     void before_draw();
     void after_draw();
   public:
-    ModelCommon model_data;
-    Movable moves;
-    Model( std::string file_path );
+    ModelAsset( std::string file_path );
     void draw();
     Shader* getShader() { return &this->shader; };
-    void move();
 };
 
 #endif

@@ -19,27 +19,27 @@ include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/
 
 SET(
   OpenGL_SRCs
-  OpenGL/Model.cpp 
+  OpenGL/ModelAsset.cpp 
   OpenGL/Shader.cpp
   OpenGL/Renderer.cpp
 )
 
 SET(
   OpenGL_Hs
-  OpenGL/Model.h
+  OpenGL/ModelAsset.h
   OpenGL/Shader.h
   OpenGL/Renderer.h
 )
 
 SET(
   Helpers_SRCs
-  Helpers/Model.cpp
+  Helpers/ModelAssetHelper.cpp
   Helpers/GLFW.cpp
 )
 
 SET(
   Helpers_Hs
-  Helpers/Model.h
+  Helpers/ModelAssetHelper.h
   Helpers/GLFW.h
 )
 
@@ -49,6 +49,7 @@ SET(
   Scene.cpp
   Light.cpp
   Window.cpp
+  ModelInstance.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
 )
@@ -58,12 +59,13 @@ SET( Renderer_Hs_DIR  ../inc/Renderer )
 SET(
   Renderer_Hs
   Camera.h
-  Model.h
+  ModelAsset.h
   Renderer.h
   Scene.h
   Light.h
   Shader.h
   Window.h
+  ModelInstance.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
 )
