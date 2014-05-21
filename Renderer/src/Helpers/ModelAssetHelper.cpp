@@ -36,7 +36,7 @@ namespace ModelAssetHelper
       }
       else if( std::regex_match( text, rx_vtn ) )
       {
-        std::tr1::regex_search( text.c_str( ), values, rx_vt );
+        std::tr1::regex_search( text.c_str( ), values, rx_vtn );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
         elem[1] = atoi( values[2].str( ).c_str( ) ) - 1;
         elem[2] = atoi( values[3].str( ).c_str( ) ) - 1;
@@ -67,6 +67,12 @@ namespace ModelAssetHelper
         std::istringstream s( line.substr( 3 ) );
         WMath::vec3 uv; s >> uv[0]; s >> uv[1]; uv[2] = 0.0f;
         uvs.push_back( uv );
+      }
+      if( line.substr( 0, 3 ) == "vn " )
+      {
+        std::istringstream s( line.substr( 3 ) );
+        WMath::vec3 n; s >> n[0]; s >> n[1]; s >> n[2];
+        normals.push_back( n );
       }
       else if( line.substr( 0, 2 ) == "f " ) 
       {

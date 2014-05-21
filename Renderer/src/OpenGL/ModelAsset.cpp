@@ -18,14 +18,13 @@ ModelAsset::ModelAsset( std::string file_path, Shader* shader )
   std::vector< std::array<GLushort, 3> > elements;
 
   ModelAssetHelper::ImportOBJ( file_path.c_str(), vertices, uvs, normals, elements );
-  normals = ModelAssetHelper::CalculateNormalsAveraged( vertices, elements );
 
   std::vector< WMath::vec3 > new_vertices;
   for( int i = 0; i < elements.size(); i++ )
   {
     new_vertices.push_back( vertices.at( elements.at( i )[0] ) );
     new_vertices.push_back( uvs.at( elements.at( i )[1] ) );
-    new_vertices.push_back( normals.at( elements.at( i )[0] ) );
+    new_vertices.push_back( normals.at( elements.at( i )[2] ) );
   }
 
   this->vertices_count = elements.size();

@@ -29,7 +29,7 @@ int main()
   ModelInstance model_instance( &model_asset );
   ModelInstance model_instance2( &model_asset );
 
-  Camera camera(  WMath::vec3(2.0f, 3.0f, -10.0f),
+  Camera camera(  WMath::vec3(-2.0f, 3.0f, 8.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
   Light light(  WMath::vec3( 0.0f, 0.0f, -100.0f ),
@@ -55,7 +55,7 @@ int main()
   scene.addLight( &light );
   scene.setCamera( &camera );
 
-  light.setPosition( WMath::vec3( 0.0f, 0.0f, -2.0f ) );
+  light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 
   WMath::translate( model_instance2.getTransform( ), WMath::vec3( 0.0f, 3.0f, 0.0f ) );
 

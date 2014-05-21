@@ -19,7 +19,7 @@ void main()
 {
   float materialShininess     = 80.0f;
   vec3 materialSpecularColor  = vec3( 1.0, 1.0, 1.0 );
-  vec3 cameraPosition = vec3( 2.0, 3.0, -5.0 );
+  vec3 cameraPosition = vec3( 2.0, 3.0, -10.0 );
 
   vec3 normal = normalize(transpose(inverse(mat3(Model))) * fragNormal);
   vec3 surfacePos = vec3(Model * vec4(fragVert, 1));
