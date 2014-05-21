@@ -1,6 +1,7 @@
 #ifndef __WHITE_OPENGLSHADER__
 #define __WHITE_OPENGLSHADER__
 
+#include "Renderer/Light.h"
 #include "Renderer/OpenGL/Shader.h"
 #include "Renderer/Helpers/Model.h"
 
@@ -23,6 +24,7 @@ class Shader
     void setUniformMatrix4fv( std::string name,
                               const GLfloat *value,
                               GLboolean transpose);
+    void setLight( Light* light );
 };
 
 #endif

@@ -41,10 +41,6 @@ Model::Model( std::string file_path )
   this->shader.setUniformMatrix4fv( "Model", WMath::value_ptr(
                                           &this->model_data.transformation ),
                                     GL_TRUE );
-  this->shader.setUniform3f( "light.position", 0.0f, 0.0f, -2.0f );
-  this->shader.setUniform3f( "light.intensities", 1.0f, 1.0f, 1.0f );
-  this->shader.setUniform1f( "light.attenuation", 0.2f );
-  this->shader.setUniform1f( "light.ambientCoefficient", 0.005f );
 
   // Load textures
   GLuint textures[2];
@@ -92,13 +88,13 @@ void Model::draw()
 
 void Model::setView( WMath::mat4* view )
 {
-  this->shader.setUniformMatrix4fv( "View",
+  this->shader.setUniformMatrix4fv( "camera.view",
                                     WMath::value_ptr(view), GL_FALSE);
 }
 
 void Model::setProj( WMath::mat4* proj )
 {
-  this->shader.setUniformMatrix4fv( "Proj",
+  this->shader.setUniformMatrix4fv( "camera.proj",
                                     WMath::value_ptr(proj), GL_FALSE);
 }
 

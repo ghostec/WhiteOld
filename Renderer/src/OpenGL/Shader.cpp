@@ -56,3 +56,12 @@ void Shader::setUniformMatrix4fv( std::string name,
   glUniformMatrix4fv( uniform, 1, transpose, value );
   glUseProgram(0);
 }
+
+void Shader::setLight( Light* light )
+{
+  WMath::vec3 pos = light->getPosition( );
+  this->setUniform3f( "light.position", pos[0], pos[1], pos[2] );
+  this->setUniform3f( "light.intensities", 1.0f, 1.0f, 1.0f );
+  this->setUniform1f( "light.attenuation", 0.2f );
+  this->setUniform1f( "light.ambientCoefficient", 0.005f );
+}

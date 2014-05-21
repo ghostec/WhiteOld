@@ -9,6 +9,7 @@
 #include "Renderer/Model.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
+#include "Renderer/Light.h"
 #include "Input/Input.h"
 
 int main()
@@ -19,28 +20,34 @@ int main()
   Input* input = white.getInput();
   active_input = input;
 
-  Model model1( "../assets/models/cube.obj" );
+  Model model( "../assets/models/cube.obj" );
 
-  Camera camera(  WMath::vec3(-2.0f, 3.0f, 5.0f),
+  Camera camera(  WMath::vec3(2.0f, 3.0f, -10.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
 
+  Light light(  WMath::vec3( 0.0f, 0.0f, -100.0f ),
+                WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
+
   input->registerObserver(  "ARROW_UP_PRESS", 
-                            std::bind(  [&]() { model1.moves.ARROW_UP = true; } ), 
+                            std::bind(  [&]() { model.moves.ARROW_UP = true; } ), 
                             "model1" );
   input->registerObserver(  "ARROW_UP_RELEASE",
-                            std::bind(  [&] () { model1.moves.ARROW_UP = false; } ),
+                            std::bind(  [&] () { model.moves.ARROW_UP = false; } ),
                             "model1" );
 
   input->registerObserver(  "ARROW_DOWN_PRESS",
-                            std::bind( [&] () { model1.moves.ARROW_DOWN = true; } ),
+                            std::bind( [&] () { model.moves.ARROW_DOWN = true; } ),
                             "model1" );
   input->registerObserver(  "ARROW_DOWN_RELEASE",
-                            std::bind( [&] () { model1.moves.ARROW_DOWN = false; } ),
+                            std::bind( [&] () { model.moves.ARROW_DOWN = false; } ),
                             "model1" );
 
   Scene scene;
-  scene.addModel( &model1 );
+  scene.addModel( &model );
+  scene.addLight( &light );
   scene.setCamera( &camera );
+
+  light.setPosition( WMath::vec3( 0.0f, 0.0f, -2.0f ) );
 
   //WMath::rotate_y( &model1.model_data.transformation, 90.0f );
   //WMath::scale( &model1.model_data.transformation, 

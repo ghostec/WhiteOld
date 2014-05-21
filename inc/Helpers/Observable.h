@@ -1,3 +1,6 @@
+#ifndef __WHITE_OBSERVABLE__
+#define __WHITE_OBSERVABLE__
+
 #include <functional>  // for std::function
 #include <utility>     // for std::forward and std::move
 #include <map>
@@ -45,3 +48,5 @@ public:
 private:
   std::map<Event, std::vector< ObserverPair >> observers_;
 };
+
+#endif

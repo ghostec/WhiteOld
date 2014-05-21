@@ -8,6 +8,7 @@
 #include "Renderer/Model.h"
 #include "Renderer/Helpers/Model.h"
 #include "Renderer/Camera.h"
+#include "Renderer/Light.h"
 #include "Renderer/OpenGL/Shader.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
@@ -36,6 +37,7 @@ class Model
     Movable moves;
     Model( std::string file_path );
     void draw();
+    Shader* getShader() { return &this->shader; };
     void setView( WMath::mat4* view );
     void setProj( WMath::mat4* proj );
     void move();

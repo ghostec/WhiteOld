@@ -47,6 +47,7 @@ SET(
   Renderer_SRCs
   Camera.cpp
   Scene.cpp
+  Light.cpp
   Window.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
@@ -60,6 +61,7 @@ SET(
   Model.h
   Renderer.h
   Scene.h
+  Light.h
   Shader.h
   Window.h
   ${Helpers_Hs}

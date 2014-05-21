@@ -27,6 +27,28 @@ void Scene::addModel( Model* model )
   this->models.push_back( model );
 }
 
+void Scene::addLight( Light* light )
+{
+  this->lights.push_back( light );
+  light->registerObserver(  "DIRTY",
+                            std::bind( &Scene::setLights, this ),
+                            "SCENE" );
+  int vector_models_size = this->models.size( );
+  for( int i = 0; i < vector_models_size; i++ )
+  {
+    this->models.at( i )->getShader()->setLight( this->lights[0] );
+  }
+}
+
+void Scene::setLights()
+{
+  int vector_models_size = this->models.size( );
+  for( int i = 0; i < vector_models_size; i++ )
+  {
+    this->models.at( i )->getShader()->setLight( this->lights[0] );
+  }
+}
+
 void Scene::setCamera( Camera* camera )
 {
   this->camera  = camera;
