@@ -3,18 +3,19 @@
 
 #include "Renderer/Light.h"
 #include "Renderer/Camera.h"
-#include "Renderer/OpenGL/Shader.h"
+#include "Renderer/Shader.h"
 #include "Renderer/Helpers/ModelAssetHelper.h"
 
 class Shader
 {
   private:
-    
+    DrawMode draw_mode;
   public:
     Shader( std::string name );
     GLuint shader;
-    void before_draw();
-    void after_draw();
+    void use();
+    void unuse();
+    void setDrawMode( DrawMode draw_mode );
     void setVertexAttribute(  std::string name, int count, int stride,
                               int offset );
     void setUniform1f( std::string name, GLfloat v0 );
@@ -27,6 +28,8 @@ class Shader
                               GLboolean transpose);
     void setLight( Light* light );
     void setCamera( Camera* camera );
+    // getters
+    DrawMode getDrawMode() { return this->draw_mode; };
 };
 
 #endif

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <vector>
 #include <SOIL/SOIL.h>
-#include "Renderer/ModelAsset.h"
 #include "Renderer/Helpers/ModelAssetHelper.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Light.h"
@@ -19,15 +19,17 @@ class ModelAsset
   private:
     // OpenGL
     GLuint vao, vbo;
-    Shader* shader;
     // Model
+    std::vector< Shader* > shaders;
     int vertices_count;
     void before_draw();
     void after_draw();
   public:
-    ModelAsset( std::string file_path, Shader* shader );
-    void draw( GLenum DRAW_MODE );
-    Shader* getShader() { return this->shader; };
+    ModelAsset( std::string file_path );
+    void addShader( Shader* shader );
+    void configureShader( Shader* shader );
+    void draw( std::vector< Shader* >* instance_shaders );
+    std::vector< Shader* > getShaders() { return this->shaders; };
 };
 
 #endif

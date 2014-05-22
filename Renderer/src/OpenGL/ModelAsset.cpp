@@ -1,9 +1,7 @@
 #include "Renderer/OpenGL/ModelAsset.h"
 
-ModelAsset::ModelAsset( std::string file_path, Shader* shader )
+ModelAsset::ModelAsset( std::string file_path )
 {
-  this->shader = shader;
-
   // Create Vertex Array Object
   glGenVertexArrays(1, &this->vao);
   glBindVertexArray(vao);
@@ -32,12 +30,27 @@ ModelAsset::ModelAsset( std::string file_path, Shader* shader )
   glBufferData( GL_ARRAY_BUFFER, elements.size() * ( 3 * sizeof( WMath::vec3 ) ),
                 &new_vertices[0], GL_STATIC_DRAW);
 
-  this->shader->setVertexAttribute( "vPosition", 3, 3 * sizeof( WMath::vec3 ),
-                             0 );
-  this->shader->setVertexAttribute( "vUV", 3, 3 * sizeof( WMath::vec3 ),
-                            sizeof( WMath::vec3 ) );
-  this->shader->setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
-                            2 * sizeof( WMath::vec3 ) );
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+}
+
+void ModelAsset::addShader( Shader* shader )
+{
+  this->shaders.push_back( shader );
+  this->configureShader( shader );
+}
+
+void ModelAsset::configureShader( Shader* shader )
+{
+  glBindVertexArray( this->vao );
+  glBindBuffer( GL_ARRAY_BUFFER, this->vbo );
+
+  shader->setVertexAttribute( "vPosition", 3, 3 * sizeof( WMath::vec3 ),
+    0 );
+  shader->setVertexAttribute( "vUV", 3, 3 * sizeof( WMath::vec3 ),
+    sizeof( WMath::vec3 ) );
+  shader->setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
+    2 * sizeof( WMath::vec3 ) );
 
   // Load textures
   GLuint textures[2];
@@ -51,32 +64,47 @@ ModelAsset::ModelAsset( std::string file_path, Shader* shader )
   image = SOIL_load_image( "../assets/textures/wooden-crate.jpg", &width, &height, 0, SOIL_LOAD_RGB );
   glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
   SOIL_free_image_data( image );
-  glUniform1i( glGetUniformLocation( this->shader->shader, "materialTex" ), 0 );
+  glUniform1i( glGetUniformLocation( shader->shader, "materialTex" ), 0 );
 
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
+  glBindBuffer( GL_ARRAY_BUFFER, 0 );
+  glBindVertexArray( 0 );
 }
 
 void ModelAsset::before_draw()
 {
-  this->shader->before_draw();
   glBindVertexArray( this->vao );
 }
 
 void ModelAsset::after_draw()
 {
   glBindVertexArray(0);
-  this->shader->after_draw();
 }
 
-void ModelAsset::draw( GLenum DRAW_MODE )
+void ModelAsset::draw( std::vector< Shader* >* instance_shaders )
 {
   this->before_draw();
-  glDrawArrays( DRAW_MODE, 0, this->vertices_count );
+  for( Shader* shader : this->shaders )
+  {
+    shader->use();
+    if( shader->getDrawMode() == DM_NORMAL )
+      glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
+    else if( shader->getDrawMode() == DM_WIRE )
+      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );
+    shader->unuse();
+  }
+  for( Shader* shader : *instance_shaders )
+  {
+    shader->use( );
+    if( shader->getDrawMode( ) == DM_NORMAL )
+      glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
+    else if( shader->getDrawMode() == DM_WIRE )
+      glDrawArrays( GL_LINE_LOOP, 0, this->vertices_count );
+    shader->unuse( );
+  }
   this->after_draw();
 }

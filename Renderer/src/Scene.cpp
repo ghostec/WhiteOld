@@ -29,7 +29,14 @@ void Scene::addLight( Light* light )
   int vector_models_size = this->models.size( );
   for( int i = 0; i < vector_models_size; i++ )
   {
-    this->models.at(i)->getModelAsset()->getShader()->setLight( this->lights[0] );
+    for( Shader* shader : this->models.at(i)->getModelAsset()->getShaders() )
+    {
+      shader->setLight( this->lights[0] );
+    }
+    for( Shader* shader : *this->models.at(i)->getShaders() )
+    {
+      shader->setLight( this->lights[0] );
+    }
   }
 }
 
@@ -38,7 +45,14 @@ void Scene::updateLights()
   int vector_models_size = this->models.size( );
   for( int i = 0; i < vector_models_size; i++ )
   {
-    this->models.at(i)->getModelAsset()->getShader()->setLight( this->lights[0] );
+    for( Shader* shader : this->models.at( i )->getModelAsset( )->getShaders( ) )
+    {
+      shader->setLight( this->lights[0] );
+    }
+    for( Shader* shader : *this->models.at( i )->getShaders( ) )
+    {
+      shader->setLight( this->lights[0] );
+    }
   }
 }
 
@@ -52,7 +66,14 @@ void Scene::setCamera( Camera* camera )
   int vector_models_size = this->models.size( );
   for( int i = 0; i < vector_models_size; i++ )
   {
-    this->models.at(i)->getModelAsset()->getShader()->setCamera( this->camera );
+    for( Shader* shader : this->models.at( i )->getModelAsset( )->getShaders( ) )
+    {
+      shader->setCamera( this->camera );
+    }
+    for( Shader* shader : *this->models.at( i )->getShaders( ) )
+    {
+      shader->setCamera( this->camera );
+    }
   }
 }
 
@@ -61,6 +82,13 @@ void Scene::updateCamera()
   int vector_models_size = this->models.size( );
   for( int i = 0; i < vector_models_size; i++ )
   {
-    this->models.at(i)->getModelAsset()->getShader()->setCamera( this->camera );
+    for( Shader* shader : this->models.at( i )->getModelAsset( )->getShaders( ) )
+    {
+      shader->setCamera( this->camera );
+    }
+    for( Shader* shader : *this->models.at( i )->getShaders( ) )
+    {
+      shader->setCamera( this->camera );
+    }
   }
 }

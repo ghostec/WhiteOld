@@ -1,6 +1,7 @@
 #ifndef __RENDERER_MODELINSTANCE__
 #define __RENDERER_MODELINSTANCE__
 
+#include <vector>
 #include "Renderer/ModelAsset.h"
 
 typedef struct Movable_
@@ -13,16 +14,18 @@ class ModelInstance
 {
   private:
     ModelAsset* model_asset;
+    std::vector< Shader* > shaders;
     WMath::mat4 transform;
-    GLenum DRAW_MODE;
   public:
     Movable moves;
-    ModelInstance( ModelAsset* model_asset, GLenum DRAW_MODE );
+    ModelInstance( ModelAsset* model_asset );
+    void addShader( Shader* shader );
     void draw();
     void move();
     // getters
     ModelAsset* getModelAsset() { return this->model_asset; };
     WMath::mat4* getTransform() { return &this->transform; };
+    std::vector< Shader* >* getShaders() { return &this->shaders; };
 };
 
 #endif

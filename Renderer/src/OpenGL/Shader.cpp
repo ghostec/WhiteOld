@@ -5,16 +5,22 @@ Shader::Shader( std::string name )
   this->shader = ModelAssetHelper::OpenGL::CreateShaderProgram(
       "../assets/shaders/" + name + "/vertex.glsl",
       "../assets/shaders/" + name +"/fragment.glsl" );
+  this->draw_mode = DM_NORMAL;
 }
 
-void Shader::before_draw()
+void Shader::use()
 {
   glUseProgram( this->shader );
 }
 
-void Shader::after_draw()
+void Shader::unuse()
 {
   glUseProgram(0);
+}
+
+void Shader::setDrawMode( DrawMode draw_mode )
+{
+  this->draw_mode = draw_mode;
 }
 
 void Shader::setVertexAttribute(  std::string name, int count, int stride,

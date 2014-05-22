@@ -1,18 +1,31 @@
 #include "Renderer/ModelInstance.h"
 
-ModelInstance::ModelInstance( ModelAsset* model_asset, GLenum DRAW_MODE )
+ModelInstance::ModelInstance( ModelAsset* model_asset )
 {
   this->model_asset = model_asset;
-  this->DRAW_MODE = DRAW_MODE;
+}
+
+void ModelInstance::addShader( Shader* shader )
+{
+  this->shaders.push_back( shader );
+  this->model_asset->configureShader( shader );
 }
 
 void ModelInstance::draw()
 {
-  this->model_asset->getShader()->setUniformMatrix4fv(  "Model", 
-                                                        WMath::value_ptr(
-                                                          &this->transform ),
-                                                        GL_TRUE );
-  this->model_asset->draw( DRAW_MODE );
+  for( Shader* shader : this->model_asset->getShaders() )
+  {
+    shader->setUniformMatrix4fv(  "Model",
+                                  WMath::value_ptr( &this->transform ),
+                                  GL_TRUE );
+  }
+  for( Shader* shader : this->shaders )
+  {
+    shader->setUniformMatrix4fv( "Model",
+      WMath::value_ptr( &this->transform ),
+      GL_TRUE );
+  }
+  this->model_asset->draw( &this->shaders );
 }
 
 void ModelInstance::move( )

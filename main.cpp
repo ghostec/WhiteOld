@@ -24,13 +24,16 @@ int main()
 
   Shader shader_standard( "standard" );
   Shader shader_wireframe( "wireframe" );
+  shader_wireframe.setDrawMode( DM_WIRE );
 
-  ModelAsset model_asset1( "../assets/models/cube.obj", &shader_standard );
-  ModelAsset model_asset2( "../assets/models/cube.obj", &shader_wireframe );
+  ModelAsset model_asset( "../assets/models/cube.obj" );
 
-  ModelInstance model_instance( &model_asset1, GL_TRIANGLES );
-  ModelInstance model_instance_( &model_asset2, GL_LINE_STRIP );
-  ModelInstance model_instance2( &model_asset1, GL_TRIANGLES );
+  model_asset.addShader( &shader_standard );
+
+  ModelInstance model_instance( &model_asset );
+  ModelInstance model_instance2( &model_asset );
+
+  model_instance.addShader( &shader_wireframe );
 
   Camera camera(  WMath::vec3(-2.0f, 3.0f, 8.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
@@ -53,7 +56,6 @@ int main()
                             "model" );
 
   Scene scene;
-  scene.addModel( &model_instance_ );
   scene.addModel( &model_instance );
   scene.addModel( &model_instance2 );
   scene.addLight( &light );
