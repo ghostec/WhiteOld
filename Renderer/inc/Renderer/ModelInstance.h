@@ -16,6 +16,7 @@ class ModelInstance
     ModelAsset* model_asset;
     std::vector< Shader* > shaders;
     WMath::mat4 transform;
+    void updateTransform( std::vector< Shader* >* shaders );
   public:
     Movable moves;
     ModelInstance( ModelAsset* model_asset );

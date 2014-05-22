@@ -11,20 +11,20 @@ void ModelInstance::addShader( Shader* shader )
   this->model_asset->configureShader( shader );
 }
 
-void ModelInstance::draw()
+void ModelInstance::updateTransform( std::vector< Shader* >* shaders )
 {
-  for( Shader* shader : this->model_asset->getShaders() )
+  for( Shader* shader : *shaders )
   {
     shader->setUniformMatrix4fv(  "Model",
                                   WMath::value_ptr( &this->transform ),
                                   GL_TRUE );
   }
-  for( Shader* shader : this->shaders )
-  {
-    shader->setUniformMatrix4fv( "Model",
-      WMath::value_ptr( &this->transform ),
-      GL_TRUE );
-  }
+}
+
+void ModelInstance::draw()
+{
+  this->updateTransform( this->model_asset->getShaders() );
+  this->updateTransform( &this->shaders );
   this->model_asset->draw( &this->shaders );
 }
 

@@ -85,26 +85,23 @@ void ModelAsset::after_draw()
   glBindVertexArray(0);
 }
 
-void ModelAsset::draw( std::vector< Shader* >* instance_shaders )
+void ModelAsset::drawForShaders( std::vector< Shader* >* shaders )
 {
-  this->before_draw();
-  for( Shader* shader : this->shaders )
-  {
-    shader->use();
-    if( shader->getDrawMode() == DM_NORMAL )
-      glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
-    else if( shader->getDrawMode() == DM_WIRE )
-      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );
-    shader->unuse();
-  }
-  for( Shader* shader : *instance_shaders )
+  for( Shader* shader : *shaders )
   {
     shader->use( );
     if( shader->getDrawMode( ) == DM_NORMAL )
       glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
-    else if( shader->getDrawMode() == DM_WIRE )
-      glDrawArrays( GL_LINE_LOOP, 0, this->vertices_count );
+    else if( shader->getDrawMode( ) == DM_WIRE )
+      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );
     shader->unuse( );
   }
+}
+
+void ModelAsset::draw( std::vector< Shader* >* instance_shaders )
+{
+  this->before_draw();
+  this->drawForShaders( &this->shaders );
+  this->drawForShaders( instance_shaders );
   this->after_draw();
 }
