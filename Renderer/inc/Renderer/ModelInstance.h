@@ -16,6 +16,7 @@ class ModelInstance
     ModelAsset* model_asset;
     std::vector< Shader* > shaders;
     WMath::mat4 transform;
+    int picking_id;
     void updateTransform( std::vector< Shader* >* shaders );
   public:
     Movable moves;
@@ -27,6 +28,7 @@ class ModelInstance
     ModelAsset* getModelAsset() { return this->model_asset; };
     WMath::mat4* getTransform() { return &this->transform; };
     std::vector< Shader* >* getShaders() { return &this->shaders; };
+    int getPickingId() { return this->picking_id; };
 };
 
 #endif

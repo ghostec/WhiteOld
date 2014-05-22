@@ -4,9 +4,11 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include "Input/Input.h"
 #include "Renderer/ModelAsset.h"
 #include "Renderer/ModelInstance.h"
 #include "Renderer/Light.h"
+#include "Renderer/MousePicking.h"
 
 typedef std::pair< int, ModelAsset* > ModelAssetPair;
 
@@ -26,6 +28,11 @@ class Scene
     void updateLights();
     void setCamera( Camera* camera );
     void updateCamera();
+    void mousePicking();
+    // getters
+    std::vector< ModelInstance* >* getModelInstances() 
+      { return &this->model_instances; };
+    Camera* getCamera() { return this->camera; };
 };
 
 #endif

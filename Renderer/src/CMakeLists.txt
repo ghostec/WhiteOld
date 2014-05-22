@@ -22,6 +22,7 @@ SET(
   OpenGL/ModelAsset.cpp 
   OpenGL/Shader.cpp
   OpenGL/Renderer.cpp
+  OpenGL/MousePicking.cpp
 )
 
 SET(
@@ -29,6 +30,7 @@ SET(
   OpenGL/ModelAsset.h
   OpenGL/Shader.h
   OpenGL/Renderer.h
+  OpenGL/MousePicking.h
 )
 
 SET(
@@ -66,6 +68,7 @@ SET(
   Shader.h
   Window.h
   ModelInstance.h
+  MousePicking.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
 )

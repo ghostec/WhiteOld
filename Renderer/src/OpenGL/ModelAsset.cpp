@@ -85,7 +85,7 @@ void ModelAsset::after_draw()
   glBindVertexArray(0);
 }
 
-void ModelAsset::drawForShaders( std::vector< Shader* >* shaders )
+void ModelAsset::drawWithShaders( std::vector< Shader* >* shaders )
 {
   for( Shader* shader : *shaders )
   {
@@ -101,7 +101,7 @@ void ModelAsset::drawForShaders( std::vector< Shader* >* shaders )
 void ModelAsset::draw( std::vector< Shader* >* instance_shaders )
 {
   this->before_draw();
-  this->drawForShaders( &this->shaders );
-  this->drawForShaders( instance_shaders );
+  this->drawWithShaders( &this->shaders );
+  this->drawWithShaders( instance_shaders );
   this->after_draw();
 }

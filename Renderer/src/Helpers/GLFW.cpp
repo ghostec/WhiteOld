@@ -7,7 +7,7 @@ namespace GLFWhelper
     if( ! glfwInit() )
       std::cout << "couldn't initialize GLFW" << std::endl;
 
-    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_SAMPLES, 32);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -23,6 +23,7 @@ namespace GLFWhelper
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback( window, keyboardCallback );
+    glfwSetMouseButtonCallback( window, mouseButtonCallback );
 
     glewExperimental = GL_TRUE;
     glewInit();

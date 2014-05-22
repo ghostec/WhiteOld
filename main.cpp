@@ -23,8 +23,6 @@ int main()
   active_input = input;
 
   Shader shader_standard( "standard" );
-  Shader shader_wireframe( "wireframe" );
-  shader_wireframe.setDrawMode( DM_WIRE );
 
   ModelAsset model_asset( "../assets/models/cube.obj" );
 
@@ -32,8 +30,6 @@ int main()
 
   ModelInstance model_instance( &model_asset );
   ModelInstance model_instance2( &model_asset );
-
-  model_instance.addShader( &shader_wireframe );
 
   Camera camera(  WMath::vec3(-2.0f, 3.0f, 8.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
@@ -60,6 +56,10 @@ int main()
   scene.addModel( &model_instance2 );
   scene.addLight( &light );
   scene.setCamera( &camera );
+
+  input->registerObserver(  "CLICK",
+                            std::bind( &Scene::mousePicking, &scene ),
+                            "scene" );
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 

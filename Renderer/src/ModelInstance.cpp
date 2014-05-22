@@ -2,7 +2,9 @@
 
 ModelInstance::ModelInstance( ModelAsset* model_asset )
 {
+  static int id = 1;
   this->model_asset = model_asset;
+  this->picking_id = id++;
 }
 
 void ModelInstance::addShader( Shader* shader )

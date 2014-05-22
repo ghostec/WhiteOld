@@ -12,6 +12,14 @@ bool Input::isKeyPressed( Key key )
   return GLFWhelper::isKeyPressed( this->window, key );
 }
 
+void Input::getMousePos( int* x, int* y )
+{
+  double xpos, ypos;
+  glfwGetCursorPos( this->window, &xpos, &ypos );
+  *x = (int) xpos;
+  *y = (int) ypos;
+}
+
 void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
   if( key == GLFW_KEY_UP && action == GLFW_PRESS )
@@ -30,4 +38,9 @@ void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, in
   {
     active_input->notify( "ARROW_DOWN_RELEASE" );
   }
+}
+
+void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
+{
+  active_input->notify( "CLICK" );
 }

@@ -1,5 +1,5 @@
-#ifndef __WHITE_SHADER__
-#define __WHITE_SHADER__
+#ifndef __RENDERER_SHADER__
+#define __RENDERER_SHADER__
 
 #include <iostream>
 #include <string>

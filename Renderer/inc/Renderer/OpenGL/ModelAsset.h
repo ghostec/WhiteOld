@@ -22,13 +22,13 @@ class ModelAsset
     // Model
     std::vector< Shader* > shaders;
     int vertices_count;
-    void before_draw();
-    void after_draw();
-    void drawForShaders( std::vector< Shader* >* shaders );
   public:
     ModelAsset( std::string file_path );
     void addShader( Shader* shader );
     void configureShader( Shader* shader );
+    void before_draw( );
+    void after_draw( );
+    void drawWithShaders( std::vector< Shader* >* shaders );
     void draw( std::vector< Shader* >* instance_shaders );
     std::vector< Shader* >* getShaders() { return &this->shaders; };
 };
