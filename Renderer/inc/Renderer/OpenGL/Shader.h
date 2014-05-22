@@ -11,7 +11,7 @@ class Shader
   private:
     
   public:
-    Shader();
+    Shader( std::string name );
     GLuint shader;
     void before_draw();
     void after_draw();

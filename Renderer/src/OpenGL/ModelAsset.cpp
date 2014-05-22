@@ -74,9 +74,9 @@ void ModelAsset::after_draw()
   this->shader->after_draw();
 }
 
-void ModelAsset::draw()
+void ModelAsset::draw( GLenum DRAW_MODE )
 {
   this->before_draw();
-  glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
+  glDrawArrays( DRAW_MODE, 0, this->vertices_count );
   this->after_draw();
 }

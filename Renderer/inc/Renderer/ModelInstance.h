@@ -14,11 +14,12 @@ class ModelInstance
   private:
     ModelAsset* model_asset;
     WMath::mat4 transform;
+    GLenum DRAW_MODE;
   public:
     Movable moves;
-    ModelInstance( ModelAsset* model_asset );
+    ModelInstance( ModelAsset* model_asset, GLenum DRAW_MODE );
     void draw();
-    void move( );
+    void move();
     // getters
     ModelAsset* getModelAsset() { return this->model_asset; };
     WMath::mat4* getTransform() { return &this->transform; };

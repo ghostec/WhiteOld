@@ -1,10 +1,10 @@
 #include "Renderer/OpenGL/Shader.h"
 
-Shader::Shader()
+Shader::Shader( std::string name )
 {
   this->shader = ModelAssetHelper::OpenGL::CreateShaderProgram(
-      "../assets/shaders/vertex_shader.glsl",
-      "../assets/shaders/fragment_shader.glsl" );
+      "../assets/shaders/" + name + "/vertex.glsl",
+      "../assets/shaders/" + name +"/fragment.glsl" );
 }
 
 void Shader::before_draw()

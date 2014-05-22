@@ -26,7 +26,7 @@ class ModelAsset
     void after_draw();
   public:
     ModelAsset( std::string file_path, Shader* shader );
-    void draw();
+    void draw( GLenum DRAW_MODE );
     Shader* getShader() { return this->shader; };
 };
 

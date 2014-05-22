@@ -1,8 +1,9 @@
 #include "Renderer/ModelInstance.h"
 
-ModelInstance::ModelInstance( ModelAsset* model_asset )
+ModelInstance::ModelInstance( ModelAsset* model_asset, GLenum DRAW_MODE )
 {
   this->model_asset = model_asset;
+  this->DRAW_MODE = DRAW_MODE;
 }
 
 void ModelInstance::draw()
@@ -11,7 +12,7 @@ void ModelInstance::draw()
                                                         WMath::value_ptr(
                                                           &this->transform ),
                                                         GL_TRUE );
-  this->model_asset->draw();
+  this->model_asset->draw( DRAW_MODE );
 }
 
 void ModelInstance::move( )
