@@ -53,14 +53,13 @@ void ModelAsset::configureShader( Shader* shader )
     2 * sizeof( WMath::vec3 ) );
 
   // Load textures
-  GLuint textures[2];
-  glGenTextures( 2, textures );
+  glGenTextures( 1, &texture );
 
   int width, height;
   unsigned char* image;
 
   glActiveTexture( GL_TEXTURE0 );
-  glBindTexture( GL_TEXTURE_2D, textures[0] );
+  glBindTexture( GL_TEXTURE_2D, texture );
   image = SOIL_load_image( "../assets/textures/wooden-crate.jpg", &width, &height, 0, SOIL_LOAD_RGB );
   glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
   SOIL_free_image_data( image );
@@ -78,6 +77,7 @@ void ModelAsset::configureShader( Shader* shader )
 void ModelAsset::before_draw()
 {
   glBindVertexArray( this->vao );
+  glBindTexture( GL_TEXTURE_2D, texture );
 }
 
 void ModelAsset::after_draw()
@@ -92,8 +92,8 @@ void ModelAsset::drawWithShaders( std::vector< Shader* >* shaders )
     shader->use( );
     if( shader->getDrawMode( ) == DM_NORMAL )
       glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
-    else if( shader->getDrawMode( ) == DM_WIRE )
-      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );
+    else if( shader->getDrawMode() == DM_WIRE )
+      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );    
     shader->unuse( );
   }
 }

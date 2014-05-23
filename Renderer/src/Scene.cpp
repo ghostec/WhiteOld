@@ -84,11 +84,11 @@ void Scene::updateCamera()
     this->updateCameraForShaders( model_instance->getShaders() );
 }
 
-void Scene::mousePicking()
+ModelInstance* Scene::getModelInstanceWithId( int id )
 {
-  MousePicking mouse_picking;
-  mouse_picking.draw_picker_colours( this );
-  int x, y;
-  active_input->getMousePos( &x, &y );
-  int id = mouse_picking.getIdForPosition( x, y);
+  for( ModelInstance* model_instance : this->model_instances )
+  {
+    if( model_instance->getPickingId() == id )
+      return model_instance;
+  }
 }

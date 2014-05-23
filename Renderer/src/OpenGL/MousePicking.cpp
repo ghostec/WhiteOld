@@ -15,12 +15,15 @@ int decode_id( int r, int g, int b ) {
   return b + g * 256 + r * 256 * 256;
 }
 
-MousePicking::MousePicking()
+MousePicking::MousePicking( Scene* scene )
 {
   int width = 800;
   int height = 600;
 
   this->shader = new Shader( "color_picking" );
+  this->scene = scene;
+
+  this->shader->use( );
 
   // create framebuffer
   this->frame_buffer = 0;
@@ -68,11 +71,13 @@ MousePicking::MousePicking()
   GLenum draw_bufs[] = { GL_COLOR_ATTACHMENT0 };
   glDrawBuffers( 1, draw_bufs );
 
+  this->shader->unuse( );
+
   // bind default this->frame_buffer (number 0) so that we render normally next time
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::draw_picker_colours( Scene* scene ) 
+void MousePicking::draw_picker_colours() 
 {
   int width = 800;
   int height = 600;
@@ -103,10 +108,15 @@ void MousePicking::draw_picker_colours( Scene* scene )
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-int MousePicking::getIdForPosition( int x, int y )
+int MousePicking::getIdForPosition()
 {
   int width = 800;
   int height = 600;
+
+  this->draw_picker_colours();
+
+  int x, y;
+  active_input->getMousePos( &x, &y );
 
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
   unsigned char data[4] = { 0, 0, 0, 0 };

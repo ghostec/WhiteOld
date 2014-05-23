@@ -52,6 +52,7 @@ SET(
   Light.cpp
   Window.cpp
   ModelInstance.cpp
+  SceneEditor.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
 )
@@ -69,6 +70,7 @@ SET(
   Window.h
   ModelInstance.h
   MousePicking.h
+  SceneEditor.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
 )

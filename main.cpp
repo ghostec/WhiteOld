@@ -12,6 +12,8 @@
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
 #include "Renderer/Light.h"
+#include "Renderer/MousePicking.h"
+#include "Renderer/SceneEditor.h"
 #include "Input/Input.h"
 
 int main()
@@ -23,9 +25,11 @@ int main()
   active_input = input;
 
   Shader shader_standard( "standard" );
+  Shader shader_wireframe( "wireframe" );
+  shader_wireframe.setDrawMode( DM_WIRE );
 
   ModelAsset model_asset( "../assets/models/cube.obj" );
-
+  
   model_asset.addShader( &shader_standard );
 
   ModelInstance model_instance( &model_asset );
@@ -57,9 +61,12 @@ int main()
   scene.addLight( &light );
   scene.setCamera( &camera );
 
+  MousePicking mouse_picking( &scene );
+  SceneEditor scene_editor( &scene, &mouse_picking, shader_wireframe );
+
   input->registerObserver(  "CLICK",
-                            std::bind( &Scene::mousePicking, &scene ),
-                            "scene" );
+                            std::bind( &SceneEditor::selectModelInstance, &scene_editor ),
+                            "mouse_picking" );
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 

@@ -19,6 +19,7 @@ class ModelAsset
   private:
     // OpenGL
     GLuint vao, vbo;
+    GLuint texture;
     // Model
     std::vector< Shader* > shaders;
     int vertices_count;

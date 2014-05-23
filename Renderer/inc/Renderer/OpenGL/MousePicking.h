@@ -5,7 +5,9 @@
 #include <GL/glew.h>
 #include "Renderer/Scene.h"
 #include "Renderer/Shader.h"
+#include "Input/Input.h"
 #include "WMath/WMath.h"
+#include "Helpers/Observable.h"
 
 class Scene;
 
@@ -14,10 +16,11 @@ class MousePicking
   private:
     GLuint frame_buffer, frame_buffer_tex, render_buffer;
     Shader* shader;
+    Scene* scene;
   public:
-    MousePicking();
-    void draw_picker_colours( Scene* scene );
-    int getIdForPosition( int x, int y );
+    MousePicking( Scene* scene );
+    void draw_picker_colours();
+    int getIdForPosition();
 };
 
 #endif
