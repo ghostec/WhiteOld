@@ -29,11 +29,3 @@ void ModelInstance::draw()
   this->updateTransform( &this->shaders );
   this->model_asset->draw( &this->shaders );
 }
-
-void ModelInstance::move( )
-{
-  if( this->moves.ARROW_UP )
-    WMath::translate( &this->transform, WMath::vec3( 0.0f, 0.005f, 0.0f ) );
-  if( this->moves.ARROW_DOWN )
-    WMath::translate( &this->transform, WMath::vec3( 0.0f, -0.005f, 0.0f ) );
-}

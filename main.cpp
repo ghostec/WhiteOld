@@ -2,7 +2,6 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "White.h"
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
@@ -18,11 +17,10 @@
 
 int main()
 {
-  White white;
-  white.setArchitecture( OSX );
+  Window window;
   
-  Input* input = white.getInput();
-  active_input = input;
+  Input input( window.getWindow() );
+  active_input = &input;
 
   Shader shader_standard( "standard" );
   Shader shader_wireframe( "wireframe" );
@@ -41,20 +39,6 @@ int main()
   Light light(  WMath::vec3( 0.0f, 0.0f, -100.0f ),
                 WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
 
-  input->registerObserver(  "ARROW_UP_PRESS", 
-                            std::bind(  [&]() { model_instance.moves.ARROW_UP = true; } ), 
-                            "model" );
-  input->registerObserver(  "ARROW_UP_RELEASE",
-                            std::bind( [&] ( ) { model_instance.moves.ARROW_UP = false; } ),
-                            "model" );
-
-  input->registerObserver(  "ARROW_DOWN_PRESS",
-                            std::bind( [&] ( ) { model_instance.moves.ARROW_DOWN = true; } ),
-                            "model" );
-  input->registerObserver(  "ARROW_DOWN_RELEASE",
-                            std::bind( [&] ( ) { model_instance.moves.ARROW_DOWN = false; } ),
-                            "model" );
-
   Scene scene;
   scene.addModel( &model_instance );
   scene.addModel( &model_instance2 );
@@ -64,9 +48,22 @@ int main()
   MousePicking mouse_picking( &scene );
   SceneEditor scene_editor( &scene, &mouse_picking, shader_wireframe );
 
-  input->registerObserver(  "CLICK",
+  input.registerObserver(  "CLICK",
                             std::bind( &SceneEditor::selectModelInstance, &scene_editor ),
                             "mouse_picking" );
+  input.registerObserver( "ARROW_UP_PRESS",
+    std::bind( [&] ( ) { scene_editor.moves.ARROW_UP = true; } ),
+    "model" );
+  input.registerObserver( "ARROW_UP_RELEASE",
+    std::bind( [&] ( ) { scene_editor.moves.ARROW_UP = false; } ),
+    "model" );
+
+  input.registerObserver( "ARROW_DOWN_PRESS",
+    std::bind( [&] ( ) { scene_editor.moves.ARROW_DOWN = true; } ),
+    "model" );
+  input.registerObserver( "ARROW_DOWN_RELEASE",
+    std::bind( [&] ( ) { scene_editor.moves.ARROW_DOWN = false; } ),
+    "model" );
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 
@@ -76,9 +73,9 @@ int main()
   //WMath::scale( &model1.model_data.transformation, 
   //              WMath::vec3( 2.0f, 2.0f, 2.0f ) );
 
-  Renderer* renderer = white.getRenderer();
-  renderer->setCurrentScene( &scene );
-  renderer->render();
+  Renderer renderer( &window, &scene_editor );
+  renderer.setCurrentScene( &scene );
+  renderer.render();
 
   return 0;
 }

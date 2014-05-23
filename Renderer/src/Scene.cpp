@@ -2,17 +2,9 @@
 
 void Scene::draw()
 {
-  //GLuint light_index = glGetUniformBlockIndex( program, "LightBlock" );
-  //glUniformBlockBinding( program, light_index, 0 );
-  //glBindBuffer( GL_UNIFORM_BUFFER, light_buffer );
-  //glBufferSubData( GL_UNIFORM_BUFFER, 0, sizeof(LightBlock), &Light );
-
   int vector_models_size = this->model_instances.size();
   for( int i = 0; i < vector_models_size; i++ )
-  {
-    this->model_instances.at(i)->move();
     this->model_instances.at(i)->draw();
-  }
 }
 
 void Scene::addModel( ModelInstance* model_instance )

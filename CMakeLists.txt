@@ -41,7 +41,6 @@ SET(
 
 SET(
   SRCs
-  White.cpp
   ${Helpers_SRCs}
 )
 
@@ -53,7 +52,6 @@ SET( Hs_DIR inc )
 
 SET(
   Hs
-  White.h
   ${Helpers_Hs}
 )
 

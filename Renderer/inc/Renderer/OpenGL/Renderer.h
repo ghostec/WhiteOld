@@ -6,21 +6,17 @@
 #include "Renderer/Window.h"
 #include "Renderer/ModelAsset.h"
 #include "Renderer/Scene.h"
+#include "Renderer/SceneEditor.h"
 #include "Input/Input.h"
-
-typedef struct _RendererContext
-{
-  Window *window;
-} RendererContext;
 
 class Renderer
 {
   private:
-    RendererContext context;
+    Window* window;
     Scene* current_scene;
-    void setWindow( Window* window );
+    SceneEditor* scene_editor;
   public:
-    Renderer( RendererContext rc );
+    Renderer( Window* window, SceneEditor* scene_editor );
     void render();
     void setCurrentScene( Scene* scene );
 };
