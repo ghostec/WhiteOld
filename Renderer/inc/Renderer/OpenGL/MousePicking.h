@@ -9,8 +9,6 @@
 #include "WMath/WMath.h"
 #include "Helpers/Observable.h"
 
-class Scene;
-
 class MousePicking
 {
   private:
@@ -18,9 +16,10 @@ class MousePicking
     Shader* shader;
     Scene* scene;
   public:
-    MousePicking( Scene* scene );
+    MousePicking();
+    void setScene( Scene* scene );
     void draw_picker_colours();
-    int getIdForPosition();
+    int getIdForPosition( int x, int y );
 };
 
 #endif

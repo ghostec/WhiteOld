@@ -45,7 +45,8 @@ int main()
   scene.addLight( &light );
   scene.setCamera( &camera );
 
-  MousePicking mouse_picking( &scene );
+  MousePicking mouse_picking;
+  mouse_picking.setScene( &scene );
   SceneEditor scene_editor( &scene, &mouse_picking, shader_wireframe );
 
   input.registerObserver(  "CLICK",
@@ -69,13 +70,17 @@ int main()
 
   WMath::translate( model_instance2.getTransform( ), WMath::vec3( 0.0f, 3.0f, 0.0f ) );
 
-  //WMath::rotate_y( &model1.model_data.transformation, 90.0f );
-  //WMath::scale( &model1.model_data.transformation, 
-  //              WMath::vec3( 2.0f, 2.0f, 2.0f ) );
-
   Renderer renderer( &window, &scene_editor );
   renderer.setCurrentScene( &scene );
-  renderer.render();
+
+  while(  window.isOpen() &&
+          !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
+  {
+    scene_editor.move();
+    renderer.render();
+  }
+
+  
 
   return 0;
 }

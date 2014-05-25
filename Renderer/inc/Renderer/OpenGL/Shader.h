@@ -1,6 +1,7 @@
 #ifndef __RENDERER_OPENGLSHADER__
 #define __RENDERER_OPENGLSHADER__
 
+#include <string>
 #include "Renderer/Light.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Shader.h"
@@ -10,6 +11,7 @@ class Shader
 {
   private:
     DrawMode draw_mode;
+    std::string name;
   public:
     Shader( std::string name );
     GLuint shader;
@@ -30,6 +32,7 @@ class Shader
     void setCamera( Camera* camera );
     // getters
     DrawMode getDrawMode() { return this->draw_mode; };
+    const std::string getName() { return this->name; };
 };
 
 #endif

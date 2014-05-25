@@ -2,10 +2,15 @@
 
 Window::Window()
 {
-  this->windowvar = GLFWhelper::CreateWindow();
+  this->window = GLFWhelper::CreateWindow();
 }
 
-WindowVar* Window::getWindow()
+bool Window::isOpen()
 {
-  return this->windowvar;
+  return !glfwWindowShouldClose( this->window );
+}
+
+GLFWwindow* Window::getWindow( )
+{
+  return this->window;
 }

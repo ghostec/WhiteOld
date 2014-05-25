@@ -1,17 +1,16 @@
-#ifndef __WHITE_WINDOW__
-#define __WHITE_WINDOW__
+#ifndef __RENDERER_WINDOW__
+#define __RENDERER_WINDOW__
 
 #include "Renderer/Helpers/GLFW.h"
-
-#define WindowVar GLFWwindow
 
 class Window
 {
   private:
-    WindowVar *windowvar;
+    GLFWwindow *window;
   public:
     Window();
-    WindowVar *getWindow();
+    bool isOpen();
+    GLFWwindow *getWindow( );
 };
 
 #endif

@@ -11,9 +11,23 @@ SceneEditor::SceneEditor( Scene* scene, MousePicking* mouse_picking, Shader& sha
 void SceneEditor::selectModelInstance()
 {
   if( this->selected_model_instance != nullptr )
-    this->selected_model_instance->getShaders( )->pop_back( );
+  {
+    std::vector< Shader* >* shaders = this->selected_model_instance->getShaders();
+    for( Shader* shader : *shaders )
+    {
+      shaders
+      ->erase(  std::remove_if( shaders->begin( ),
+                              shaders->end( ),
+                              [&]( Shader* shader )
+                              { return shader->getName() == "wireframe"; } ),
+                shaders->end() );
+    }
+  }
+
+  int x, y;
+  active_input->getMousePos( &x, &y );
     
-  int id = this->mouse_picking->getIdForPosition( );
+  int id = this->mouse_picking->getIdForPosition( x, y );
 
   if( id == 0 ) 
   {
@@ -27,7 +41,7 @@ void SceneEditor::selectModelInstance()
 }
 
 void SceneEditor::move( )
-{
+{ 
   if( this->moves.ARROW_UP )
     WMath::translate( this->selected_model_instance->getTransform( ), WMath::vec3( 0.0f, 0.005f, 0.0f ) );
   if( this->moves.ARROW_DOWN )
