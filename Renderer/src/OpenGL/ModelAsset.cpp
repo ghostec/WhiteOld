@@ -93,7 +93,7 @@ void ModelAsset::drawWithShaders( std::vector< Shader* >* shaders )
     if( shader->getDrawMode( ) == DM_NORMAL )
       glDrawArrays( GL_TRIANGLES, 0, this->vertices_count );
     else if( shader->getDrawMode() == DM_WIRE )
-      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );    
+      glDrawArrays( GL_LINE_STRIP, 0, this->vertices_count );
     shader->unuse( );
   }
 }

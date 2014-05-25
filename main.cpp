@@ -25,13 +25,22 @@ int main()
   Shader shader_standard( "standard" );
   Shader shader_wireframe( "wireframe" );
   shader_wireframe.setDrawMode( DM_WIRE );
+  Shader shader_color( "color" );
 
   ModelAsset model_asset( "../assets/models/cube.obj" );
+  ModelAsset model_arrow( "../assets/models/arrow.obj" );
   
   model_asset.addShader( &shader_standard );
+  model_arrow.addShader( &shader_color );
 
   ModelInstance model_instance( &model_asset );
-  ModelInstance model_instance2( &model_asset );
+
+  ModelInstance model_arrow_x( &model_arrow );
+  model_arrow_x.setColor( WMath::vec3( 1.0f, 0.0f, 0.0f ) );
+  ModelInstance model_arrow_z( &model_arrow );
+  model_arrow_z.setColor( WMath::vec3( 0.0f, 0.0f, 1.0f ) );
+  ModelInstance model_arrow_y( &model_arrow );
+  model_arrow_y.setColor( WMath::vec3( 0.0f, 1.0f, 0.0f ) );
 
   Camera camera(  WMath::vec3(-2.0f, 3.0f, 8.0f),
                   WMath::vec3(0.0f, 0.0f, 0.0f) );
@@ -41,7 +50,9 @@ int main()
 
   Scene scene;
   scene.addModel( &model_instance );
-  scene.addModel( &model_instance2 );
+  scene.addModel( &model_arrow_x );
+  scene.addModel( &model_arrow_y );
+  scene.addModel( &model_arrow_z );
   scene.addLight( &light );
   scene.setCamera( &camera );
 
@@ -68,7 +79,12 @@ int main()
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 
-  WMath::translate( model_instance2.getTransform( ), WMath::vec3( 0.0f, 3.0f, 0.0f ) );
+  WMath::translate( model_instance.getTransform( ), WMath::vec3( 0.0f, 1.5f, 0.0f ) );
+
+  WMath::translate( model_arrow_x.getTransform( ), WMath::vec3( 0.0f, -2.0f, 0.0f ) );
+  WMath::translate( model_arrow_y.getTransform( ), WMath::vec3( 0.0f, -2.0f, 0.0f ) );
+  WMath::translate( model_arrow_z.getTransform( ), WMath::vec3( 0.0f, -2.0f, 0.0f ) );
+  WMath::rotate_y( model_arrow_z.getTransform( ), 90.0f );
 
   Renderer renderer( &window, &scene_editor );
   renderer.setCurrentScene( &scene );
