@@ -8,6 +8,7 @@
 #include "Renderer/ModelAsset.h"
 #include "Renderer/ModelInstance.h"
 #include "Renderer/Light.h"
+#include "Renderer/Helpers/ShaderHelper.h"
 
 typedef std::pair< int, ModelAsset* > ModelAssetPair;
 

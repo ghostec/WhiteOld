@@ -103,7 +103,7 @@ void MousePicking::draw_picker_colours()
     model_instance->getModelAsset()->before_draw();
     std::vector< Shader* > shaders{ this->shader };
     this->shader->setUniformMatrix4fv( "Model", WMath::value_ptr( model_instance->getTransform() ), GL_TRUE );
-    this->shader->setCamera( scene->getCamera() );
+    ShaderHelper::setCamera( this->shader, scene->getCamera() );
     model_instance->getModelAsset()->drawWithShaders( &shaders );
     model_instance->getModelAsset()->after_draw();
   }

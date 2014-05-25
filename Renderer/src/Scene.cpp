@@ -41,7 +41,9 @@ void Scene::addLight( Light* light )
 void Scene::updateLightsForShaders( std::vector< Shader* >* shaders )
 {
   for( Shader* shader : *shaders )
-    shader->setLight( this->lights[0] );
+  {
+    ShaderHelper::setLight( shader, this->lights[0] );
+  }
 }
 
 void Scene::updateLights()
@@ -65,7 +67,9 @@ void Scene::setCamera( Camera* camera )
 void Scene::updateCameraForShaders( std::vector< Shader* >* shaders )
 {
   for( Shader* shader : *shaders )
-    shader->setCamera( this->camera );
+  {
+    ShaderHelper::setCamera( shader, this->camera );
+  }
 }
 
 void Scene::updateCamera()

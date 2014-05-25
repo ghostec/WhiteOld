@@ -28,8 +28,6 @@ class Shader
     void setUniformMatrix4fv( std::string name,
                               const GLfloat *value,
                               GLboolean transpose);
-    void setLight( Light* light );
-    void setCamera( Camera* camera );
     // getters
     DrawMode getDrawMode() { return this->draw_mode; };
     const std::string getName() { return this->name; };

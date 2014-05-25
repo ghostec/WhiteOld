@@ -43,6 +43,17 @@ SET(
   Helpers_Hs
   Helpers/ModelAssetHelper.h
   Helpers/GLFW.h
+  Helpers/ShaderHelper.h
+)
+
+SET(
+  Helpers_OpenGL_SRCs
+  Helpers/OpenGL/ShaderHelper.cpp
+)
+
+SET(
+  Helpers_OpenGL_Hs
+  Helpers/OpenGL/ShaderHelper.h
 )
 
 SET(
@@ -55,6 +66,7 @@ SET(
   SceneEditor.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
+  ${Helpers_OpenGL_SRCs}
 )
 
 SET( Renderer_Hs_DIR  ../inc/Renderer )
@@ -73,6 +85,7 @@ SET(
   SceneEditor.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
+  ${Helpers_OpenGL_Hs}
 )
 
 FOREACH(OpenGL_H ${OpenGL_Hs})
@@ -81,6 +94,10 @@ ENDFOREACH()
 
 FOREACH(Helper_H ${Helpers_Hs})
   LIST(APPEND Helpers_Hs_PATHs "${Renderer_Hs_DIR}/${Helper_H}")
+ENDFOREACH()
+
+FOREACH(Helper_OpenGL_H ${Helpers_OpenGL_Hs})
+  LIST(APPEND Helpers_OpenGL_Hs_PATHs "${Renderer_Hs_DIR}/${Helper_OpenGL_H}")
 ENDFOREACH()
 
 FOREACH(Renderer_H ${Renderer_Hs})
@@ -96,3 +113,6 @@ source_group("Header Files\\Helpers" FILES ${Helpers_Hs_PATHs})
 
 source_group("Source Files\\OpenGL" FILES ${OpenGL_SRCs})
 source_group("Header Files\\OpenGL" FILES ${OpenGL_Hs_PATHs})
+
+source_group("Source Files\\Helpers\\OpenGL" FILES ${Helpers_OpenGL_SRCs})
+source_group("Header Files\\Helpers\\OpenGL" FILES ${Helpers_OpenGL_Hs_PATHs})
