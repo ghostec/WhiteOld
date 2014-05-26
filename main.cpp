@@ -1,5 +1,6 @@
 #define GLEW_STATIC
 #include <iostream>
+#include <chrono>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Renderer/Helpers/GLFW.h"
@@ -16,6 +17,7 @@
 #include "Renderer/GUIAsset.h"
 #include "Renderer/GUIInstance.h"
 #include "Renderer/GUIScene.h"
+#include "Renderer/Effect.h"
 #include "Input/Input.h"
 
 int main()
@@ -36,8 +38,8 @@ int main()
   scene.setCamera( &camera );
 
   GUIAsset gui_asset( 100.0f, 100.0f );
-  GUIInstance gui_instance( &gui_asset, 0.1f, 4.0f/3.0f );
-  GUIInstance gui_instance2( &gui_asset, 0.1f, 4.0f / 3.0f );
+  GUIInstance gui_instance( &gui_asset, 0.05f, 4.0f/3.0f );
+  GUIInstance gui_instance2( &gui_asset, 0.05f, 4.0f / 3.0f );
   GUIScene gui_scene( &scene );
   gui_scene.addGUIInstance( &gui_instance );
   gui_scene.addGUIInstance( &gui_instance2 );
@@ -48,11 +50,17 @@ int main()
   Renderer renderer( &window, nullptr );
   renderer.setCurrentScene( &scene );
 
+  auto t0 = std::chrono::high_resolution_clock::now();
+  Effect effect( gui_instance.getModelInstance(), 1.0f, 0.0f, 1.0f );
+
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
     gui_scene.pollEvents();
     renderer.render();
+    effect.execute();
+    while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
+    t0 = std::chrono::high_resolution_clock::now();
   }
 
   return 0;

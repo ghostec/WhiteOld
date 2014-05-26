@@ -5,6 +5,7 @@ ModelInstance::ModelInstance( ModelAsset* model_asset )
   static int id = 1;
   this->model_asset = model_asset;
   this->picking_id = id++;
+  this->opacity = 1.0f;
 }
 
 void ModelInstance::setModelAsset( ModelAsset* model_asset )
@@ -29,14 +30,29 @@ void ModelInstance::updateTransform( std::vector< Shader* >* shaders )
   }
 }
 
+void ModelInstance::updateOpacity( std::vector< Shader* >* shaders )
+{
+  for( Shader* shader : *shaders )
+  {
+    shader->setUniform1f( "opacity", this->opacity );
+  }
+}
+
 void ModelInstance::draw()
 {
   this->updateTransform( this->model_asset->getShaders() );
   this->updateTransform( &this->shaders );
+  this->updateOpacity( this->model_asset->getShaders() );
+  this->updateOpacity( &this->shaders );
   this->model_asset->draw( &this->shaders );
 }
 
 void ModelInstance::setColor( WMath::vec3 color )
 {
   this->color = color;
+}
+
+void ModelInstance::setOpacity( float opacity )
+{
+  this->opacity = opacity;
 }

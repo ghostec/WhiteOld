@@ -67,6 +67,8 @@ SET(
   GUIAsset.cpp
   GUIInstance.cpp
   GUIScene.cpp
+  Effect.cpp
+  EffectsManager.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
   ${Helpers_OpenGL_SRCs}
@@ -89,6 +91,8 @@ SET(
   GUIAsset.h
   GUIInstance.h
   GUIScene.h
+  Effect.h
+  EffectsManager.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
   ${Helpers_OpenGL_Hs}

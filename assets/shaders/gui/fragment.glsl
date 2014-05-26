@@ -13,10 +13,12 @@ uniform struct Light
    float ambientCoefficient;
 } lights[10];
 
+uniform float opacity;
 uniform sampler2D materialTex;
 uniform mat4 Model;
 
 void main() 
 {
-  finalColor = texture(materialTex, fragTexCoord);
+  finalColor.rgb = texture(materialTex, fragTexCoord);
+  finalColor.a = opacity;
 }
