@@ -15,6 +15,7 @@
 #include "Renderer/SceneEditor.h"
 #include "Renderer/GUIAsset.h"
 #include "Renderer/GUIInstance.h"
+#include "Renderer/GUIScene.h"
 #include "Input/Input.h"
 
 int main()
@@ -37,9 +38,10 @@ int main()
   GUIAsset gui_asset( 100.0f, 100.0f );
   GUIInstance gui_instance( &gui_asset, 0.1f, 4.0f/3.0f );
   GUIInstance gui_instance2( &gui_asset, 0.1f, 4.0f / 3.0f );
+  GUIScene gui_scene( &scene );
+  gui_scene.addGUIInstance( &gui_instance );
+  gui_scene.addGUIInstance( &gui_instance2 );
 
-  scene.addModel( gui_instance.getModelInstance() );
-  scene.addModel( gui_instance2.getModelInstance( ) );
   gui_instance2.translate( 0.0f, 62.0f );
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
@@ -49,6 +51,7 @@ int main()
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
+    gui_scene.pollEvents();
     renderer.render();
   }
 

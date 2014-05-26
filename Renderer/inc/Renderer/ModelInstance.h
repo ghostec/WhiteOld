@@ -16,6 +16,7 @@ class ModelInstance
     void updateTransform( std::vector< Shader* >* shaders );
   public:
     ModelInstance( ModelAsset* model_asset );
+    void setModelAsset( ModelAsset* model_asset );
     void addShader( Shader* shader );
     void draw();
     void setColor( WMath::vec3 color );

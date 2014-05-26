@@ -66,6 +66,7 @@ SET(
   SceneEditor.cpp
   GUIAsset.cpp
   GUIInstance.cpp
+  GUIScene.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
   ${Helpers_OpenGL_SRCs}
@@ -87,6 +88,7 @@ SET(
   SceneEditor.h
   GUIAsset.h
   GUIInstance.h
+  GUIScene.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
   ${Helpers_OpenGL_Hs}

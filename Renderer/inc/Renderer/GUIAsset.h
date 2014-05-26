@@ -3,14 +3,19 @@
 
 #include "Renderer/ModelAsset.h"
 
+typedef enum GUI_STATE
+{
+  GUI_NORMAL, GUI_HOVER, GUI_CLICK
+} GUI_STATE;
+
 class GUIAsset
 {
   private:
-    ModelAsset* model_asset;
+    std::map< GUI_STATE, ModelAsset* > model_assets;
     Shader* shader;
   public:
     GUIAsset( float width, float height );
-    ModelAsset* getModelAsset() { return this->model_asset; };
+    ModelAsset* getModelAsset( GUI_STATE state );
 };
 
 #endif

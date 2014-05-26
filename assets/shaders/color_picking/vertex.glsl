@@ -15,5 +15,5 @@ uniform struct Camera
 void main() 
 {
   // Pass some variables to the fragment shader
-  gl_Position = camera.proj * camera.view * Model * vec4(vPosition,1.0);
+  gl_Position = Model * vec4(vPosition,1.0);
 }
