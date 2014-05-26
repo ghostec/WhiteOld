@@ -25,8 +25,13 @@ class ModelAsset
     int vertices_count;
   public:
     ModelAsset( std::string file_path );
+    ModelAsset( std::vector< WMath::vec3 > vertices,
+                std::vector< WMath::vec3 > uvs,
+                std::vector< WMath::vec3 > normals,
+                std::vector< std::array<GLushort, 3> > elements );
     void addShader( Shader* shader );
     void configureShader( Shader* shader );
+    void setTexture( std::string name, Shader* shader );
     void before_draw( );
     void after_draw( );
     void drawWithShaders( std::vector< Shader* >* shaders );

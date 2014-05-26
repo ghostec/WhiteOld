@@ -1,4 +1,5 @@
 #version 150 core
+
 in vec2 fragTexCoord;
 in vec3 fragVert;
 in vec3 fragNormal;

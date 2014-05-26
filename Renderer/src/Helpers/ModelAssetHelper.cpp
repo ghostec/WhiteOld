@@ -83,13 +83,6 @@ namespace ModelAssetHelper
       else { /* ignoring this line */ }
     }
 
-    float max = 0.0f;
-    for( int i = 0; i < vertices.size( ); i++ )
-      for( int j = 0; j < 3; j++ )
-        if( vertices[i][j] > max ) max = vertices[i][j];
-    for( int i = 0; i < vertices.size( ); i++ )
-      for( int j = 0; j < 3; j++ )
-        vertices[i][j] /= max;
   }
 
   std::vector< WMath::vec3 > 

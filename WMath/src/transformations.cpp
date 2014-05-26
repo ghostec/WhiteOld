@@ -21,6 +21,16 @@ namespace WMath
     (*t_matrix) = (*t_matrix) * m;
   }
 
+  void rotate_x( mat4* t_matrix, float degrees )
+  {
+    mat4 m;
+    m[1][1] = cos( degrees * PI / 180.0 );
+    m[1][2] = -sin( degrees * PI / 180.0 );
+    m[2][1] = sin( degrees * PI / 180.0 );
+    m[2][2] = cos( degrees * PI / 180.0 );
+    ( *t_matrix ) = ( *t_matrix ) * m;
+  }
+
   void rotate_y( mat4* t_matrix, float degrees )
   {
     mat4 m;
@@ -29,5 +39,15 @@ namespace WMath
     m[2][0] = sin(degrees * PI / 180.0);
     m[2][2] = cos(degrees * PI / 180.0);
     (*t_matrix) = (*t_matrix) * m;
+  }
+
+  void rotate_z( mat4* t_matrix, float degrees )
+  {
+    mat4 m;
+    m[0][0] = cos( degrees * PI / 180.0 );
+    m[0][1] = -sin( degrees * PI / 180.0 );
+    m[1][0] = sin( degrees * PI / 180.0 );
+    m[1][1] = cos( degrees * PI / 180.0 );
+    ( *t_matrix ) = ( *t_matrix ) * m;
   }
 }
