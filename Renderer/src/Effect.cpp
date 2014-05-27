@@ -36,6 +36,7 @@ Effect::Effect( ModelInstance* model_instance )
 {
   this->model_instance = model_instance;
   this->created_at = std::chrono::high_resolution_clock::now();
+  this->done = false;
 }
 
 void Effect::execute()
@@ -43,15 +44,30 @@ void Effect::execute()
   auto t0 = std::chrono::high_resolution_clock::now( );
   float elapsed = std::chrono::duration_cast< std::chrono::milliseconds >
                   ( t0 - this->created_at ).count( ) / 1000.0f;
-  for( EffectComponent effect_component : this->effect_components )
+  this->done = true;
+  for( EffectComponentPair ecp : this->effect_components )
   {
-    ( effect_component.interpolation_function )( &effect_component, elapsed );
-    ( effect_component.effect_function )( this->model_instance, 
-                                          effect_component.current_value );
+    EffectComponent* effect_component = &ecp.first;
+    bool* done = &ecp.second;
+    if( *done == true ) continue;
+    if( elapsed > effect_component->duration )
+    {
+      ( effect_component->effect_function )(  this->model_instance,
+                                              effect_component->final_value );
+      *done = true;
+    }
+    else
+    {
+      ( effect_component->interpolation_function )( effect_component, elapsed );
+      ( effect_component->effect_function )(  this->model_instance,
+                                              effect_component->current_value );
+      this->done = false;
+    }
   }
 }
 
 void Effect::addComponent( EffectComponent effect_component )
 {
-  this->effect_components.push_back( effect_component );
+  this->effect_components.push_back( std::make_pair(  effect_component,
+                                                      false ) );
 }

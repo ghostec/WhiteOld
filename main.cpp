@@ -18,6 +18,7 @@
 #include "Renderer/GUIInstance.h"
 #include "Renderer/GUIScene.h"
 #include "Renderer/Effect.h"
+#include "Renderer/EffectsManager.h"
 #include "Input/Input.h"
 
 int main()
@@ -61,13 +62,15 @@ int main()
   Effect effect( gui_instance.getModelInstance() );
   effect.addComponent( fadeOut( 1.0f ) );
   effect.addComponent( effect_component2 );
+  EffectsManager effects_manager;
+  effects_manager.addEffect( effect );
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
     gui_scene.pollEvents();
     renderer.render();
-    effect.execute();
+    effects_manager.execute();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();
   }
