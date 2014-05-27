@@ -7,6 +7,7 @@ SET(
   vec4.cpp
   vec3.cpp
   transformations.cpp
+  interpolation.cpp
 )
 
 SET( WMath_Hs_DIR ../inc/WMath )
@@ -15,6 +16,7 @@ SET(
   WMath_Hs
   WMath.h
   transformations.h
+  interpolation.h
 )
 
 FOREACH(WMath_H ${WMath_Hs})

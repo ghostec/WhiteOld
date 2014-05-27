@@ -51,7 +51,22 @@ int main()
   renderer.setCurrentScene( &scene );
 
   auto t0 = std::chrono::high_resolution_clock::now();
-  Effect effect( gui_instance.getModelInstance(), 1.0f, 0.0f, 1.0f );
+
+  EffectComponent effect_component;
+  effect_component.initial_value = 1.0f;
+  effect_component.final_value = 0.0f;
+  effect_component.duration = 1.0f;
+  effect_component.interpolation_function = &interpolation_function;
+  effect_component.effect_function = &effect_function;
+  EffectComponent effect_component2;
+  effect_component2.initial_value = 0.0f;
+  effect_component2.final_value = 0.1f;
+  effect_component2.duration = 5.0f;
+  effect_component2.interpolation_function = &interpolation_function;
+  effect_component2.effect_function = &effect_function2;
+  Effect effect( gui_instance.getModelInstance() );
+  effect.addComponent( effect_component );
+  effect.addComponent( effect_component2 );
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )

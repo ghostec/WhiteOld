@@ -3,18 +3,35 @@
 
 #include <chrono>
 #include "Renderer/ModelInstance.h"
+#include "WMath/interpolation.h"
+
+typedef struct EffectComponent
+{
+  float current_value;
+  float target_value;
+  float initial_value, final_value;
+  float duration;
+  void (*interpolation_function)( EffectComponent* effect_component,
+                                  float time_elapsed );
+  void (*effect_function)( ModelInstance* model_instance, float value );
+} EffectComponent;
+
+void interpolation_function(  EffectComponent* effect_component,
+                              float time_elapsed );
+void effect_function( ModelInstance* model_instance,
+                      float value );
+void effect_function2(  ModelInstance* model_instance,
+                        float value );
 
 class Effect
 {
   private:
-    float duration;
-    float elapsed = 0.0f;
-    float initial_value, final_value;
     std::chrono::high_resolution_clock::time_point created_at;
     ModelInstance* model_instance;
+    std::vector< EffectComponent > effect_components;
   public:
-    Effect( ModelInstance* model_instance, float duration,
-            float initial_value, float final_value );
+    Effect( ModelInstance* model_instance );
+    void addComponent( EffectComponent effect_component );
     void execute();
 };
 
