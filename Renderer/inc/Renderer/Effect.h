@@ -8,7 +8,6 @@
 typedef struct EffectComponent
 {
   float current_value;
-  float target_value;
   float initial_value, final_value;
   float duration;
   void (*interpolation_function)( EffectComponent* effect_component,
@@ -22,6 +21,8 @@ void effect_function( ModelInstance* model_instance,
                       float value );
 void effect_function2(  ModelInstance* model_instance,
                         float value );
+
+EffectComponent fadeOut( float duration );
 
 class Effect
 {

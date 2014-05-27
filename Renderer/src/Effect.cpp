@@ -21,6 +21,17 @@ void effect_function2(  ModelInstance* model_instance,
   WMath::translate( model_instance->getTransform(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
 }
 
+EffectComponent fadeOut( float duration )
+{
+  EffectComponent effect_component;
+  effect_component.duration = duration;
+  effect_component.interpolation_function = &interpolation_function;
+  effect_component.effect_function = &effect_function;
+  effect_component.initial_value = 1.0f;
+  effect_component.final_value = 0.0f;
+  return effect_component;
+}
+
 Effect::Effect( ModelInstance* model_instance )
 {
   this->model_instance = model_instance;
