@@ -36,7 +36,6 @@ Effect::Effect( ModelInstance* model_instance )
 {
   this->model_instance = model_instance;
   this->created_at = std::chrono::high_resolution_clock::now();
-  this->done = false;
 }
 
 void Effect::execute()
@@ -44,30 +43,34 @@ void Effect::execute()
   auto t0 = std::chrono::high_resolution_clock::now( );
   float elapsed = std::chrono::duration_cast< std::chrono::milliseconds >
                   ( t0 - this->created_at ).count( ) / 1000.0f;
-  this->done = true;
-  for( EffectComponentPair ecp : this->effect_components )
+
+  std::vector< int > marked_indices;
+
+  int index = 0;
+  for( EffectComponent effect_component : this->effect_components )
   {
-    EffectComponent* effect_component = &ecp.first;
-    bool* done = &ecp.second;
-    if( *done == true ) continue;
-    if( elapsed > effect_component->duration )
+    if( elapsed > effect_component.duration )
     {
-      ( effect_component->effect_function )(  this->model_instance,
-                                              effect_component->final_value );
-      *done = true;
+      ( effect_component.effect_function )(  this->model_instance,
+                                              effect_component.final_value );
+      marked_indices.push_back( index );
     }
     else
     {
-      ( effect_component->interpolation_function )( effect_component, elapsed );
-      ( effect_component->effect_function )(  this->model_instance,
-                                              effect_component->current_value );
-      this->done = false;
+      ( effect_component.interpolation_function )( &effect_component, elapsed );
+      ( effect_component.effect_function )(  this->model_instance,
+                                              effect_component.current_value );
     }
+    index += 1;
   }
+
+  std::sort(  marked_indices.begin(), marked_indices.end(),
+              std::greater<int>() );
+
+  remove_marked_indices( &this->effect_components, &marked_indices );
 }
 
 void Effect::addComponent( EffectComponent effect_component )
 {
-  this->effect_components.push_back( std::make_pair(  effect_component,
-                                                      false ) );
+  this->effect_components.push_back( effect_component );
 }

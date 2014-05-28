@@ -56,7 +56,7 @@ int main()
   EffectComponent effect_component2;
   effect_component2.initial_value = 0.0f;
   effect_component2.final_value = 0.1f;
-  effect_component2.duration = 5.0f;
+  effect_component2.duration = 2.0f;
   effect_component2.interpolation_function = &interpolation_function;
   effect_component2.effect_function = &effect_function2;
   Effect effect( gui_instance.getModelInstance() );

@@ -6,6 +6,14 @@
 #include "Renderer/ModelInstance.h"
 #include "WMath/interpolation.h"
 
+template<typename Class>
+void remove_marked_indices( std::vector< Class >* v, 
+                            std::vector< int >* marked_indices_descending_order )
+{
+  for( int i : *marked_indices_descending_order )
+    v->erase( std::next( v->begin(), i ) );
+}
+
 typedef struct EffectComponent
 {
   float current_value;
@@ -15,8 +23,6 @@ typedef struct EffectComponent
                                   float time_elapsed );
   void (*effect_function)( ModelInstance* model_instance, float value );
 } EffectComponent;
-
-typedef std::pair< EffectComponent, bool > EffectComponentPair;
 
 void interpolation_function(  EffectComponent* effect_component,
                               float time_elapsed );
@@ -32,14 +38,13 @@ class Effect
   private:
     std::chrono::high_resolution_clock::time_point created_at;
     ModelInstance* model_instance;
-    std::vector< EffectComponentPair > effect_components;
-    bool done;
+    std::vector< EffectComponent > effect_components;
   public:
     Effect( ModelInstance* model_instance );
     void addComponent( EffectComponent effect_component );
     void execute();
     // getters
-    bool isDone() { return this->done; };
+    int getEffectComponentsSize() { return this->effect_components.size(); };
 };
 
 #endif

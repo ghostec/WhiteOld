@@ -1,19 +1,5 @@
 #include "Renderer/EffectsManager.h"
 
-bool isIndexMarked( std::vector< int >& marked, int& i )
-{
-  for( int index : marked )
-  {
-    if( index == i )
-    {
-      i++;
-      return true;
-    }
-  }
-  i++;
-  return false;
-}
-
 void EffectsManager::addEffect( Effect effect )
 {
   this->effects.push_back( effect );
@@ -21,23 +7,21 @@ void EffectsManager::addEffect( Effect effect )
 
 void EffectsManager::execute()
 {
-  std::vector< int > marked;
-  int index = 0;
-  for( Effect effect : this->effects )
+  std::vector< int > marked_indices;
+  for( int i=0; i < this->effects.size(); i++ )
   {
-    if( effect.isDone() )
+    if( this->effects[i].getEffectComponentsSize() == 0 )
     {
-      marked.push_back( index );
+      marked_indices.push_back( i );
     }
     else
     {
-      effect.execute();
+      this->effects[i].execute( );
     }
-    index += 1;
   }
 
-  int i = 0;
-  this->effects.erase( std::remove_if(  this->effects.begin(),
-                                        this->effects.end(),
-                                        isIndexMarked( marked, i ) ), this->effects.end() );
+  std::sort(  marked_indices.begin( ), marked_indices.end( ),
+              std::greater<int>( ) );
+
+  remove_marked_indices( &this->effects, &marked_indices );
 }
