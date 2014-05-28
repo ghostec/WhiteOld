@@ -64,9 +64,6 @@ void Effect::execute()
     index += 1;
   }
 
-  std::sort(  marked_indices.begin(), marked_indices.end(),
-              std::greater<int>() );
-
   remove_marked_indices( &this->effect_components, &marked_indices );
 }
 

@@ -10,7 +10,8 @@ class GUIInstance
     GUIAsset* gui_asset;
     ModelInstance* model_instance;
   public:
-    GUIInstance( GUIAsset* gui_asset, float percent, float ar );
+    GUIInstance( GUIAsset* gui_asset, GUIInstance* parent, float percent, float ar );
+    GUIInstance( GUIAsset* gui_asset, GUIInstance* parent, float width, float height );
     void setState( GUI_STATE state );
     void translate( float x, float y );
     ModelInstance* getModelInstance() { return this->model_instance; };

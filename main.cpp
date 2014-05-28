@@ -39,8 +39,8 @@ int main()
   scene.setCamera( &camera );
 
   GUIAsset gui_asset( 100.0f, 100.0f );
-  GUIInstance gui_instance( &gui_asset, 0.05f, 4.0f/3.0f );
-  GUIInstance gui_instance2( &gui_asset, 0.05f, 4.0f / 3.0f );
+  GUIInstance gui_instance( &gui_asset, 0.1f, 4.0f/3.0f );
+  GUIInstance gui_instance2( &gui_asset, 0.1f, 4.0f/3.0f );
   GUIScene gui_scene( &scene );
   gui_scene.addGUIInstance( &gui_instance );
   gui_scene.addGUIInstance( &gui_instance2 );

@@ -8,9 +8,11 @@
 
 template<typename Class>
 void remove_marked_indices( std::vector< Class >* v, 
-                            std::vector< int >* marked_indices_descending_order )
+                            std::vector< int >* marked_indices )
 {
-  for( int i : *marked_indices_descending_order )
+  std::sort(  marked_indices->begin( ), marked_indices->end( ),
+              std::greater<int>( ) );
+  for( int i : *marked_indices )
     v->erase( std::next( v->begin(), i ) );
 }
 

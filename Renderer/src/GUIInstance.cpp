@@ -1,6 +1,6 @@
 #include "Renderer/GUIInstance.h"
 
-GUIInstance::GUIInstance( GUIAsset* gui_asset, float percent, float ar )
+GUIInstance::GUIInstance( GUIAsset* gui_asset, GUIInstance* parent, float percent, float ar )
 {
   this->gui_asset = gui_asset;
 
@@ -18,6 +18,11 @@ GUIInstance::GUIInstance( GUIAsset* gui_asset, float percent, float ar )
                 WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
   WMath::translate( this->model_instance->getTransform(),
                     WMath::vec3( -1.0f + (width+2.0f*offset_x) / parent_width, 1.0f - (height+2.0f*offset_y) / parent_height, 0.0f ) );
+}
+
+GUIInstance::GUIInstance( GUIAsset* gui_asset, GUIInstance* parent, float width, float height )
+{
+
 }
 
 void GUIInstance::setState( GUI_STATE state )

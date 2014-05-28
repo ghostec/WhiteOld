@@ -20,8 +20,5 @@ void EffectsManager::execute()
     }
   }
 
-  std::sort(  marked_indices.begin( ), marked_indices.end( ),
-              std::greater<int>( ) );
-
   remove_marked_indices( &this->effects, &marked_indices );
 }
