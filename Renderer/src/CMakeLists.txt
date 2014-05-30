@@ -23,6 +23,7 @@ SET(
   OpenGL/Shader.cpp
   OpenGL/Renderer.cpp
   OpenGL/MousePicking.cpp
+  OpenGL/Texture.cpp
 )
 
 SET(
@@ -31,6 +32,7 @@ SET(
   OpenGL/Shader.h
   OpenGL/Renderer.h
   OpenGL/MousePicking.h
+  OpenGL/Texture.h
 )
 
 SET(
@@ -93,6 +95,7 @@ SET(
   GUIScene.h
   Effect.h
   EffectsManager.h
+  Texture.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
   ${Helpers_OpenGL_Hs}

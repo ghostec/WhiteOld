@@ -38,8 +38,11 @@ int main()
   scene.addLight( &light );
   scene.setCamera( &camera );
 
-  GUIAsset gui_asset_main( 100.0f, 100.0f, "red.png" );
-  GUIAsset gui_asset( 100.0f, 100.0f, "circle.png" );
+  Texture texture_red( "red.png" );
+  Texture texture_circle( "circle.png" );
+
+  GUIAsset gui_asset_main( 100.0f, 100.0f, &texture_red );
+  GUIAsset gui_asset( 100.0f, 100.0f, &texture_circle );
 
   GUIInstance gui_window( &gui_asset_main, 800.0f, 600.0f );
   GUIInstance gui_instance( &gui_asset, &gui_window, 0.1f );

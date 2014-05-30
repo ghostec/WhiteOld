@@ -14,7 +14,7 @@ class GUIAsset
     std::map< GUI_STATE, ModelAsset* > model_assets;
     Shader* shader;
   public:
-    GUIAsset( float width, float height, std::string texture );
+    GUIAsset( float width, float height, Texture* texture );
     ModelAsset* getModelAsset( GUI_STATE state );
 };
 

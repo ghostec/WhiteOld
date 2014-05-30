@@ -9,7 +9,8 @@
 #include "Renderer/Helpers/ModelAssetHelper.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Light.h"
-#include "Renderer/OpenGL/Shader.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Texture.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"
@@ -17,10 +18,8 @@
 class ModelAsset
 {
   private:
-    // OpenGL
     GLuint vao, vbo;
-    GLuint texture;
-    // Model
+    Texture* texture;
     std::vector< Shader* > shaders;
     int vertices_count;
   public:
@@ -31,7 +30,7 @@ class ModelAsset
                 std::vector< std::array<GLushort, 3> > elements );
     void addShader( Shader* shader );
     void configureShader( Shader* shader );
-    void setTexture( std::string name, Shader* shader );
+    void setTexture( Texture* texture );
     void before_draw( );
     void after_draw( );
     void drawWithShaders( std::vector< Shader* >* shaders );
