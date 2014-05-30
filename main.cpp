@@ -44,16 +44,13 @@ int main()
   GUIAsset gui_asset_main( 100.0f, 100.0f, &texture_red );
   GUIAsset gui_asset( 100.0f, 100.0f, &texture_circle );
 
-  GUIInstance gui_window( &gui_asset_main, 800.0f, 600.0f );
-  GUIInstance gui_instance( &gui_asset, &gui_window, 0.1f );
-  GUIInstance gui_instance2( &gui_asset, &gui_window, 0.1f );
+  GUIInstance gui_window( &gui_asset_main, 800.0f, 600.0f, 0, 0, 0, 0 );
+  GUIInstance gui_instance( &gui_asset, &gui_window, 0.25f, 20, 20, 0.0, 0.25f );
+  GUIInstance gui_instance2( &gui_asset, &gui_window, 0.25f, 20, 20, 0, 0 );
   GUIScene gui_scene( &scene );
   gui_scene.addGUIInstance( &gui_window );
   gui_scene.addGUIInstance( &gui_instance );
   gui_scene.addGUIInstance( &gui_instance2 );
- 
-
-  gui_instance2.translate( 0.0f, 62.0f );
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
   Renderer renderer( &window, nullptr );
