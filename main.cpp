@@ -38,12 +38,17 @@ int main()
   scene.addLight( &light );
   scene.setCamera( &camera );
 
-  GUIAsset gui_asset( 100.0f, 100.0f );
-  GUIInstance gui_instance( &gui_asset, 0.1f, 4.0f/3.0f );
-  GUIInstance gui_instance2( &gui_asset, 0.1f, 4.0f/3.0f );
+  GUIAsset gui_asset_main( 100.0f, 100.0f, "red.png" );
+  GUIAsset gui_asset( 100.0f, 100.0f, "circle.png" );
+
+  GUIInstance gui_window( &gui_asset_main, 800.0f, 600.0f );
+  GUIInstance gui_instance( &gui_asset, &gui_window, 0.1f );
+  GUIInstance gui_instance2( &gui_asset, &gui_window, 0.1f );
   GUIScene gui_scene( &scene );
+  gui_scene.addGUIInstance( &gui_window );
   gui_scene.addGUIInstance( &gui_instance );
   gui_scene.addGUIInstance( &gui_instance2 );
+ 
 
   gui_instance2.translate( 0.0f, 62.0f );
 
@@ -68,7 +73,7 @@ int main()
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
-    gui_scene.pollEvents();
+    //gui_scene.pollEvents();
     renderer.render();
     effects_manager.execute();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );

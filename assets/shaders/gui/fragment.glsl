@@ -20,5 +20,4 @@ uniform mat4 Model;
 void main() 
 {
   finalColor = texture(materialTex, fragTexCoord);
-  finalColor.a = opacity;
 }

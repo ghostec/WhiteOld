@@ -32,10 +32,11 @@ namespace GLFWhelper
 
     // OpenGL
     glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
     glEnable( GL_BLEND );
-    glBlendEquation( GL_FUNC_ADD );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glClearColor( 1.0, 1.0, 1.0, 1.0 );
+    
+    //glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 
     return window;
   }
