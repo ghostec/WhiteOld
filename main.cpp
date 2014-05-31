@@ -53,8 +53,8 @@ int main()
   gui_scene.addGUIInstance( &gui_instance2 );
 
   light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
-  Renderer renderer( &window, nullptr );
-  renderer.setCurrentScene( &scene );
+  Renderer renderer( &window );
+  renderer.addScene( &scene );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
@@ -75,6 +75,19 @@ int main()
   effect.addComponent( effect_component2 );
   EffectsManager effects_manager;
   effects_manager.addEffect( effect );
+
+  Scene scene2;
+  ModelAsset model_asset_cube( "../assets/models/cube.obj", MODEL_ASSET_3D );
+  Shader shader_standard( "standard" );
+  Texture texture_cube( "wooden-crate.jpg" );
+  model_asset_cube.addShader( &shader_standard );
+  model_asset_cube.setTexture( &texture_cube );
+  ModelInstance model_instance_cube( &model_asset_cube );
+  scene2.addModel( &model_instance_cube );
+  scene2.setCamera( &camera );
+  scene2.addLight( &light );
+
+  renderer.addScene( &scene2 );
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )

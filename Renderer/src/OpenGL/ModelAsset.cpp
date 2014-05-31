@@ -1,7 +1,9 @@
 #include "Renderer/OpenGL/ModelAsset.h"
 
-ModelAsset::ModelAsset( std::string file_path )
+ModelAsset::ModelAsset( std::string file_path, ModelAssetType model_asset_type )
 {
+  this->model_asset_type = model_asset_type;
+
   // Create Vertex Array Object
   glGenVertexArrays(1, &this->vao);
   glBindVertexArray(vao);
@@ -37,8 +39,11 @@ ModelAsset::ModelAsset( std::string file_path )
 ModelAsset::ModelAsset( std::vector< WMath::vec3 > vertices,
                         std::vector< WMath::vec3 > uvs,
                         std::vector< WMath::vec3 > normals,
-                        std::vector< std::array<GLushort, 3> > elements )
+                        std::vector< std::array<GLushort, 3> > elements,
+                        ModelAssetType model_asset_type )
 {
+  this->model_asset_type = model_asset_type;
+
   // Create Vertex Array Object
   glGenVertexArrays( 1, &this->vao );
   glBindVertexArray( vao );
@@ -94,7 +99,14 @@ void ModelAsset::setTexture( Texture* texture )
 void ModelAsset::before_draw()
 {
   glBindVertexArray( this->vao );
-  glDisable( GL_DEPTH_TEST );
+  if( this->model_asset_type == MODEL_ASSET_2D )
+  {
+    glDisable( GL_DEPTH_TEST );
+  }
+  else
+  {
+    glEnable( GL_DEPTH_TEST );
+  }
   this->texture->use( this->shaders[0] );
 }
 

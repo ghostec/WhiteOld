@@ -15,6 +15,11 @@
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"
 
+typedef enum ModelAssetType
+{
+  MODEL_ASSET_2D, MODEL_ASSET_3D
+} ModelAssetType;
+
 class ModelAsset
 {
   private:
@@ -22,12 +27,14 @@ class ModelAsset
     Texture* texture;
     std::vector< Shader* > shaders;
     int vertices_count;
+    ModelAssetType model_asset_type;
   public:
-    ModelAsset( std::string file_path );
+    ModelAsset( std::string file_path, ModelAssetType model_asset_type );
     ModelAsset( std::vector< WMath::vec3 > vertices,
                 std::vector< WMath::vec3 > uvs,
                 std::vector< WMath::vec3 > normals,
-                std::vector< std::array<GLushort, 3> > elements );
+                std::vector< std::array<GLushort, 3> > elements,
+                ModelAssetType model_asset_type );
     void addShader( Shader* shader );
     void configureShader( Shader* shader );
     void setTexture( Texture* texture );

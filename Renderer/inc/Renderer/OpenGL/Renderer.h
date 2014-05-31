@@ -13,12 +13,11 @@ class Renderer
 {
   private:
     Window* window;
-    Scene* current_scene;
-    SceneEditor* scene_editor;
+    std::vector< Scene* > scenes;
   public:
-    Renderer( Window* window, SceneEditor* scene_editor );
+    Renderer( Window* window );
     void render();
-    void setCurrentScene( Scene* scene );
+    void addScene( Scene* scene );
 };
 
 #endif

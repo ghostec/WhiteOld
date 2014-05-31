@@ -1,9 +1,8 @@
 #include "Renderer/OpenGL/Renderer.h"
 
-Renderer::Renderer( Window* window, SceneEditor* scene_editor )
+Renderer::Renderer( Window* window )
 {
   this->window = window;
-  this->scene_editor = scene_editor;
 }
 
 void Renderer::render()
@@ -12,13 +11,16 @@ void Renderer::render()
     //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    this->current_scene->draw();
+    for( Scene* scene : this->scenes )
+    {
+      scene->draw( );
+    }
 
     glfwSwapBuffers( this->window->getWindow() );
     glfwPollEvents();
 }
 
-void Renderer::setCurrentScene( Scene* scene )
+void Renderer::addScene( Scene* scene )
 {
-  this->current_scene = scene;
+  this->scenes.push_back( scene );
 }
