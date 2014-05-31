@@ -32,6 +32,8 @@ void effect_function( ModelInstance* model_instance,
                       float value );
 void effect_function2(  ModelInstance* model_instance,
                         float value );
+void effect_function3( ModelInstance* model_instance,
+                       float value );
 
 EffectComponent fadeOut( float duration );
 

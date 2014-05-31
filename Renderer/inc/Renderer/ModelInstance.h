@@ -10,7 +10,7 @@ class ModelInstance
   private:
     ModelAsset* model_asset;
     std::vector< Shader* > shaders;
-    WMath::mat4 transform;
+    WMath::mat4 transform, translate, rotate, scale;
     int picking_id;
     float opacity;
     WMath::vec3 color;
@@ -25,7 +25,10 @@ class ModelInstance
     void setOpacity( float opacity );
     // getters
     ModelAsset* getModelAsset() { return this->model_asset; };
-    WMath::mat4* getTransform() { return &this->transform; };
+    WMath::mat4* getTransformM();
+    WMath::mat4* getTranslateM() { return &this->translate; };
+    WMath::mat4* getRotateM() { return &this->rotate; };
+    WMath::mat4* getScaleM() { return &this->scale; };
     std::vector< Shader* >* getShaders() { return &this->shaders; };
     int getPickingId() { return this->picking_id; };
 };

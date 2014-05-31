@@ -24,7 +24,7 @@ void ModelInstance::updateTransform( std::vector< Shader* >* shaders )
   for( Shader* shader : *shaders )
   {
     shader->setUniformMatrix4fv(  "Model",
-                                  WMath::value_ptr( &this->transform ),
+                                  WMath::value_ptr( this->getTransformM() ),
                                   GL_TRUE );
     shader->setUniform3f( "color", this->color[0], this->color[1], this->color[2] );
   }
@@ -55,4 +55,10 @@ void ModelInstance::setColor( WMath::vec3 color )
 void ModelInstance::setOpacity( float opacity )
 {
   this->opacity = opacity;
+}
+
+WMath::mat4* ModelInstance::getTransformM()
+{
+  this->transform = this->scale * this->rotate * this->translate;
+  return &this->transform;
 }

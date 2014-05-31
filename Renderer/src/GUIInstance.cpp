@@ -15,9 +15,9 @@ GUIInstance::GUIInstance( GUIAsset* gui_asset, float width, float height,
   offset_y_percent = offset_y_percent * parent_height;
 
   this->model_instance = new ModelInstance( gui_asset->getModelAsset( GUI_NORMAL ) );
-  WMath::scale( this->model_instance->getTransform( ),
+  WMath::scale( this->model_instance->getScaleM( ),
                 WMath::vec3( ( 1.0f / ar ) * percent, percent, 1.0f ) );
-  WMath::translate( this->model_instance->getTransform( ),
+  WMath::translate( this->model_instance->getTranslateM( ),
                     WMath::vec3( -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width,
                     1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height,
                     0.0f ) );
@@ -40,12 +40,12 @@ GUIInstance::GUIInstance( GUIAsset* gui_asset, GUIInstance* parent, float percen
   offset_y_percent = offset_y_percent * parent_height;
   
   this->model_instance = new ModelInstance( gui_asset->getModelAsset( GUI_NORMAL ) );
-  WMath::scale( this->model_instance->getTransform(), 
+  WMath::scale( this->model_instance->getScaleM(), 
                 WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
-  WMath::translate( this->model_instance->getTransform(),
-    WMath::vec3(  -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width, 
-                  1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height, 
-                  0.0f ) );
+  WMath::translate( this->model_instance->getTranslateM(),
+                    WMath::vec3(  -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width, 
+                                  1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height, 
+                                  0.0f ) );
 }
 
 void GUIInstance::setState( GUI_STATE state )
@@ -58,6 +58,6 @@ void GUIInstance::translate( float x, float y )
   float parent_width = 800.0f;
   float parent_height = 600.0f;
 
-  WMath::translate( this->model_instance->getTransform( ),
+  WMath::translate( this->model_instance->getTranslateM( ),
                     WMath::vec3( ( 2.0f*x ) / parent_width, - ( 2.0f*y ) / parent_height, 0.0f ) );
 }

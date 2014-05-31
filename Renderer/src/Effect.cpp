@@ -18,7 +18,13 @@ void effect_function( ModelInstance* model_instance,
 void effect_function2(  ModelInstance* model_instance,
                         float value )
 {
-  WMath::translate( model_instance->getTransform(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
+  WMath::translate( model_instance->getTranslateM(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
+}
+
+void effect_function3(  ModelInstance* model_instance,
+                        float value )
+{
+  WMath::rotate_y( model_instance->getRotateM(), 2.5f );
 }
 
 EffectComponent fadeOut( float duration )

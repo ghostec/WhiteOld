@@ -43,7 +43,7 @@ void SceneEditor::selectModelInstance()
 void SceneEditor::move( )
 { 
   if( this->moves.ARROW_UP )
-    WMath::translate( this->selected_model_instance->getTransform( ), WMath::vec3( 0.0f, 0.005f, 0.0f ) );
+    WMath::translate( this->selected_model_instance->getTranslateM( ), WMath::vec3( 0.0f, 0.005f, 0.0f ) );
   if( this->moves.ARROW_DOWN )
-    WMath::translate( this->selected_model_instance->getTransform( ), WMath::vec3( 0.0f, -0.005f, 0.0f ) );
+    WMath::translate( this->selected_model_instance->getTranslateM( ), WMath::vec3( 0.0f, -0.005f, 0.0f ) );
 }
