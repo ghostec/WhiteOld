@@ -20,9 +20,12 @@
 #include "Renderer/Effect.h"
 #include "Renderer/EffectsManager.h"
 #include "Input/Input.h"
+#include "Renderer/Helpers/XMLHelper.h"
 
 int main()
 {
+  XMLHelper::parseXML();
+
   Window window;
   
   Input input( window.getWindow() );

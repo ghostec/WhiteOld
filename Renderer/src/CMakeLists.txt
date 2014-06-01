@@ -39,12 +39,14 @@ SET(
   Helpers_SRCs
   Helpers/ModelAssetHelper.cpp
   Helpers/GLFW.cpp
+  Helpers/XMLHelper.cpp
 )
 
 SET(
   Helpers_Hs
   Helpers/ModelAssetHelper.h
   Helpers/GLFW.h
+  Helpers/XMLHelper.h
   Helpers/ShaderHelper.h
 )
 
@@ -71,6 +73,7 @@ SET(
   GUIScene.cpp
   Effect.cpp
   EffectsManager.cpp
+  ResourceManager.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
   ${Helpers_OpenGL_SRCs}
@@ -95,6 +98,7 @@ SET(
   GUIScene.h
   Effect.h
   EffectsManager.h
+  ResourceManager.h
   Texture.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
