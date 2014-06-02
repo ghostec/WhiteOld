@@ -31,8 +31,8 @@ int main()
   Input input( window.getWindow() );
   active_input = &input;
 
-  ResourceManager resource_manager;
-  std::shared_ptr<Scene> scene = XMLHelper::parseXMLScene( &resource_manager );
+  std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
+  std::shared_ptr<Scene> scene = XMLHelper::parseXMLScene( resource_manager );
 
   Light light(  WMath::vec3( 0.0f, 0.0f, -100.0f ),
                 WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );

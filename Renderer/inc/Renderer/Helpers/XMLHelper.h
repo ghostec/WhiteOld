@@ -22,7 +22,8 @@ namespace XMLHelper
   std::shared_ptr<Shader> parseXMLShader( tinyxml2::XMLElement* element );
   std::shared_ptr<Texture> parseXMLTexture( tinyxml2::XMLElement* element );
   std::shared_ptr<ModelAsset> parseXMLModelAsset( tinyxml2::XMLElement* element );
-  std::shared_ptr<Scene> parseXMLScene( ResourceManager* resource_manager );
+  std::shared_ptr<Scene> parseXMLScene
+    ( std::shared_ptr<ResourceManager> resource_manager );
 }
 
 #endif
