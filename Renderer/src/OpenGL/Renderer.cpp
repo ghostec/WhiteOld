@@ -13,7 +13,7 @@ void Renderer::render()
 
     for( Scene* scene : this->scenes )
     {
-      scene->draw( );
+      scene->draw();
     }
 
     glfwSwapBuffers( this->window->getWindow() );

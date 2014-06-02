@@ -4,7 +4,7 @@ void Scene::draw()
 {
   int vector_models_size = this->model_instances.size();
   for( int i = 0; i < vector_models_size; i++ )
-    this->model_instances.at(i)->draw();
+    this->model_instances.at( i )->draw();  
 }
 
 void Scene::addModel( ModelInstance* model_instance )

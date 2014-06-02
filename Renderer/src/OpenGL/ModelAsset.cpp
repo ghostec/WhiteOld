@@ -17,6 +17,7 @@ ModelAsset::ModelAsset( std::string file_path, ModelAssetType model_asset_type )
   std::vector< WMath::vec3 > normals;
   std::vector< std::array<GLushort, 3> > elements;
 
+  file_path = "../assets/models/" + file_path;
   ModelAssetHelper::ImportOBJ( file_path.c_str(), vertices, uvs, normals, elements );
 
   std::vector< WMath::vec3 > new_vertices;

@@ -138,6 +138,7 @@ namespace ModelAssetHelper
       // Create and compile the vertex shader
       GLuint shader = glCreateShader( shader_type );
 
+
       glShaderSource(shader, 1, &source_code, NULL);
       glCompileShader(shader);
 
