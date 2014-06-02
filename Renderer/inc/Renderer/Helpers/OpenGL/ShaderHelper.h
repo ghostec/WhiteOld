@@ -1,6 +1,7 @@
 #ifndef __RENDERER_HELPERS_OPENGL_SHADERHELPER__
 #define __RENDERER_HELPERS_OPENGL_SHADERHELPER__
 
+#include <memory>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Renderer/Shader.h"
@@ -9,8 +10,8 @@
 
 namespace ShaderHelper
 {
-  void setLight( Shader* shader, Light* light );
-  void setCamera( Shader* shader, Camera* camera );
+  void setLight( std::shared_ptr<Shader> shader, std::shared_ptr<Light> light );
+  void setCamera( std::shared_ptr<Shader> shader, std::shared_ptr<Camera> camera );
 }
 
 #endif

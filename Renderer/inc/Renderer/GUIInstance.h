@@ -7,20 +7,21 @@
 class GUIInstance
 {
   private:
-    GUIAsset* gui_asset;
-    GUIInstance* parent;
-    ModelInstance* model_instance;
+    std::shared_ptr<GUIAsset> gui_asset;
+    std::shared_ptr<GUIInstance> parent;
+    std::shared_ptr<ModelInstance> model_instance;
     float width, height;
   public:
-    GUIInstance(  GUIAsset* gui_asset, float width, float height,
+    GUIInstance( std::shared_ptr<GUIAsset> gui_asset, float width, float height,
                   float offset_x, float offset_y,
                   float offset_x_percent, float offset_y_percent );
-    GUIInstance(  GUIAsset* gui_asset, GUIInstance* parent, float percent,
-                  float offset_x, float offset_y,
-                  float offset_x_percent, float offset_y_percent );
-    void setState( GUI_STATE state );
+    GUIInstance( std::shared_ptr<GUIAsset> gui_asset, 
+      std::shared_ptr<GUIInstance> parent, float percent,
+      float offset_x, float offset_y,
+      float offset_x_percent, float offset_y_percent );
     void translate( float x, float y );
-    ModelInstance* getModelInstance() { return this->model_instance; };
+    std::shared_ptr<ModelInstance> getModelInstance() 
+      { return this->model_instance; };
     // getters
     float getWidth() { return this->width; };
     float getHeight( ) { return this->height; };

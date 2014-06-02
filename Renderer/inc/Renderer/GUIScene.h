@@ -2,6 +2,7 @@
 #define __RENDERER_GUISCENE__
 
 #include <vector>
+#include <memory>
 #include "Renderer/Scene.h"
 #include "Renderer/GUIInstance.h"
 #include "Renderer/MousePicking.h"
@@ -10,12 +11,12 @@
 class GUIScene
 {
   private:
-    Scene* scene;
-    std::vector< GUIInstance* > gui_instances;
+    std::shared_ptr<Scene> scene;
+    std::vector< std::shared_ptr<GUIInstance> > gui_instances;
     MousePicking mouse_picking;
   public:
-    GUIScene( Scene* scene );
-    void addGUIInstance( GUIInstance* gui_instance );
+    GUIScene( std::shared_ptr<Scene> scene );
+    void addGUIInstance( std::shared_ptr<GUIInstance> gui_instance );
     void pollEvents();
 };
 

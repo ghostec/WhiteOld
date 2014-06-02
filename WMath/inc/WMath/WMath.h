@@ -1,7 +1,8 @@
-#ifndef __WHITE_WMATH__
-#define __WHITE_WMATH__
+#ifndef __WMATH_WMATH__
+#define __WMATH_WMATH__
 
 #include <iostream>
+#include <memory>
 #include <cmath>
 
 #define PI 3.14159265
@@ -67,6 +68,6 @@ namespace WMath
   vec3 normalize( vec3 v );
   vec3 cross( vec3 v1, vec3 v2 );
 
-  float* value_ptr( mat4 *m );
+  float* value_ptr( std::shared_ptr<mat4> m );
 }
 #endif

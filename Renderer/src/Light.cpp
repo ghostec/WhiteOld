@@ -7,10 +7,11 @@ Light::Light( WMath::vec3 position, WMath::vec3 color,
   this->color = color;
   this->attenuation = attenuation;
   this->ambient_coefficient = ambient_coefficient;
+  this->dirty = true;
 }
 
 void Light::setPosition( WMath::vec3 position )
 {
   this->position = position;
-  this->notify( "DIRTY" );
+  this->dirty = true;
 }

@@ -1,7 +1,7 @@
 #include "Renderer/Effect.h"
 
-void interpolation_function(  EffectComponent* effect_component,
-                              float time_elapsed )
+void interpolation_function( EffectComponent* effect_component,
+  float time_elapsed )
 {
   effect_component->current_value =
     WMath::linear_interpolation(  time_elapsed, effect_component->duration,
@@ -9,20 +9,20 @@ void interpolation_function(  EffectComponent* effect_component,
                                   effect_component->final_value );
 }
 
-void effect_function( ModelInstance* model_instance,
-                      float value )
+void effect_function( std::shared_ptr<ModelInstance> model_instance,
+  float value )
 {
   model_instance->setOpacity( value );
 }
 
-void effect_function2(  ModelInstance* model_instance,
-                        float value )
+void effect_function2( std::shared_ptr<ModelInstance> model_instance,
+  float value )
 {
   WMath::translate( model_instance->getTranslateM(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
 }
 
-void effect_function3(  ModelInstance* model_instance,
-                        float value )
+void effect_function3( std::shared_ptr<ModelInstance> model_instance,
+  float value )
 {
   WMath::rotate_y( model_instance->getRotateM(), 2.5f );
 }
@@ -38,7 +38,7 @@ EffectComponent fadeOut( float duration )
   return effect_component;
 }
 
-Effect::Effect( ModelInstance* model_instance )
+Effect::Effect( std::shared_ptr<ModelInstance> model_instance )
 {
   this->model_instance = model_instance;
   this->created_at = std::chrono::high_resolution_clock::now();
@@ -63,14 +63,18 @@ void Effect::execute()
     }
     else
     {
-      ( effect_component.interpolation_function )( &effect_component, elapsed );
-      ( effect_component.effect_function )(  this->model_instance,
-                                              effect_component.current_value );
+      ( effect_component.interpolation_function )
+        ( std::make_shared<EffectComponent>( effect_component ), elapsed );
+      ( effect_component.effect_function )( this->model_instance,
+        effect_component.current_value );
     }
     index += 1;
   }
 
-  remove_marked_indices( &this->effect_components, &marked_indices );
+  remove_marked_indices
+    ( std::make_shared< std::vector<EffectComponent> >
+      ( this->effect_components ), 
+        std::make_shared< std::vector<int> >( marked_indices ) );
 }
 
 void Effect::addComponent( EffectComponent effect_component )

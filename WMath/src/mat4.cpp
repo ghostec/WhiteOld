@@ -109,7 +109,7 @@ namespace WMath
     return ( orientation * translation );
   }
 
-  float* value_ptr( mat4 *m )
+  float*  value_ptr( std::shared_ptr<mat4> m )
   {
     return &m->columns[0][0];
   }

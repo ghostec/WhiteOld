@@ -20,5 +20,5 @@ void EffectsManager::execute()
     }
   }
 
-  remove_marked_indices( &this->effects, &marked_indices );
+  remove_marked_indices( std::make_shared< std::vector<Effect> >( this->effects ), std::make_shared< std::vector<int> >( marked_indices ) );
 }

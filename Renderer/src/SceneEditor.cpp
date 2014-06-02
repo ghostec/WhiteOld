@@ -1,8 +1,8 @@
 #include "Renderer/SceneEditor.h"
 
-SceneEditor::SceneEditor( Scene* scene, MousePicking* mouse_picking, Shader& shader )
+SceneEditor::SceneEditor( std::shared_ptr<Scene> scene, std::shared_ptr<MousePicking> mouse_picking, std::shared_ptr<Shader> shader )
 {
-  this->shader = &shader;
+  this->shader = shader;
   this->scene = scene;
   this->mouse_picking = mouse_picking;
   this->selected_model_instance = nullptr;
@@ -12,13 +12,13 @@ void SceneEditor::selectModelInstance()
 {
   if( this->selected_model_instance != nullptr )
   {
-    std::vector< Shader* >* shaders = this->selected_model_instance->getShaders();
-    for( Shader* shader : *shaders )
+    std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders = this->selected_model_instance->getShaders( );
+    for( std::shared_ptr<Shader> shader : *shaders )
     {
       shaders
       ->erase(  std::remove_if( shaders->begin( ),
                               shaders->end( ),
-                              [&]( Shader* shader )
+                              [&] ( std::shared_ptr<Shader> shader )
                               { return shader->getName() == "wireframe"; } ),
                 shaders->end() );
     }

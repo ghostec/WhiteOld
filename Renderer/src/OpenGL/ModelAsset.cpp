@@ -70,13 +70,13 @@ ModelAsset::ModelAsset( std::vector< WMath::vec3 > vertices,
   glBindVertexArray( 0 );
 }
 
-void ModelAsset::addShader( Shader* shader )
+void ModelAsset::addShader( std::shared_ptr<Shader> shader )
 {
   this->shaders.push_back( shader );
   this->configureShader( shader );
 }
 
-void ModelAsset::configureShader( Shader* shader )
+void ModelAsset::configureShader( std::shared_ptr<Shader> shader )
 {
   glBindVertexArray( this->vao );
   glBindBuffer( GL_ARRAY_BUFFER, this->vbo );
@@ -92,7 +92,7 @@ void ModelAsset::configureShader( Shader* shader )
   glBindVertexArray( 0 );
 }
 
-void ModelAsset::setTexture( Texture* texture )
+void ModelAsset::setTexture( std::shared_ptr<Texture> texture )
 {
   this->texture = texture;
 }
@@ -117,9 +117,10 @@ void ModelAsset::after_draw()
   glBindVertexArray(0);
 }
 
-void ModelAsset::drawWithShaders( std::vector< Shader* >* shaders )
+void ModelAsset::drawWithShaders
+  ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders )
 {
-  for( Shader* shader : *shaders )
+  for( std::shared_ptr<Shader> shader : *shaders )
   {
     shader->use( );
     if( shader->getDrawMode( ) == DM_NORMAL )
@@ -130,10 +131,14 @@ void ModelAsset::drawWithShaders( std::vector< Shader* >* shaders )
   }
 }
 
-void ModelAsset::draw( std::vector< Shader* >* instance_shaders )
+void ModelAsset::draw
+  ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > 
+    instance_shaders )
 {
   this->before_draw();
-  this->drawWithShaders( &this->shaders );
+  this->drawWithShaders( 
+    std::make_shared< std::vector< std::shared_ptr<Shader> > >
+      ( this->shaders ) );
   this->drawWithShaders( instance_shaders );
   this->after_draw();
 }

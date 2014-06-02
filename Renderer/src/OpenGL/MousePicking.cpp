@@ -20,7 +20,7 @@ MousePicking::MousePicking()
   int width = 800;
   int height = 600;
 
-  this->shader = new Shader( "color_picking" );
+  this->shader.reset( new Shader( "color_picking" ) );
 
   this->shader->use( );
 
@@ -76,7 +76,7 @@ MousePicking::MousePicking()
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::setScene( Scene* scene )
+void MousePicking::setScene( std::shared_ptr<Scene> scene )
 {
   this->scene = scene;
 }
@@ -95,16 +95,16 @@ void MousePicking::draw_picker_colours()
   this->shader->use();
   // TODO: Send matrices
 
-  for( ModelInstance* model_instance : *scene->getModelInstances() )
+  for( std::shared_ptr<ModelInstance> model_instance : *scene->getModelInstances( ) )
   {
     model_instance->getModelAsset()->configureShader( this->shader );
     WMath::vec3 picking_color = encode_id( model_instance->getPickingId() );
     this->shader->setUniform3f( "unique_id", picking_color[0], picking_color[1], picking_color[2] );
     model_instance->getModelAsset()->before_draw();
-    std::vector< Shader* > shaders{ this->shader };
+    std::vector< std::shared_ptr<Shader> > shaders { this->shader };
     this->shader->setUniformMatrix4fv( "Model", WMath::value_ptr( model_instance->getTransformM() ), GL_TRUE );
     ShaderHelper::setCamera( this->shader, scene->getCamera() );
-    model_instance->getModelAsset()->drawWithShaders( &shaders );
+    model_instance->getModelAsset()->drawWithShaders( std::make_shared< std::vector< std::shared_ptr<Shader > > >( shaders ) );
     model_instance->getModelAsset()->after_draw();
   }
   this->shader->unuse( );

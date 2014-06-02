@@ -25,7 +25,7 @@ Texture::Texture( std::string name )
   glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
-void Texture::use( Shader* shader )
+void Texture::use( std::shared_ptr<Shader> shader )
 {
   glBindTexture( GL_TEXTURE_2D, this->texture );
   glUniform1i( glGetUniformLocation( shader->shader, "materialTex" ), 0 );

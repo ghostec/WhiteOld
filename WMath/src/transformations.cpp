@@ -2,7 +2,7 @@
 
 namespace WMath
 {
-  void translate( mat4* t_matrix, vec3 v )
+  void translate( std::shared_ptr<mat4> t_matrix, vec3 v )
   {
     mat4 m;
     m[0][3] = v[0];
@@ -11,7 +11,7 @@ namespace WMath
     (*t_matrix) = (*t_matrix) * m;
   }
 
-  void scale( mat4* t_matrix, vec3 v )
+  void scale( std::shared_ptr<mat4> t_matrix, vec3 v )
   {
     mat4 m;
     m[0][0] = v[0];
@@ -21,7 +21,7 @@ namespace WMath
     (*t_matrix) = (*t_matrix) * m;
   }
 
-  void rotate_x( mat4* t_matrix, float degrees )
+  void rotate_x( std::shared_ptr<mat4> t_matrix, float degrees )
   {
     mat4 m;
     m[1][1] = cos( degrees * PI / 180.0 );
@@ -31,7 +31,7 @@ namespace WMath
     ( *t_matrix ) = ( *t_matrix ) * m;
   }
 
-  void rotate_y( mat4* t_matrix, float degrees )
+  void rotate_y( std::shared_ptr<mat4> t_matrix, float degrees )
   {
     mat4 m;
     m[0][0] = cos(degrees * PI / 180.0);
@@ -41,7 +41,7 @@ namespace WMath
     (*t_matrix) = (*t_matrix) * m;
   }
 
-  void rotate_z( mat4* t_matrix, float degrees )
+  void rotate_z( std::shared_ptr<mat4> t_matrix, float degrees )
   {
     mat4 m;
     m[0][0] = cos( degrees * PI / 180.0 );

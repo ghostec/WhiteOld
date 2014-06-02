@@ -68,14 +68,14 @@ namespace XMLHelper
     std::shared_ptr<ModelAsset> model_asset = parseXMLModelAsset( element );
     const char* texture_name = parseXMLstring( element, "texture" );
     std::shared_ptr<Texture> texture = resource_manager->getTexture( texture_name );
-    model_asset->setTexture( texture.get() );
+    model_asset->setTexture( texture );
 
     tinyxml2::XMLElement* shaders = element->FirstChildElement( "shaders" )->FirstChildElement();
     do
     {
       const char* shader_name = parseXMLstring( shaders, "name" );
       std::shared_ptr<Shader> shader = resource_manager->getShader( shader_name );
-      model_asset->addShader( shader.get() );
+      model_asset->addShader( shader );
       shaders = shaders->NextSiblingElement( );
     } while( shaders );
     
@@ -90,7 +90,7 @@ namespace XMLHelper
     const char* name = parseXMLstring( element, "name" );
     const char* model_asset_name = parseXMLstring( element, "model_asset" );
     std::shared_ptr<ModelAsset> model_asset = resource_manager->getModelAsset( model_asset_name );
-    std::shared_ptr<ModelInstance> model_instance( new ModelInstance( model_asset.get() ) );
+    std::shared_ptr<ModelInstance> model_instance( new ModelInstance( model_asset ) );
     resource_manager->addModelInstance( model_instance, name );
     return model_instance;
   }
@@ -109,7 +109,7 @@ namespace XMLHelper
       if( strcmp( element->Name(), "camera" ) == 0 )
       {
         std::shared_ptr<Camera> camera = parseXMLCamera( element );
-        scene->setCamera( camera.get() ); 
+        scene->setCamera( camera ); 
       }
       else if( strcmp( element->Name( ), "shader" ) == 0 )
       {
@@ -127,7 +127,7 @@ namespace XMLHelper
       {
         std::shared_ptr<ModelInstance> model_instance = 
           parseXMLModelInstance( element, resource_manager );
-        scene->addModel( model_instance.get() );
+        scene->addModel( model_instance );
       }
       element = element->NextSiblingElement();
     } while( element );

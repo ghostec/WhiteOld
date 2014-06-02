@@ -16,13 +16,13 @@ typedef struct Movable_
 class SceneEditor
 {
   private:
-    Scene* scene;
-    MousePicking* mouse_picking;
-    ModelInstance* selected_model_instance;
-    Shader* shader;
+    std::shared_ptr<Scene> scene;
+    std::shared_ptr<MousePicking> mouse_picking;
+    std::shared_ptr<ModelInstance> selected_model_instance;
+    std::shared_ptr<Shader> shader;
   public:
     Movable moves;
-    SceneEditor( Scene* scene, MousePicking* mouse_picking, Shader& shader );
+    SceneEditor( std::shared_ptr<Scene> scene, std::shared_ptr<MousePicking> mouse_picking, std::shared_ptr<Shader> shader );
     void selectModelInstance();
     void move();
 };
