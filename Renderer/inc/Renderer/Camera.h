@@ -20,8 +20,8 @@ class Camera
     void setTarget( WMath::vec3 target );
     void setDirty( bool value ) { this->dirty = value; };
     // getters
-    std::shared_ptr<WMath::mat4> getView() { return std::make_shared<WMath::mat4>( this->view ); };
-    std::shared_ptr<WMath::mat4> getProj( ) { return std::make_shared<WMath::mat4>( this->proj ); };
+    WMath::mat4* getView() { return &this->view; };
+    WMath::mat4* getProj( ) { return &this->proj; };
     bool getDirty() { return this->dirty; };
 };
 

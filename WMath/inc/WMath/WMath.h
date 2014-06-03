@@ -68,6 +68,6 @@ namespace WMath
   vec3 normalize( vec3 v );
   vec3 cross( vec3 v1, vec3 v2 );
 
-  float* value_ptr( std::shared_ptr<mat4> m );
+  float* value_ptr( mat4* m );
 }
 #endif

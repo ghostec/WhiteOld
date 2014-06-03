@@ -10,8 +10,8 @@
 
 namespace ShaderHelper
 {
-  void setLight( std::shared_ptr<Shader> shader, std::shared_ptr<Light> light );
-  void setCamera( std::shared_ptr<Shader> shader, std::shared_ptr<Camera> camera );
+  void setLight( Shader* shader, Light* light );
+  void setCamera( Shader* shader, Camera* camera );
 }
 
 #endif

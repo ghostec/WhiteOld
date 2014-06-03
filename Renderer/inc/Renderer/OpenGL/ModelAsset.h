@@ -42,13 +42,12 @@ class ModelAsset
     void before_draw();
     void after_draw();
     void drawWithShaders
-      ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders );
+      ( std::vector< std::shared_ptr<Shader> >* shaders );
     void draw
-      ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > 
+      ( std::vector< std::shared_ptr<Shader> >*
           instance_shaders );
-    std::shared_ptr< std::vector< std::shared_ptr<Shader> > > getShaders() 
-      { return std::make_shared< std::vector< std::shared_ptr<Shader> > >
-          ( this->shaders ); };
+    std::vector< std::shared_ptr<Shader> >* getShaders() 
+      { return &this->shaders; };
 };
 
 #endif

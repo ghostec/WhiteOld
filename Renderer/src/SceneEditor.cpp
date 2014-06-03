@@ -12,7 +12,7 @@ void SceneEditor::selectModelInstance()
 {
   if( this->selected_model_instance != nullptr )
   {
-    std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders = this->selected_model_instance->getShaders( );
+    std::vector< std::shared_ptr<Shader> >* shaders = this->selected_model_instance->getShaders( );
     for( std::shared_ptr<Shader> shader : *shaders )
     {
       shaders

@@ -19,9 +19,9 @@ class Scene
     std::vector< std::shared_ptr<Light> >         lights;
     std::shared_ptr<Camera>                       camera;
     void updateLightsForShaders
-      ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders );
+      ( std::vector< std::shared_ptr<Shader> >* shaders );
     void updateCameraForShaders
-      ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders );
+      ( std::vector< std::shared_ptr<Shader> >* shaders );
   public:
     void draw();
     void addModel( std::shared_ptr<ModelInstance> model_instance );
@@ -30,11 +30,10 @@ class Scene
     void setCamera( std::shared_ptr<Camera> camera );
     void updateCamera();
     // getters
-    std::shared_ptr< std::vector< std::shared_ptr<ModelInstance> > >
+    std::vector< std::shared_ptr<ModelInstance> >*
       getModelInstances()
     {
-      return std::make_shared< std::vector< std::shared_ptr<ModelInstance> > >
-        ( this->model_instances );
+      return &this->model_instances;
     };
     std::shared_ptr<Camera> getCamera() { return this->camera; };
     std::shared_ptr<ModelInstance> getModelInstanceWithId( int id );

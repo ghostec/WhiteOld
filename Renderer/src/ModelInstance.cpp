@@ -14,7 +14,7 @@ void ModelInstance::addShader( std::shared_ptr<Shader> shader )
   this->model_asset->configureShader( shader );
 }
 
-void ModelInstance::updateTransform( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders )
+void ModelInstance::updateTransform( std::vector< std::shared_ptr<Shader> >* shaders )
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
@@ -25,7 +25,7 @@ void ModelInstance::updateTransform( std::shared_ptr< std::vector< std::shared_p
   }
 }
 
-void ModelInstance::updateOpacity( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders )
+void ModelInstance::updateOpacity( std::vector< std::shared_ptr<Shader> >* shaders )
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
@@ -36,10 +36,10 @@ void ModelInstance::updateOpacity( std::shared_ptr< std::vector< std::shared_ptr
 void ModelInstance::draw()
 {
   this->updateTransform( this->model_asset->getShaders() );
-  this->updateTransform( std::make_shared< std::vector< std::shared_ptr<Shader> > >( this->shaders ) );
+  this->updateTransform( &this->shaders );
   this->updateOpacity( this->model_asset->getShaders() );
-  this->updateOpacity( std::make_shared< std::vector< std::shared_ptr<Shader> > >( this->shaders ) );
-  this->model_asset->draw( std::make_shared< std::vector< std::shared_ptr<Shader> > >( this->shaders ) );
+  this->updateOpacity( &this->shaders );
+  this->model_asset->draw( &this->shaders );
 }
 
 void ModelInstance::setColor( WMath::vec3 color )
@@ -52,8 +52,8 @@ void ModelInstance::setOpacity( float opacity )
   this->opacity = opacity;
 }
 
-std::shared_ptr<WMath::mat4> ModelInstance::getTransformM( )
+WMath::mat4* ModelInstance::getTransformM( )
 {
   this->transform = this->scale * this->rotate * this->translate;
-  return std::make_shared< WMath::mat4 >( this->transform );
+  return &this->transform;
 }

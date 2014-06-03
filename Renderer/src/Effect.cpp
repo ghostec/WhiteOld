@@ -9,19 +9,19 @@ void interpolation_function( EffectComponent* effect_component,
                                   effect_component->final_value );
 }
 
-void effect_function( std::shared_ptr<ModelInstance> model_instance,
+void effect_function( ModelInstance* model_instance,
   float value )
 {
   model_instance->setOpacity( value );
 }
 
-void effect_function2( std::shared_ptr<ModelInstance> model_instance,
+void effect_function2( ModelInstance* model_instance,
   float value )
 {
   WMath::translate( model_instance->getTranslateM(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
 }
 
-void effect_function3( std::shared_ptr<ModelInstance> model_instance,
+void effect_function3( ModelInstance* model_instance,
   float value )
 {
   WMath::rotate_y( model_instance->getRotateM(), 2.5f );
@@ -57,24 +57,22 @@ void Effect::execute()
   {
     if( elapsed > effect_component.duration )
     {
-      ( effect_component.effect_function )(  this->model_instance,
+      ( effect_component.effect_function )( &*this->model_instance,
                                               effect_component.final_value );
       marked_indices.push_back( index );
     }
     else
     {
       ( effect_component.interpolation_function )
-        ( std::make_shared<EffectComponent>( effect_component ), elapsed );
-      ( effect_component.effect_function )( this->model_instance,
+        ( &effect_component, elapsed );
+      ( effect_component.effect_function )( &*this->model_instance,
         effect_component.current_value );
     }
     index += 1;
   }
 
   remove_marked_indices
-    ( std::make_shared< std::vector<EffectComponent> >
-      ( this->effect_components ), 
-        std::make_shared< std::vector<int> >( marked_indices ) );
+    ( &this->effect_components, &marked_indices );
 }
 
 void Effect::addComponent( EffectComponent effect_component )

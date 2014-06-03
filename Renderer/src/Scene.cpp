@@ -31,11 +31,11 @@ void Scene::addLight( std::shared_ptr<Light> light )
   this->lights.push_back( light );
 }
 
-void Scene::updateLightsForShaders( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders )
+void Scene::updateLightsForShaders( std::vector< std::shared_ptr<Shader> >* shaders )
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
-    ShaderHelper::setLight( shader, this->lights[0] );
+    ShaderHelper::setLight( &*shader, &*this->lights[0] );
   }
 }
 
@@ -55,11 +55,11 @@ void Scene::setCamera( std::shared_ptr<Camera> camera )
 }
 
 void Scene::updateCameraForShaders
-  ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders )
+  ( std::vector< std::shared_ptr<Shader> >* shaders )
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
-    ShaderHelper::setCamera( shader, this->camera );
+    ShaderHelper::setCamera( &*shader, &*this->camera );
   }
 }
 

@@ -118,7 +118,7 @@ void ModelAsset::after_draw()
 }
 
 void ModelAsset::drawWithShaders
-  ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > shaders )
+( std::vector< std::shared_ptr<Shader> >* shaders )
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
@@ -132,13 +132,11 @@ void ModelAsset::drawWithShaders
 }
 
 void ModelAsset::draw
-  ( std::shared_ptr< std::vector< std::shared_ptr<Shader> > > 
+( std::vector< std::shared_ptr<Shader> >*
     instance_shaders )
 {
   this->before_draw();
-  this->drawWithShaders( 
-    std::make_shared< std::vector< std::shared_ptr<Shader> > >
-      ( this->shaders ) );
+  this->drawWithShaders( &this->shaders );
   this->drawWithShaders( instance_shaders );
   this->after_draw();
 }

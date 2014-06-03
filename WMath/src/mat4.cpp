@@ -58,28 +58,6 @@ namespace WMath
     return mat4( X, Y, Z, W );
   }
 
-  /*
-  mat4 rotate_x( float degree )
-  {
-    mat4 m;
-    m[1][1] = cos( degree * PI / 180.0 );
-    m[1][2] = - sin( degree * PI / 180.0 );
-    m[2][1] = sin( degree * PI / 180.0 );
-    m[2][2] = cos( degree * PI / 180.0 );
-    return m;
-  }
-
-  mat4 rotate_z( float degree )
-  {
-    mat4 m;
-    m[0][0] = cos( degree * PI / 180.0 );
-    m[0][1] = - sin( degree * PI / 180.0 );
-    m[1][0] = sin( degree * PI / 180.0 );
-    m[1][1] = cos( degree * PI / 180.0 );
-    return m;
-  }
-  */
-
   mat4 lookAtRH( vec3 eye, vec3 target, vec3 up )
   {
     vec3 zaxis = normalize( eye - target );       // The "forward" vector.
@@ -109,7 +87,7 @@ namespace WMath
     return ( orientation * translation );
   }
 
-  float*  value_ptr( std::shared_ptr<mat4> m )
+  float*  value_ptr( mat4* m )
   {
     return &m->columns[0][0];
   }
