@@ -35,31 +35,27 @@ void Shader::setVertexAttribute(  std::string name, int count, int stride,
   glUseProgram(0);
 }
 
-void Shader::setUniform1f( std::string name, GLfloat v0 )
+void Shader::setUniform( std::string name, const float value )
 {
   glUseProgram( this->shader );
   GLint uniform = glGetUniformLocation( this->shader, name.c_str( ) );
-  glUniform1f( uniform, v0 );
+  glUniform1f( uniform, value );
   glUseProgram( 0 );
 }
 
-void Shader::setUniform3f(  std::string name,
-                            GLfloat v0,
-                            GLfloat v1,
-                            GLfloat v2 )
+void Shader::setUniform( std::string name, const float value[3] )
 {
-  glUseProgram(this->shader);
-  GLint uniform = glGetUniformLocation( this->shader , name.c_str() );
-  glUniform3f( uniform, v0, v1, v2 );
-  glUseProgram(0);
+  glUseProgram( this->shader );
+  GLint uniform = glGetUniformLocation( this->shader, name.c_str( ) );
+  glUniform3f( uniform, value[0], value[1], value[2] );
+  glUseProgram( 0 );
 }
 
-void Shader::setUniformMatrix4fv( std::string name,
-                                  const GLfloat *value,
-                                  GLboolean transpose )
+void Shader::setUniform( std::string name, WMath::mat4* value,
+  bool transpose )
 {
   glUseProgram(this->shader);
   GLint uniform = glGetUniformLocation( this->shader , name.c_str() );
-  glUniformMatrix4fv( uniform, 1, transpose, value );
+  glUniformMatrix4fv( uniform, 1, transpose, WMath::value_ptr( value ) );
   glUseProgram(0);
 }

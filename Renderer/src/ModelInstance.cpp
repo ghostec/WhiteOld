@@ -18,10 +18,9 @@ void ModelInstance::updateTransform( std::vector< std::shared_ptr<Shader> >* sha
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
-    shader->setUniformMatrix4fv(  "Model",
-                                  WMath::value_ptr( this->getTransformM() ),
-                                  GL_TRUE );
-    shader->setUniform3f( "color", this->color[0], this->color[1], this->color[2] );
+    shader->setUniform(  "Model", this->getTransformM(),
+      GL_TRUE );
+    shader->setUniform( "color", this->color.vec );
   }
 }
 
@@ -29,7 +28,7 @@ void ModelInstance::updateOpacity( std::vector< std::shared_ptr<Shader> >* shade
 {
   for( std::shared_ptr<Shader> shader : *shaders )
   {
-    shader->setUniform1f( "opacity", this->opacity );
+    shader->setUniform( "opacity", this->opacity );
   }
 }
 

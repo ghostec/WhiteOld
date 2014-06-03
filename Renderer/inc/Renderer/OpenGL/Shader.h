@@ -6,6 +6,7 @@
 #include "Renderer/Camera.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Helpers/ModelAssetHelper.h"
+#include "WMath/WMath.h"
 
 class Shader
 {
@@ -20,14 +21,9 @@ class Shader
     void setDrawMode( DrawMode draw_mode );
     void setVertexAttribute(  std::string name, int count, int stride,
                               int offset );
-    void setUniform1f( std::string name, GLfloat v0 );
-    void setUniform3f( std::string name,
-                        GLfloat v0,
-                        GLfloat v1,
-                        GLfloat v2 );
-    void setUniformMatrix4fv( std::string name,
-                              const GLfloat *value,
-                              GLboolean transpose);
+    void setUniform( std::string name, const float value );
+    void setUniform( std::string name, const float value[3] );
+    void setUniform( std::string name, WMath::mat4* value, bool transpose );
     // getters
     DrawMode getDrawMode() { return this->draw_mode; };
     const std::string getName() { return this->name; };

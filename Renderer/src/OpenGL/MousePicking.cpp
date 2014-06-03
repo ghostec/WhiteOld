@@ -99,10 +99,10 @@ void MousePicking::draw_picker_colours()
   {
     model_instance->getModelAsset()->configureShader( this->shader );
     WMath::vec3 picking_color = encode_id( model_instance->getPickingId() );
-    this->shader->setUniform3f( "unique_id", picking_color[0], picking_color[1], picking_color[2] );
+    this->shader->setUniform( "unique_id", picking_color.vec );
     model_instance->getModelAsset()->before_draw();
     std::vector< std::shared_ptr<Shader> > shaders { this->shader };
-    this->shader->setUniformMatrix4fv( "Model", WMath::value_ptr( model_instance->getTransformM() ), GL_TRUE );
+    this->shader->setUniform( "Model", model_instance->getTransformM(), GL_TRUE );
     ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
     model_instance->getModelAsset()->drawWithShaders( &shaders );
     model_instance->getModelAsset()->after_draw();
