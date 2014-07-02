@@ -31,22 +31,15 @@ void Scene::addLight( std::shared_ptr<Light> light )
   this->lights.push_back( light );
 }
 
-void Scene::updateLightsForShaders( std::vector< std::shared_ptr<Shader> >* shaders )
+void Scene::updateLightsForShader( std::shared_ptr<Shader> shader )
 {
-  for( std::shared_ptr<Shader> shader : *shaders )
-  {
-    ShaderHelper::setLight( &*shader, &*this->lights[0] );
-  }
+  ShaderHelper::setLight( &*shader, &*this->lights[0] );
 }
 
 void Scene::updateLights()
 {
-  for( std::map< std::shared_ptr<ModelAsset>, int >::iterator it 
-        = this->model_assets.begin();
-        it != this->model_assets.end(); it++ )
-    this->updateLightsForShaders( it->first->getShaders() );
   for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
-    this->updateLightsForShaders( model_instance->getShaders() );
+    this->updateLightsForShader( model_instance->getShader() );
 }
 
 void Scene::setCamera( std::shared_ptr<Camera> camera )
@@ -54,23 +47,15 @@ void Scene::setCamera( std::shared_ptr<Camera> camera )
   this->camera  = camera;
 }
 
-void Scene::updateCameraForShaders
-  ( std::vector< std::shared_ptr<Shader> >* shaders )
+void Scene::updateCameraForShader( std::shared_ptr<Shader> shader )
 {
-  for( std::shared_ptr<Shader> shader : *shaders )
-  {
-    ShaderHelper::setCamera( &*shader, &*this->camera );
-  }
+  ShaderHelper::setCamera( &*shader, &*this->camera );
 }
 
 void Scene::updateCamera()
 {
-  for( std::map< std::shared_ptr<ModelAsset>, int >::iterator it
-    = this->model_assets.begin( );
-    it != this->model_assets.end( ); it++ )
-    this->updateCameraForShaders( it->first->getShaders() );
   for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
-    this->updateCameraForShaders( model_instance->getShaders() );
+    this->updateCameraForShader( model_instance->getShader() );
 }
 
 std::shared_ptr<ModelInstance> Scene::getModelInstanceWithId( int id )

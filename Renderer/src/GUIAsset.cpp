@@ -10,12 +10,12 @@ GUIAsset::GUIAsset
 
   this->model_assets[GUI_NORMAL].reset
     ( new ModelAsset( "square.obj", MODEL_ASSET_2D ) );
-  this->model_assets[GUI_NORMAL]->addShader( this->shader );
+  //this->model_assets[GUI_NORMAL]->setShader( this->shader );
   this->model_assets[GUI_NORMAL]->setTexture( texture );
 
   this->model_assets[GUI_HOVER].reset
     ( new ModelAsset( "square.obj", MODEL_ASSET_2D ) );
-  this->model_assets[GUI_HOVER]->addShader( this->shader );
+  //this->model_assets[GUI_HOVER]->setShader( this->shader );
   this->model_assets[GUI_HOVER]->setTexture( texture );
 }
 

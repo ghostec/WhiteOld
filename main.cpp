@@ -38,7 +38,7 @@ int main()
     WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
 
   scene->addLight( std::shared_ptr<Light>( &light ) );
-  light.setPosition( WMath::vec3( -3.0f, 0.0f, -2.0f ) );
+  light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
   Renderer renderer( &window );
   renderer.addScene( scene.get() );
 

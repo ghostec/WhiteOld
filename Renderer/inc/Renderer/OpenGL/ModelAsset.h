@@ -16,6 +16,12 @@
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"
 
+typedef struct ModelAssetData
+{
+  std::vector< WMath::vec3 > vertices, uvs, normals;
+  std::vector< std::array<GLushort, 3> > elements;
+} ModelAssetData;
+
 typedef enum ModelAssetType
 {
   MODEL_ASSET_2D, MODEL_ASSET_3D
@@ -26,28 +32,16 @@ class ModelAsset
   private:
     GLuint vao, vbo;
     std::shared_ptr<Texture> texture;
-    std::vector< std::shared_ptr<Shader> > shaders;
     int vertices_count;
     ModelAssetType model_asset_type;
   public:
-    ModelAsset( std::string file_path, ModelAssetType model_asset_type );
-    ModelAsset( std::vector< WMath::vec3 > vertices,
-      std::vector< WMath::vec3 > uvs,
-      std::vector< WMath::vec3 > normals,
-      std::vector< std::array<GLushort, 3> > elements,
-      ModelAssetType model_asset_type );
-    void addShader( std::shared_ptr<Shader> shader );
-    void configureShader( std::shared_ptr<Shader> shader );
+    ModelAsset( std::string file_path, ModelAssetType type );
+    ModelAsset( ModelAssetData data, ModelAssetType type );
     void setTexture( std::shared_ptr<Texture> texture );
-    void before_draw();
+    void ModelAsset::configureShader( std::shared_ptr<Shader> shader );
+    void before_draw( std::shared_ptr<Shader> shader );
     void after_draw();
-    void drawWithShaders
-      ( std::vector< std::shared_ptr<Shader> >* shaders );
-    void draw
-      ( std::vector< std::shared_ptr<Shader> >*
-          instance_shaders );
-    std::vector< std::shared_ptr<Shader> >* getShaders() 
-      { return &this->shaders; };
+    void draw( std::shared_ptr<Shader> shader );
 };
 
 #endif

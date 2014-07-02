@@ -10,18 +10,18 @@ class ModelInstance
 {
   private:
     std::shared_ptr<ModelAsset> model_asset;
-    std::vector< std::shared_ptr<Shader> > shaders;
+    std::shared_ptr<Shader> shader;
     WMath::mat4 transform, translate, rotate, scale;
     int picking_id;
     float opacity;
     WMath::vec3 color;
     void updateTransform
-      ( std::vector< std::shared_ptr<Shader> >* shaders );
+      ( std::shared_ptr<Shader> shader );
     void updateOpacity
-      ( std::vector< std::shared_ptr<Shader> >* shaders );
+      ( std::shared_ptr<Shader> shader );
   public:
     ModelInstance( std::shared_ptr<ModelAsset> model_asset );
-    void addShader( std::shared_ptr<Shader> shader );
+    void setShader( std::shared_ptr<Shader> shader );
     void draw();
     void setColor( WMath::vec3 color );
     void setOpacity( float opacity );
@@ -30,12 +30,9 @@ class ModelInstance
     WMath::mat4* getTransformM();
     WMath::mat4* getTranslateM()
       { return &this->translate; };
-    WMath::mat4* getRotateM()
-      { return &this->rotate; };
-    WMath::mat4* getScaleM()
-      { return &this->scale; };
-    std::vector< std::shared_ptr<Shader> >* getShaders()
-      { return &this->shaders; };
+    WMath::mat4* getRotateM() { return &this->rotate; };
+    WMath::mat4* getScaleM() { return &this->scale; };
+    std::shared_ptr<Shader> getShader() { return this->shader; };
     int getPickingId() { return this->picking_id; };
 };
 

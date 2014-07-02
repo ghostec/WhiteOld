@@ -67,19 +67,11 @@ namespace XMLHelper
   {
     std::shared_ptr<ModelAsset> model_asset = parseXMLModelAsset( element );
     const char* texture_name = parseXMLstring( element, "texture" );
-    std::shared_ptr<Texture> texture = resource_manager->getTexture( texture_name );
+    std::shared_ptr<Texture> texture =
+      resource_manager->getTexture( texture_name );
     model_asset->setTexture( texture );
-
-    tinyxml2::XMLElement* shaders = element->FirstChildElement( "shaders" )->FirstChildElement();
-    do
-    {
-      const char* shader_name = parseXMLstring( shaders, "name" );
-      std::shared_ptr<Shader> shader = resource_manager->getShader( shader_name );
-      model_asset->addShader( shader );
-      shaders = shaders->NextSiblingElement( );
-    } while( shaders );
-    
     const char* name = parseXMLstring( element, "name" );
+
     resource_manager->addModelAsset( model_asset, name );
   }
 
@@ -91,6 +83,10 @@ namespace XMLHelper
     const char* model_asset_name = parseXMLstring( element, "model_asset" );
     std::shared_ptr<ModelAsset> model_asset = resource_manager->getModelAsset( model_asset_name );
     std::shared_ptr<ModelInstance> model_instance( new ModelInstance( model_asset ) );
+    const char* shader_name = parseXMLstring( element, "shader" );
+    std::shared_ptr<Shader> shader = resource_manager->getShader( shader_name );
+    model_instance->setShader( shader );
+
     resource_manager->addModelInstance( model_instance, name );
     return model_instance;
   }

@@ -12,16 +12,8 @@ void SceneEditor::selectModelInstance()
 {
   if( this->selected_model_instance != nullptr )
   {
-    std::vector< std::shared_ptr<Shader> >* shaders = this->selected_model_instance->getShaders( );
-    for( std::shared_ptr<Shader> shader : *shaders )
-    {
-      shaders
-      ->erase(  std::remove_if( shaders->begin( ),
-                              shaders->end( ),
-                              [&] ( std::shared_ptr<Shader> shader )
-                              { return shader->getName() == "wireframe"; } ),
-                shaders->end() );
-    }
+    ;
+    // remove wireframe shader
   }
 
   int x, y;
@@ -36,7 +28,7 @@ void SceneEditor::selectModelInstance()
   }
 
   this->selected_model_instance = this->scene->getModelInstanceWithId( id );
-  this->selected_model_instance->addShader( this->shader );
+  this->selected_model_instance->setShader( this->shader );
   this->scene->updateCamera();
 }
 
