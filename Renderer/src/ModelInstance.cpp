@@ -5,7 +5,6 @@ ModelInstance::ModelInstance( std::shared_ptr<ModelAsset> model_asset )
   static int id = 1;
   this->model_asset = model_asset;
   this->picking_id = id++;
-  this->opacity = 1.0f;
 }
 
 void ModelInstance::setShader( std::shared_ptr<Shader> shader )
@@ -18,29 +17,17 @@ void ModelInstance::updateTransform( std::shared_ptr<Shader> shader )
 {
   shader->setUniform(  "Model", this->getTransformM(),
     GL_TRUE );
-  shader->setUniform( "color", this->color.vec );
 }
 
-void ModelInstance::updateOpacity( std::shared_ptr<Shader> shader )
+void ModelInstance::addFloat( std::string name, float f )
 {
-  shader->setUniform( "opacity", this->opacity );
+  this->data.floats.push_back( std::make_pair( name, f ) );
 }
 
 void ModelInstance::draw()
 {
   this->updateTransform( this->shader );
-  this->updateOpacity( this->shader );
   this->model_asset->draw( this->shader );
-}
-
-void ModelInstance::setColor( WMath::vec3 color )
-{
-  this->color = color;
-}
-
-void ModelInstance::setOpacity( float opacity )
-{
-  this->opacity = opacity;
 }
 
 WMath::mat4* ModelInstance::getTransformM( )

@@ -9,12 +9,6 @@ void interpolation_function( EffectComponent* effect_component,
                                   effect_component->final_value );
 }
 
-void effect_function( ModelInstance* model_instance,
-  float value )
-{
-  model_instance->setOpacity( value );
-}
-
 void effect_function2( ModelInstance* model_instance,
   float value )
 {
