@@ -19,4 +19,19 @@ namespace ShaderHelper
     shader->setUniform( "camera.proj",
       camera->getProj(), GL_FALSE );
   }
+
+  void setModelData( Shader* shader, ModelData* model_data )
+  {
+    for( auto it = model_data->getFloatMap()->begin();
+      it != model_data->getFloatMap()->end(); it++ )
+    {
+      shader->setUniform( it->first, it->second );
+    }
+
+    for( auto it = model_data->getMat4Map()->begin();
+      it != model_data->getMat4Map()->end(); it++ )
+    {
+      shader->setUniform( it->first, &it->second, GL_FALSE );
+    }
+  }
 }

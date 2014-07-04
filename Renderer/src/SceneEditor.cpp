@@ -27,7 +27,6 @@ void SceneEditor::selectModelInstance()
     return;
   }
 
-  this->selected_model_instance = this->scene->getModelInstanceWithId( id );
   this->selected_model_instance->setShader( this->shader );
   this->scene->updateCamera();
 }

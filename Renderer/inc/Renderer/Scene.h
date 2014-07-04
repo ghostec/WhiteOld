@@ -31,7 +31,6 @@ class Scene
     std::vector< std::shared_ptr<ModelInstance> >* getModelInstances()
       { return &this->model_instances; }
     std::shared_ptr<Camera> getCamera() { return this->camera; }
-    std::shared_ptr<ModelInstance> getModelInstanceWithId( int id );
 };
 
 #endif

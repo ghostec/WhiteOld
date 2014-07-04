@@ -20,13 +20,6 @@ void GUIScene::pollEvents()
   
   for( std::shared_ptr<GUIInstance> gui_instance : this->gui_instances )
   {
-    if( gui_instance->getModelInstance()->getPickingId() == instance_id )
-    {
-      //gui_instance->setState( GUI_HOVER );
-    }
-    else
-    {
-      //gui_instance->setState( GUI_NORMAL );
-    }
+    ;
   }
 }

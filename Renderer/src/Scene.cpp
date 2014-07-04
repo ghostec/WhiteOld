@@ -50,12 +50,3 @@ void Scene::updateCamera()
   for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
     this->updateCameraForShader( model_instance->getShader() );
 }
-
-std::shared_ptr<ModelInstance> Scene::getModelInstanceWithId( int id )
-{
-  for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
-  {
-    if( model_instance->getPickingId() == id )
-      return model_instance;
-  }
-}

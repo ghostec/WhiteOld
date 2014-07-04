@@ -5,6 +5,7 @@
 #include <memory>
 #include "Renderer/Mesh.h"
 #include "Renderer/ModelData.h"
+#include "Renderer/Helpers/ShaderHelper.h"
 #include "WMath/WMath.h"
 
 class ModelInstance
@@ -15,8 +16,6 @@ class ModelInstance
     std::shared_ptr<ModelData> model_data;
     std::shared_ptr<Texture> texture;
     WMath::mat4 transform, translate, rotate, scale;
-    
-    int picking_id;
   public:
     ModelInstance( std::shared_ptr<Mesh> mesh );
     void update();
@@ -34,12 +33,9 @@ class ModelInstance
     std::shared_ptr<Shader> getShader( ) { return this->shader; };
 
     WMath::mat4* getTransformM();
-    WMath::mat4* getTranslateM()
-      { return &this->translate; };
+    WMath::mat4* getTranslateM() { return &this->translate; };
     WMath::mat4* getRotateM() { return &this->rotate; };
     WMath::mat4* getScaleM() { return &this->scale; };
-
-    int getPickingId() { return this->picking_id; };
 };
 
 #endif
