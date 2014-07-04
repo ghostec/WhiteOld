@@ -1,25 +1,15 @@
 #include "Renderer/GUIScene.h"
 
-GUIScene::GUIScene( std::shared_ptr<Scene> scene )
+void GUIScene::addGUIElement( std::shared_ptr<GUIElement> gui_element )
 {
-  this->scene = scene;
-  this->mouse_picking.setScene( this->scene );
+  this->gui_elements.push_back( gui_element );
 }
 
-void GUIScene::addGUIInstance( std::shared_ptr<GUIInstance> gui_instance )
+void GUIScene::update()
 {
-  this->gui_instances.push_back( gui_instance );
-  this->scene->addModel( gui_instance->getModel() );
-}
-
-void GUIScene::pollEvents()
-{
-  int x, y;
-  active_input->getMousePos( &x, &y );
-  int instance_id = this->mouse_picking.getIdForPosition( x, y );
-  
-  for( std::shared_ptr<GUIInstance> gui_instance : this->gui_instances )
+  this->scene.getModels( )->clear();
+  for( std::shared_ptr<GUIElement> gui_element : this->gui_elements )
   {
-    ;
+    this->scene.addModel( gui_element->getModel() );
   }
 }

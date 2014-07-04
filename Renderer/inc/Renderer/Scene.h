@@ -14,7 +14,6 @@
 class Scene
 {
   private:
-    std::map< std::shared_ptr<Mesh>, int >  model_assets;
     std::vector< std::shared_ptr<Model> > models;
     std::vector< std::shared_ptr<Light> > lights;
     std::shared_ptr<Camera> camera;

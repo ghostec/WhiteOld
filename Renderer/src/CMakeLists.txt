@@ -68,8 +68,7 @@ SET(
   Window.cpp
   Model.cpp
   SceneEditor.cpp
-  GUIAsset.cpp
-  GUIInstance.cpp
+  GUIElement.cpp
   GUIScene.cpp
   Effect.cpp
   EffectsManager.cpp
@@ -94,8 +93,7 @@ SET(
   Model.h
   MousePicking.h
   SceneEditor.h
-  GUIAsset.h
-  GUIInstance.h
+  GUIElement.h
   GUIScene.h
   Effect.h
   EffectsManager.h

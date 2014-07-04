@@ -1,7 +1,7 @@
-#include "Renderer/GUIInstance.h"
+#include "Renderer/GUIElement.h"
 
-GUIInstance::GUIInstance( std::shared_ptr<GUIAsset> gui_asset, float width, float height,
-  float offset_x, float offset_y,
+GUIElement::GUIElement
+  ( float width, float height, float offset_x, float offset_y,
   float offset_x_percent, float offset_y_percent )
 {
   this->width = width;
@@ -10,26 +10,28 @@ GUIInstance::GUIInstance( std::shared_ptr<GUIAsset> gui_asset, float width, floa
   float percent = 1.0f;
   float parent_width = 800.0f;
   float parent_height = 600.0f;
-  this->parent = nullptr;
   offset_x_percent = ( 1.0 / ar ) * offset_x_percent * parent_width;
   offset_y_percent = offset_y_percent * parent_height;
 
-  this->model_instance.reset( new Model( gui_asset->getModelAsset( GUI_NORMAL ) ) );
-  WMath::scale( this->model_instance->getScaleM( ),
+  std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
+  std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
+  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
+  this->model.reset( new Model( mesh, MODEL_2D ) );
+  model->setTexture( texture );
+  model->setShader( shader );
+  WMath::scale( this->model->getScaleM( ),
                 WMath::vec3( ( 1.0f / ar ) * percent, percent, 1.0f ) );
-  WMath::translate( this->model_instance->getTranslateM( ),
+  WMath::translate( this->model->getTranslateM( ),
                     WMath::vec3( -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width,
                     1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height,
                     0.0f ) );
 }
 
-GUIInstance::GUIInstance
-  ( std::shared_ptr<GUIAsset> gui_asset, std::shared_ptr<GUIInstance> parent,
-    float percent, float offset_x, float offset_y, float offset_x_percent,
-    float offset_y_percent )
+GUIElement::GUIElement
+  ( std::shared_ptr<GUIElement> parent,
+  float percent, float offset_x, float offset_y,
+  float offset_x_percent, float offset_y_percent )
 {
-  this->gui_asset = gui_asset;
-
   float parent_width = parent->getWidth();
   float parent_height = parent->getHeight();
 
@@ -40,21 +42,27 @@ GUIInstance::GUIInstance
   offset_x_percent = ( 1.0 / ar ) * offset_x_percent * parent_width;
   offset_y_percent = offset_y_percent * parent_height;
   
-  this->model_instance.reset
-    ( new Model( gui_asset->getModelAsset( GUI_NORMAL ) ) );
-  WMath::scale( this->model_instance->getScaleM(), 
-                WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
-  WMath::translate( this->model_instance->getTranslateM(),
+  std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
+  std::shared_ptr<Texture> texture( new Texture( "wooden-crate.jpg" ) );
+  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
+  this->model.reset( new Model( mesh ) );
+  model->setTexture( texture );
+  model->setShader( shader );
+
+  WMath::scale( this->model->getScaleM(),
+    WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
+
+  WMath::translate( this->model->getTranslateM(),
     WMath::vec3( -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width,
     1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height, 
     0.0f ) );
 }
 
-void GUIInstance::translate( float x, float y )
+void GUIElement::translate( float x, float y )
 {
   float parent_width = 800.0f;
   float parent_height = 600.0f;
 
-  WMath::translate( this->model_instance->getTranslateM( ),
+  WMath::translate( this->model->getTranslateM( ),
     WMath::vec3( ( 2.0f*x ) / parent_width, - ( 2.0f*y ) / parent_height, 0.0f ) );
 }

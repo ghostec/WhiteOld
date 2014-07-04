@@ -12,18 +12,26 @@
 #include "Renderer/Scene.h"
 #include "Renderer/Light.h"
 #include "Renderer/ResourceManager.h"
+#include "Renderer/GUIScene.h"
 #include "WMath/WMath.h"
 
 namespace XMLHelper
 {
-  const char* parseXMLstring( tinyxml2::XMLElement* element, const char* name );
-  WMath::vec3 parseXMLvec3( tinyxml2::XMLElement* element, const char* name );
-  std::shared_ptr<Camera> parseXMLCamera( tinyxml2::XMLElement* element );
-  std::shared_ptr<Shader> parseXMLShader( tinyxml2::XMLElement* element );
-  std::shared_ptr<Texture> parseXMLTexture( tinyxml2::XMLElement* element );
-  std::shared_ptr<Mesh> parseXMLMesh( tinyxml2::XMLElement* element );
-  std::shared_ptr<Scene> parseXMLScene
-    ( std::shared_ptr<ResourceManager> resource_manager );
+  const char* parseString( tinyxml2::XMLElement* element, const char* name );
+  WMath::vec3 parseVec3( tinyxml2::XMLElement* element, const char* name );
+
+  std::shared_ptr<Camera> parseCamera( tinyxml2::XMLElement* element );
+  std::shared_ptr<Shader> parseShader( tinyxml2::XMLElement* element );
+  std::shared_ptr<Texture> parseTexture( tinyxml2::XMLElement* element );
+  std::shared_ptr<Mesh> parseMesh( tinyxml2::XMLElement* element );
+
+  Scene loadScene( std::string file_name,
+    std::shared_ptr<ResourceManager> resource_manager );
+  void loadAssets( std::string file_name,
+    std::shared_ptr<ResourceManager> resource_manager );
+
+  GUIScene loadGUIScene( std::string file_name,
+    std::shared_ptr<ResourceManager> resource_manager );
 }
 
 #endif

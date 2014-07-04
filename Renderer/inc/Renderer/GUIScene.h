@@ -4,20 +4,19 @@
 #include <vector>
 #include <memory>
 #include "Renderer/Scene.h"
-#include "Renderer/GUIInstance.h"
-#include "Renderer/MousePicking.h"
+#include "Renderer/GUIElement.h"
 #include "Input/Input.h"
 
 class GUIScene
 {
   private:
-    std::shared_ptr<Scene> scene;
-    std::vector< std::shared_ptr<GUIInstance> > gui_instances;
-    MousePicking mouse_picking;
+    std::vector< std::shared_ptr<GUIElement> > gui_elements;
+    Scene scene;
   public:
-    GUIScene( std::shared_ptr<Scene> scene );
-    void addGUIInstance( std::shared_ptr<GUIInstance> gui_instance );
-    void pollEvents();
+    void addGUIElement( std::shared_ptr<GUIElement> gui_element );
+    void update();
+    // getters
+    Scene* getScene() { return &this->scene; }
 };
 
 #endif

@@ -15,8 +15,7 @@
 #include "Renderer/Light.h"
 #include "Renderer/MousePicking.h"
 #include "Renderer/SceneEditor.h"
-#include "Renderer/GUIAsset.h"
-#include "Renderer/GUIInstance.h"
+#include "Renderer/GUIElement.h"
 #include "Renderer/GUIScene.h"
 #include "Renderer/Effect.h"
 #include "Renderer/EffectsManager.h"
@@ -32,22 +31,28 @@ int main()
   active_input = &input;
 
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
-  std::shared_ptr<Scene> scene = XMLHelper::parseXMLScene( resource_manager );
+  //Scene scene = XMLHelper::loadScene( "example", resource_manager );
 
-  Light light( WMath::vec3( -3.0f, 0.0f, 2.0f ),
-    WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
+  //Light light( WMath::vec3( -3.0f, 0.0f, 2.0f ),
+  //  WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
 
-  scene->addLight( std::shared_ptr<Light>( &light ) );
-  light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
+  //scene.addLight( std::shared_ptr<Light>( &light ) );
+  //light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
+
+  GUIScene gui_scene;
+  std::shared_ptr<GUIElement> gui_window( new GUIElement( 800.0f, 600.0f, 0, 0, 0, 0 ) );
+  std::shared_ptr<GUIElement> gui_element( new GUIElement( gui_window, 0.25, 0, 0, 0, 0 ) );
+  gui_scene.addGUIElement( gui_element );
+
   Renderer renderer( &window );
-  renderer.addScene( scene.get() );
+  renderer.addScene( gui_scene.getScene() );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
-    //gui_scene.pollEvents();
+    gui_scene.update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();
