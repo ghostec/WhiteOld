@@ -8,7 +8,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
 #include "Renderer/Shader.h"
-#include "Renderer/ModelAsset.h"
+#include "Renderer/Mesh.h"
 #include "Renderer/ModelInstance.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"

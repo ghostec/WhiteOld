@@ -19,7 +19,7 @@ include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/
 
 SET(
   OpenGL_SRCs
-  OpenGL/ModelAsset.cpp 
+  OpenGL/Mesh.cpp 
   OpenGL/Shader.cpp
   OpenGL/Renderer.cpp
   OpenGL/MousePicking.cpp
@@ -28,7 +28,7 @@ SET(
 
 SET(
   OpenGL_Hs
-  OpenGL/ModelAsset.h
+  OpenGL/Mesh.h
   OpenGL/Shader.h
   OpenGL/Renderer.h
   OpenGL/MousePicking.h
@@ -66,6 +66,7 @@ SET(
   Scene.cpp
   Light.cpp
   Window.cpp
+  ModelData.cpp
   ModelInstance.cpp
   SceneEditor.cpp
   GUIAsset.cpp
@@ -84,12 +85,13 @@ SET( Renderer_Hs_DIR  ../inc/Renderer )
 SET(
   Renderer_Hs
   Camera.h
-  ModelAsset.h
+  Mesh.h
   Renderer.h
   Scene.h
   Light.h
   Shader.h
   Window.h
+  ModelData.h
   ModelInstance.h
   MousePicking.h
   SceneEditor.h

@@ -35,7 +35,7 @@ namespace XMLHelper
   {
     std::shared_ptr<Shader> shader = parseXMLShader( element );
     const char* name = parseXMLstring( element, "name" );
-    resource_manager->addShader( shader, name );
+    resource_manager->addShader( name, shader );
   }
 
   std::shared_ptr<Texture> parseXMLTexture( tinyxml2::XMLElement* element )
@@ -50,29 +50,24 @@ namespace XMLHelper
   {
     std::shared_ptr<Texture> texture = parseXMLTexture( element );
     const char* name = parseXMLstring( element, "name" );
-    resource_manager->addTexture( texture, name );
+    resource_manager->addTexture( name, texture );
   }
 
-  std::shared_ptr<ModelAsset> parseXMLModelAsset( tinyxml2::XMLElement* element )
+  std::shared_ptr<Mesh> parseXMLMesh( tinyxml2::XMLElement* element )
   {
     
-    std::shared_ptr<ModelAsset> model_asset( new ModelAsset(  parseXMLstring( element,
-                                                              "file" ),
-                                                              MODEL_ASSET_3D ) );
-    return model_asset;
+    std::shared_ptr<Mesh> mesh( new Mesh(  parseXMLstring( element,
+      "file" ) ) );
+    return mesh;
   }
 
-  void parseXMLModelAsset( tinyxml2::XMLElement* element,
+  void parseXMLMesh( tinyxml2::XMLElement* element,
     std::shared_ptr<ResourceManager> resource_manager )
   {
-    std::shared_ptr<ModelAsset> model_asset = parseXMLModelAsset( element );
-    const char* texture_name = parseXMLstring( element, "texture" );
-    std::shared_ptr<Texture> texture =
-      resource_manager->getTexture( texture_name );
-    model_asset->setTexture( texture );
+    std::shared_ptr<Mesh> mesh = parseXMLMesh( element );
     const char* name = parseXMLstring( element, "name" );
 
-    resource_manager->addModelAsset( model_asset, name );
+    resource_manager->addMesh( name, mesh );
   }
 
   std::shared_ptr<ModelInstance> parseXMLModelInstance
@@ -80,14 +75,18 @@ namespace XMLHelper
       std::shared_ptr<ResourceManager> resource_manager )
   {
     const char* name = parseXMLstring( element, "name" );
-    const char* model_asset_name = parseXMLstring( element, "model_asset" );
-    std::shared_ptr<ModelAsset> model_asset = resource_manager->getModelAsset( model_asset_name );
-    std::shared_ptr<ModelInstance> model_instance( new ModelInstance( model_asset ) );
+    const char* mesh_name = parseXMLstring( element, "mesh" );
+    std::shared_ptr<Mesh> mesh = resource_manager->getMesh( mesh_name );
+    std::shared_ptr<ModelInstance> model_instance( new ModelInstance( mesh ) );
     const char* shader_name = parseXMLstring( element, "shader" );
     std::shared_ptr<Shader> shader = resource_manager->getShader( shader_name );
     model_instance->setShader( shader );
+    const char* texture_name = parseXMLstring( element, "texture" );
+    std::shared_ptr<Texture> texture =
+      resource_manager->getTexture( texture_name );
+    model_instance->setTexture( texture );
 
-    resource_manager->addModelInstance( model_instance, name );
+    resource_manager->addModelInstance( name, model_instance );
     return model_instance;
   }
 
@@ -115,9 +114,9 @@ namespace XMLHelper
       {
         parseXMLTexture( element, resource_manager );
       }
-      else if( strcmp( element->Name( ), "model_asset" ) == 0 )
+      else if( strcmp( element->Name( ), "mesh" ) == 0 )
       {
-        parseXMLModelAsset( element, resource_manager );
+        parseXMLMesh( element, resource_manager );
       }
       else if( strcmp( element->Name( ), "model_instance" ) == 0 )
       {

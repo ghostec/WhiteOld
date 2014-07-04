@@ -1,29 +1,22 @@
 #include "Renderer/Scene.h"
 
-void Scene::draw()
+void Scene::update()
 {
   if( this->camera->getDirty() == true )
   {
     this->updateCamera();
     this->camera->setDirty( false );
   }
-  if( this->lights[0]->getDirty( ) == true )
+  if( this->lights[0]->getDirty() == true )
   {
     this->updateLights();
     this->lights[0]->setDirty( false );
   }
-  for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
-    model_instance->draw();
 }
 
 void Scene::addModel( std::shared_ptr<ModelInstance> model_instance )
 {
   this->model_instances.push_back( model_instance );
-  if( this->model_assets.find( model_instance->getModelAsset() ) 
-      == this->model_assets.end() )
-    this->model_assets[model_instance->getModelAsset( )] = 1;
-  else
-    this->model_assets[model_instance->getModelAsset( )] += 1;
 }
 
 void Scene::addLight( std::shared_ptr<Light> light )

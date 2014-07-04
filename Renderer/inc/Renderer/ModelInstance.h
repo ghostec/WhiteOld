@@ -3,37 +3,42 @@
 
 #include <vector>
 #include <memory>
-#include "Renderer/ModelAsset.h"
+#include "Renderer/Mesh.h"
+#include "Renderer/ModelData.h"
 #include "WMath/WMath.h"
-
-typedef struct
-{
-  std::vector< std::pair< std::string, float > > floats;
-} ModelData;
 
 class ModelInstance
 {
   private:
-    std::shared_ptr<ModelAsset> model_asset;
+    std::shared_ptr<Mesh> mesh;
     std::shared_ptr<Shader> shader;
+    std::shared_ptr<ModelData> model_data;
+    std::shared_ptr<Texture> texture;
     WMath::mat4 transform, translate, rotate, scale;
-    ModelData data;
+    
     int picking_id;
-    void updateTransform
-      ( std::shared_ptr<Shader> shader );
   public:
-    ModelInstance( std::shared_ptr<ModelAsset> model_asset );
+    ModelInstance( std::shared_ptr<Mesh> mesh );
+    void update();
+
+    // setters
     void setShader( std::shared_ptr<Shader> shader );
-    void draw();
-    void addFloat( std::string name, float f );
+    void setTexture( std::shared_ptr<Texture> texture )
+      { this->texture = texture; }
+
+    void setModelData( std::shared_ptr<ModelData> model_data )
+      { this->model_data = model_data; }
+
     // getters
-    std::shared_ptr<ModelAsset> getModelAsset() { return this->model_asset; };
+    std::shared_ptr<Mesh> getMesh() { return this->mesh; };
+    std::shared_ptr<Shader> getShader( ) { return this->shader; };
+
     WMath::mat4* getTransformM();
     WMath::mat4* getTranslateM()
       { return &this->translate; };
     WMath::mat4* getRotateM() { return &this->rotate; };
     WMath::mat4* getScaleM() { return &this->scale; };
-    std::shared_ptr<Shader> getShader() { return this->shader; };
+
     int getPickingId() { return this->picking_id; };
 };
 

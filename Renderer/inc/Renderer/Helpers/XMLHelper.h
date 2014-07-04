@@ -6,7 +6,7 @@
 #include <string>
 #include "tinyxml2/tinyxml2.h"
 #include "Renderer/Shader.h"
-#include "Renderer/ModelAsset.h"
+#include "Renderer/Mesh.h"
 #include "Renderer/ModelInstance.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
@@ -21,7 +21,7 @@ namespace XMLHelper
   std::shared_ptr<Camera> parseXMLCamera( tinyxml2::XMLElement* element );
   std::shared_ptr<Shader> parseXMLShader( tinyxml2::XMLElement* element );
   std::shared_ptr<Texture> parseXMLTexture( tinyxml2::XMLElement* element );
-  std::shared_ptr<ModelAsset> parseXMLModelAsset( tinyxml2::XMLElement* element );
+  std::shared_ptr<Mesh> parseXMLMesh( tinyxml2::XMLElement* element );
   std::shared_ptr<Scene> parseXMLScene
     ( std::shared_ptr<ResourceManager> resource_manager );
 }

@@ -13,11 +13,38 @@ void Renderer::render()
 
     for( Scene* scene : this->scenes )
     {
-      scene->draw();
+      this->drawScene( scene );
     }
 
     glfwSwapBuffers( this->window->getWindow() );
     glfwPollEvents();
+}
+
+
+void Renderer::drawScene( Scene* scene )
+{
+  scene->update();
+  std::vector< std::shared_ptr<ModelInstance> >*
+    model_instances = scene->getModelInstances();
+  for( std::shared_ptr<ModelInstance> model_instance : *model_instances )
+  {
+    this->drawModel( model_instance );
+  }
+}
+
+void Renderer::drawModel( std::shared_ptr<ModelInstance> model )
+{
+  model->update();
+  std::shared_ptr<Mesh> mesh = model->getMesh();
+  std::shared_ptr<Shader> shader = model->getShader();
+
+  glBindVertexArray( mesh->getVAO() );
+  shader->use();
+
+  glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
+
+  shader->unuse();
+  glBindVertexArray( 0 );
 }
 
 void Renderer::addScene( Scene* scene )

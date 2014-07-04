@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
-#include "Renderer/ModelAsset.h"
+#include "Renderer/Mesh.h"
 #include "Renderer/Scene.h"
 #include "Renderer/SceneEditor.h"
 #include "Input/Input.h"
@@ -17,6 +17,8 @@ class Renderer
   public:
     Renderer( Window* window );
     void render();
+    void drawScene( Scene* scene );
+    void drawModel( std::shared_ptr<ModelInstance> model );
     void addScene( Scene* scene );
 };
 
