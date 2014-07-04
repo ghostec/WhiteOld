@@ -14,7 +14,7 @@ GUIInstance::GUIInstance( std::shared_ptr<GUIAsset> gui_asset, float width, floa
   offset_x_percent = ( 1.0 / ar ) * offset_x_percent * parent_width;
   offset_y_percent = offset_y_percent * parent_height;
 
-  this->model_instance.reset( new ModelInstance( gui_asset->getModelAsset( GUI_NORMAL ) ) );
+  this->model_instance.reset( new Model( gui_asset->getModelAsset( GUI_NORMAL ) ) );
   WMath::scale( this->model_instance->getScaleM( ),
                 WMath::vec3( ( 1.0f / ar ) * percent, percent, 1.0f ) );
   WMath::translate( this->model_instance->getTranslateM( ),
@@ -41,7 +41,7 @@ GUIInstance::GUIInstance
   offset_y_percent = offset_y_percent * parent_height;
   
   this->model_instance.reset
-    ( new ModelInstance( gui_asset->getModelAsset( GUI_NORMAL ) ) );
+    ( new Model( gui_asset->getModelAsset( GUI_NORMAL ) ) );
   WMath::scale( this->model_instance->getScaleM(), 
                 WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
   WMath::translate( this->model_instance->getTranslateM(),

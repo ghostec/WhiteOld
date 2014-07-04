@@ -95,19 +95,6 @@ void MousePicking::draw_picker_colours()
   this->shader->use();
   // TODO: Send matrices
 
-  for( std::shared_ptr<ModelInstance> model_instance : *scene->getModelInstances( ) )
-  {
-    /*
-    model_instance->getMesh()->configureShader( this->shader );
-    WMath::vec3 picking_color = encode_id( model_instance->getPickingId() );
-    this->shader->setUniform( "unique_id", picking_color.vec );
-    model_instance->getMesh()->before_draw( this->shader );
-    this->shader->setUniform( "Model", model_instance->getTransformM(), GL_TRUE );
-    ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
-    model_instance->getMesh()->draw( this->shader );
-    model_instance->getMesh()->after_draw();
-    */
-  }
   this->shader->unuse( );
 
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );

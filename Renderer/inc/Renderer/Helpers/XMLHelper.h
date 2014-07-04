@@ -7,7 +7,7 @@
 #include "tinyxml2/tinyxml2.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Mesh.h"
-#include "Renderer/ModelInstance.h"
+#include "Renderer/Model.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
 #include "Renderer/Light.h"

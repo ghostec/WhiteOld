@@ -24,15 +24,15 @@ void Renderer::render()
 void Renderer::drawScene( Scene* scene )
 {
   scene->update();
-  std::vector< std::shared_ptr<ModelInstance> >*
-    model_instances = scene->getModelInstances();
-  for( std::shared_ptr<ModelInstance> model_instance : *model_instances )
+  std::vector< std::shared_ptr<Model> >*
+    model_instances = scene->getModels();
+  for( std::shared_ptr<Model> model_instance : *model_instances )
   {
     this->drawModel( model_instance );
   }
 }
 
-void Renderer::drawModel( std::shared_ptr<ModelInstance> model )
+void Renderer::drawModel( std::shared_ptr<Model> model )
 {
   model->update();
   std::shared_ptr<Mesh> mesh = model->getMesh();

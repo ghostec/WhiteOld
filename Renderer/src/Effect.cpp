@@ -9,16 +9,16 @@ void interpolation_function( EffectComponent* effect_component,
                                   effect_component->final_value );
 }
 
-void effect_function2( ModelInstance* model_instance,
+void effect_function2( Model* model,
   float value )
 {
-  WMath::translate( model_instance->getTranslateM(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
+  WMath::translate( model->getTranslateM(), WMath::vec3( 0.005f, 0.0f, 0.0f ) );
 }
 
-void effect_function3( ModelInstance* model_instance,
+void effect_function3( Model* model,
   float value )
 {
-  WMath::rotate_y( model_instance->getRotateM(), 2.5f );
+  WMath::rotate_y( model->getRotateM(), 2.5f );
 }
 
 EffectComponent fadeOut( float duration )
@@ -32,9 +32,9 @@ EffectComponent fadeOut( float duration )
   return effect_component;
 }
 
-Effect::Effect( std::shared_ptr<ModelInstance> model_instance )
+Effect::Effect( std::shared_ptr<Model> model )
 {
-  this->model_instance = model_instance;
+  this->model = model;
   this->created_at = std::chrono::high_resolution_clock::now();
 }
 
@@ -51,7 +51,7 @@ void Effect::execute()
   {
     if( elapsed > effect_component.duration )
     {
-      ( effect_component.effect_function )( &*this->model_instance,
+      ( effect_component.effect_function )( &*this->model,
                                               effect_component.final_value );
       marked_indices.push_back( index );
     }
@@ -59,7 +59,7 @@ void Effect::execute()
     {
       ( effect_component.interpolation_function )
         ( &effect_component, elapsed );
-      ( effect_component.effect_function )( &*this->model_instance,
+      ( effect_component.effect_function )( &*this->model,
         effect_component.current_value );
     }
     index += 1;

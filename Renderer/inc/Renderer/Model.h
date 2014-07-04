@@ -1,5 +1,5 @@
-#ifndef __RENDERER_MODELINSTANCE__
-#define __RENDERER_MODELINSTANCE__
+#ifndef __RENDERER_MODEL__
+#define __RENDERER_MODEL__
 
 #include <vector>
 #include <memory>
@@ -8,7 +8,7 @@
 #include "Renderer/Helpers/ShaderHelper.h"
 #include "WMath/WMath.h"
 
-class ModelInstance
+class Model
 {
   private:
     std::shared_ptr<Mesh> mesh;
@@ -17,7 +17,7 @@ class ModelInstance
     std::shared_ptr<Texture> texture;
     WMath::mat4 transform, translate, rotate, scale;
   public:
-    ModelInstance( std::shared_ptr<Mesh> mesh );
+    Model( std::shared_ptr<Mesh> mesh );
     void update();
 
     // setters

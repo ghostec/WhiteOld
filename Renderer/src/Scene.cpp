@@ -14,9 +14,9 @@ void Scene::update()
   }
 }
 
-void Scene::addModel( std::shared_ptr<ModelInstance> model_instance )
+void Scene::addModel( std::shared_ptr<Model> model_instance )
 {
-  this->model_instances.push_back( model_instance );
+  this->models.push_back( model_instance );
 }
 
 void Scene::addLight( std::shared_ptr<Light> light )
@@ -31,7 +31,7 @@ void Scene::updateLightsForShader( std::shared_ptr<Shader> shader )
 
 void Scene::updateLights()
 {
-  for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
+  for( std::shared_ptr<Model> model_instance : this->models )
     this->updateLightsForShader( model_instance->getShader() );
 }
 
@@ -47,6 +47,6 @@ void Scene::updateCameraForShader( std::shared_ptr<Shader> shader )
 
 void Scene::updateCamera()
 {
-  for( std::shared_ptr<ModelInstance> model_instance : this->model_instances )
-    this->updateCameraForShader( model_instance->getShader() );
+  for( std::shared_ptr<Model> model : this->models )
+    this->updateCameraForShader( model->getShader() );
 }

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Renderer/Scene.h"
-#include "Renderer/ModelInstance.h"
+#include "Renderer/Model.h"
 #include "Renderer/Shader.h"
 #include "Renderer/MousePicking.h"
 
@@ -18,7 +18,7 @@ class SceneEditor
   private:
     std::shared_ptr<Scene> scene;
     std::shared_ptr<MousePicking> mouse_picking;
-    std::shared_ptr<ModelInstance> selected_model_instance;
+    std::shared_ptr<Model> selected_model_instance;
     std::shared_ptr<Shader> shader;
   public:
     Movable moves;

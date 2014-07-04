@@ -7,7 +7,7 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Mesh.h"
-#include "Renderer/ModelInstance.h"
+#include "Renderer/Model.h"
 #include "Renderer/ModelData.h"
 #include <typeinfo>
 
@@ -19,8 +19,8 @@ class ResourceManager
   private:
     ResourceMap<Shader> shader;
     ResourceMap<Texture> texture;
-    ResourceMap<Mesh> model_asset;
-    ResourceMap<ModelInstance> model_instance;
+    ResourceMap<Mesh> mesh;
+    ResourceMap<Model> model;
   public:
     void addShader( std::string name, std::shared_ptr<Shader> shader )
       { this->shader[name] = shader; }
@@ -29,12 +29,12 @@ class ResourceManager
       { this->texture[name] = texture; }
 
     void addMesh( std::string name,
-      std::shared_ptr<Mesh> model_asset )
-      { this->model_asset[name] = model_asset; }
+      std::shared_ptr<Mesh> mesh )
+      { this->mesh[name] = mesh; }
 
-    void addModelInstance( std::string name,
-      std::shared_ptr<ModelInstance> model_instance )
-      { this->model_instance[name] = model_instance; }
+    void addModel( std::string name,
+      std::shared_ptr<Model> model )
+      { this->model[name] = model; }
 
     std::shared_ptr<Shader> getShader( std::string name )
       { return this->shader[name]; }
@@ -43,10 +43,10 @@ class ResourceManager
       { return this->texture[name]; }
 
     std::shared_ptr<Mesh> getMesh( std::string name )
-      { return this->model_asset[name]; }
+      { return this->mesh[name]; }
 
-    std::shared_ptr<ModelInstance> getModelInstance( std::string name )
-      { return this->model_instance[name]; }
+    std::shared_ptr<Model> getModel( std::string name )
+      { return this->model[name]; }
 };
 
 #endif

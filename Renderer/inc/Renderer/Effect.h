@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include <functional>
-#include "Renderer/ModelInstance.h"
+#include "Renderer/Model.h"
 #include "WMath/interpolation.h"
 
 template<typename Class>
@@ -27,16 +27,16 @@ typedef struct EffectComponent
     ( EffectComponent* effect_component,
       float time_elapsed );
   void (*effect_function)
-    ( ModelInstance* model_instance, float value );
+    ( Model* model_instance, float value );
 } EffectComponent;
 
 void interpolation_function( EffectComponent* effect_component,
   float time_elapsed );
-void effect_function( ModelInstance* model_instance,
+void effect_function( Model* model_instance,
   float value );
-void effect_function2( ModelInstance* model_instance,
+void effect_function2( Model* model_instance,
   float value );
-void effect_function3( ModelInstance* model_instance,
+void effect_function3( Model* model_instance,
   float value );
 
 EffectComponent fadeOut( float duration );
@@ -45,10 +45,10 @@ class Effect
 {
   private:
     std::chrono::high_resolution_clock::time_point created_at;
-    std::shared_ptr<ModelInstance> model_instance;
+    std::shared_ptr<Model> model;
     std::vector< EffectComponent > effect_components;
   public:
-    Effect( std::shared_ptr<ModelInstance> model_instance );
+    Effect( std::shared_ptr<Model> model_instance );
     void addComponent( EffectComponent effect_component );
     void execute();
     // getters

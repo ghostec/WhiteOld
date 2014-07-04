@@ -66,8 +66,7 @@ SET(
   Scene.cpp
   Light.cpp
   Window.cpp
-  ModelData.cpp
-  ModelInstance.cpp
+  Model.cpp
   SceneEditor.cpp
   GUIAsset.cpp
   GUIInstance.cpp
@@ -92,7 +91,7 @@ SET(
   Shader.h
   Window.h
   ModelData.h
-  ModelInstance.h
+  Model.h
   MousePicking.h
   SceneEditor.h
   GUIAsset.h
