@@ -39,9 +39,15 @@ int main()
   //scene.addLight( std::shared_ptr<Light>( &light ) );
   //light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 
+  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
+  std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
+  GUIState gui_state = { shader, texture };
+
   GUIScene gui_scene;
   std::shared_ptr<GUIElement> gui_window( new GUIElement( 800.0f, 600.0f, 0, 0, 0, 0 ) );
   std::shared_ptr<GUIElement> gui_element( new GUIElement( gui_window, 0.25, 0, 0, 0, 0 ) );
+  gui_element->setState( "normal", gui_state );
+  gui_element->setState( "normal" );
   gui_scene.addGUIElement( gui_element );
 
   Renderer renderer( &window );

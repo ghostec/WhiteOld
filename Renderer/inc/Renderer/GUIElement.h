@@ -25,7 +25,8 @@ class GUIElement
     GUIElement( std::shared_ptr<GUIElement> parent, float percent,
       float offset_x, float offset_y,
       float offset_x_percent, float offset_y_percent );
-    void setState( std::string name, std::shared_ptr<Model> model );
+    void setState( std::string name );
+    void setState( std::string name, GUIState state );
     void translate( float x, float y );
     // getters
     float getWidth() { return this->width; };

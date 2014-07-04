@@ -14,11 +14,8 @@ GUIElement::GUIElement
   offset_y_percent = offset_y_percent * parent_height;
 
   std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
-  std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
-  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
   this->model.reset( new Model( mesh, MODEL_2D ) );
-  model->setTexture( texture );
-  model->setShader( shader );
+
   WMath::scale( this->model->getScaleM( ),
                 WMath::vec3( ( 1.0f / ar ) * percent, percent, 1.0f ) );
   WMath::translate( this->model->getTranslateM( ),
@@ -43,11 +40,7 @@ GUIElement::GUIElement
   offset_y_percent = offset_y_percent * parent_height;
   
   std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
-  std::shared_ptr<Texture> texture( new Texture( "wooden-crate.jpg" ) );
-  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
   this->model.reset( new Model( mesh ) );
-  model->setTexture( texture );
-  model->setShader( shader );
 
   WMath::scale( this->model->getScaleM(),
     WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
@@ -56,6 +49,19 @@ GUIElement::GUIElement
     WMath::vec3( -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width,
     1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height, 
     0.0f ) );
+}
+
+void GUIElement::setState( std::string name )
+{
+  this->current_state = name;
+  this->model->setShader( this->state[name].shader );
+  this->model->setTexture( this->state[name].texture );
+}
+
+void GUIElement::setState( std::string name, GUIState state )
+{
+  this->current_state = name;
+  this->state[name] = state;
 }
 
 void GUIElement::translate( float x, float y )
