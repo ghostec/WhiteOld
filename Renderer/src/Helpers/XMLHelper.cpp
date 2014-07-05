@@ -7,12 +7,29 @@ namespace XMLHelper
     return element->FirstChildElement( name )->GetText();
   }
 
+  WMath::vec2 parseVec2( tinyxml2::XMLElement* element, const char* name )
+  {
+    if( !element->FirstChildElement( name ) )
+      return WMath::vec2( 0 );
+
+    const tinyxml2::XMLAttribute* attribute =
+      element->FirstChildElement( name )->FirstAttribute();
+    return WMath::vec2
+      ( attribute->FloatValue(),
+        attribute->Next()->FloatValue() );
+  }
+
   WMath::vec3 parseVec3( tinyxml2::XMLElement* element, const char* name )
   {
-    float x = element->FirstChildElement( name )->FloatAttribute( "x" );
-    float y = element->FirstChildElement( name )->FloatAttribute( "y" );
-    float z = element->FirstChildElement( name )->FloatAttribute( "z" );
-    return WMath::vec3( x, y, z );
+    if( !element->FirstChildElement( name ) )
+      return WMath::vec3( 0 );
+
+    const tinyxml2::XMLAttribute* attribute =
+      element->FirstChildElement( name )->FirstAttribute();
+    return WMath::vec3
+      ( attribute->FloatValue(),
+      attribute->Next()->FloatValue(),
+      attribute->Next()->Next()->FloatValue() );
   }
   
   std::shared_ptr<Camera> parseCamera( tinyxml2::XMLElement* element )
@@ -90,8 +107,62 @@ namespace XMLHelper
     return model;
   }
 
-Scene loadScene( std::string file_name,
-  std::shared_ptr<ResourceManager> resource_manager )
+  std::shared_ptr<GUIElement> parseGUIElement
+    ( tinyxml2::XMLElement* element, GUIManager* gui_manager,
+    std::shared_ptr<ResourceManager> resource_manager )
+  {
+    const char* name = parseString( element, "name" );
+    const char* mesh_name = parseString( element, "mesh" );
+    std::shared_ptr<Mesh> mesh = resource_manager->getMesh( mesh_name );
+
+    WMath::vec2 offset = parseVec2( element, "offset" );
+    WMath::vec2 offset_percent = parseVec2( element, "offset_percent" );
+    WMath::vec2 dimensions = parseVec2( element, "dimensions" );
+
+    std::shared_ptr<GUIElement> gui_parent = nullptr;
+
+    float parent_percent = 1;
+
+    if( element->FirstChildElement( "parent" ) )
+    {
+      tinyxml2::XMLElement* parent_el = element->FirstChildElement( "parent" );
+      std::string parent_name = parent_el->Attribute( "name" );
+      parent_percent = parent_el->FloatAttribute( "percent" );
+
+      gui_manager->createGUIElement( name, parent_name, parent_percent, offset, offset_percent );
+    }
+    else
+    {
+      gui_manager->createGUIElement( name, dimensions, offset, offset_percent );
+    }
+
+    std::shared_ptr<GUIElement> gui_element = gui_manager->getGUIElement( name );
+
+    element = element->FirstChildElement( "state" );
+
+    while( element )
+    {
+      std::string name = parseString( element, "name" );
+      std::string shader_name = parseString( element, "shader" );
+      std::string texture_name = parseString( element, "texture" );
+
+      std::shared_ptr<Shader> shader =
+        resource_manager->getShader( shader_name );
+
+      std::shared_ptr<Texture> texture =
+        resource_manager->getTexture( texture_name );
+
+      GUIState gui_state = { shader, texture };
+      gui_element->setState( name, gui_state );
+
+      element = element->NextSiblingElement( "state" );
+    }
+
+    return gui_element;
+  }
+
+  Scene loadScene( std::string file_name,
+    std::shared_ptr<ResourceManager> resource_manager )
   {
     tinyxml2::XMLDocument doc;
     doc.LoadFile( "../assets/xml/example.xml" );
@@ -128,5 +199,43 @@ Scene loadScene( std::string file_name,
     } while( element );
 
     return scene;
+  }
+
+  GUIScene loadGUIScene( std::string file_name, GUIManager* gui_manager,
+    std::shared_ptr<ResourceManager> resource_manager )
+  {
+    tinyxml2::XMLDocument doc;
+    doc.LoadFile( "../assets/xml/gui.xml" );
+
+    GUIScene gui_scene;
+
+    tinyxml2::XMLElement* element = doc.FirstChildElement( "gui_scene" )->FirstChildElement( );
+    do
+    {
+      if( strcmp( element->Name( ), "shader" ) == 0 )
+      {
+        parseShader( element, resource_manager );
+      }
+      else if( strcmp( element->Name( ), "texture" ) == 0 )
+      {
+        parseTexture( element, resource_manager );
+      }
+      else if( strcmp( element->Name( ), "mesh" ) == 0 )
+      {
+        parseMesh( element, resource_manager );
+      }
+      else if( strcmp( element->Name( ), "gui_element" ) == 0 )
+      {
+        const char* name = parseString( element, "name" );
+
+        std::shared_ptr<GUIElement> gui_element =
+          parseGUIElement( element, gui_manager, resource_manager );
+
+        gui_scene.addGUIElement( name, gui_element );
+      }
+      element = element->NextSiblingElement();
+    } while( element );
+
+    return gui_scene;
   }
 }

@@ -1,54 +1,56 @@
 #include "Renderer/GUIElement.h"
 
-GUIElement::GUIElement
-  ( float width, float height, float offset_x, float offset_y,
-  float offset_x_percent, float offset_y_percent )
+void GUIElement::constructorTail
+  ( std::shared_ptr<Mesh> mesh, float ar, WMath::vec2 parent_dimensions,
+  WMath::vec2 offset, WMath::vec2 offset_percent, float parent_percent )
 {
-  this->width = width;
-  this->height = height;
-  float ar = 1.0f;
-  float percent = 1.0f;
-  float parent_width = 800.0f;
-  float parent_height = 600.0f;
-  offset_x_percent = ( 1.0 / ar ) * offset_x_percent * parent_width;
-  offset_y_percent = offset_y_percent * parent_height;
+  offset_percent[0] = ( 1.0 / ar ) * offset_percent[0] * parent_dimensions[0];
+  offset_percent[1] = offset_percent[1] * parent_dimensions[1];
 
-  std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
-  this->model.reset( new Model( mesh, MODEL_2D ) );
+  this->model.reset( new Model( mesh ) );
 
   WMath::scale( this->model->getScaleM( ),
-                WMath::vec3( ( 1.0f / ar ) * percent, percent, 1.0f ) );
+    WMath::vec3( ( 1.0f / ar ) * parent_percent, parent_percent, 1.0f ) );
+
   WMath::translate( this->model->getTranslateM( ),
-                    WMath::vec3( -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width,
-                    1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height,
-                    0.0f ) );
+    WMath::vec3
+    ( -1.0f + ( dimensions[0] + 2.0f*offset[0] + 2.0f*offset_percent[0] )
+    / parent_dimensions[0],
+    1.0f - ( dimensions[1] + 2.0f*offset[1] + 2.0f*offset_percent[1] )
+    / parent_dimensions[1],
+    0.0f ) );
 }
 
 GUIElement::GUIElement
-  ( std::shared_ptr<GUIElement> parent,
-  float percent, float offset_x, float offset_y,
-  float offset_x_percent, float offset_y_percent )
+  ( std::shared_ptr<Mesh> mesh, std::shared_ptr<GUIElement> parent,
+  float parent_percent, WMath::vec2 offset, WMath::vec2 offset_percent,
+  GUIType gui_type )
 {
-  float parent_width = parent->getWidth();
-  float parent_height = parent->getHeight();
-
-  float ar = parent_width / parent_height;
-
-  this->width = ( 1.0f / ar ) * percent * parent_width;
-  this->height = percent * parent_height;
-  offset_x_percent = ( 1.0 / ar ) * offset_x_percent * parent_width;
-  offset_y_percent = offset_y_percent * parent_height;
+  this->gui_type = gui_type;
   
-  std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
-  this->model.reset( new Model( mesh ) );
+  WMath::vec2 parent_dimensions = parent->getDimensions( );
+  float ar = parent_dimensions[0] / parent_dimensions[1];
+  this->dimensions[0] = ( 1.0f / ar ) * parent_percent * parent_dimensions[0];
+  this->dimensions[1] = parent_percent * parent_dimensions[1];
 
-  WMath::scale( this->model->getScaleM(),
-    WMath::vec3( (1.0f / ar) * percent, percent, 1.0f ) );
+  this->constructorTail( mesh, ar, parent_dimensions, offset,
+    offset_percent, parent_percent );
+}
 
-  WMath::translate( this->model->getTranslateM(),
-    WMath::vec3( -1.0f + ( width + 2.0f*offset_x + 2.0f*offset_x_percent ) / parent_width,
-    1.0f - ( height + 2.0f*offset_y + 2.0f*offset_y_percent ) / parent_height, 
-    0.0f ) );
+GUIElement::GUIElement
+  ( std::shared_ptr<Mesh> mesh, WMath::vec2 dimensions, WMath::vec2 offset,
+  WMath::vec2 offset_percent, GUIType gui_type )
+{
+  this->gui_type = gui_type;
+
+  // TODO: A manager that holds essential data (as current window dimension)
+  // that can be globally accessed.
+  WMath::vec2 parent_dimensions = { 800.0f, 600.0f };
+  float ar = 1.0f;
+  this->dimensions = dimensions;
+
+  this->constructorTail( mesh, ar, parent_dimensions, offset,
+    offset_percent, 1.0f );
 }
 
 void GUIElement::setState( std::string name )

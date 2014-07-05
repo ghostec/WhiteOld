@@ -15,6 +15,7 @@
 #include "Renderer/Light.h"
 #include "Renderer/MousePicking.h"
 #include "Renderer/SceneEditor.h"
+#include "Renderer/GUIManager.h"
 #include "Renderer/GUIElement.h"
 #include "Renderer/GUIScene.h"
 #include "Renderer/Effect.h"
@@ -39,16 +40,13 @@ int main()
   //scene.addLight( std::shared_ptr<Light>( &light ) );
   //light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
 
-  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
-  std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
-  GUIState gui_state = { shader, texture };
+  GUIManager gui_manager( resource_manager );
 
-  GUIScene gui_scene;
-  std::shared_ptr<GUIElement> gui_window( new GUIElement( 800.0f, 600.0f, 0, 0, 0, 0 ) );
-  std::shared_ptr<GUIElement> gui_element( new GUIElement( gui_window, 0.25, 0, 0, 0, 0 ) );
-  gui_element->setState( "normal", gui_state );
+  GUIScene gui_scene = XMLHelper::loadGUIScene( "gui", &gui_manager, resource_manager );
+  std::shared_ptr<GUIElement> gui_element = gui_manager.getGUIElement( "gui_element" );
+
   gui_element->setState( "normal" );
-  gui_scene.addGUIElement( gui_element );
+  gui_scene.addGUIElement( "name", gui_element );
 
   Renderer renderer( &window );
   renderer.addScene( gui_scene.getScene() );

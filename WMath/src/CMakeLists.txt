@@ -6,6 +6,7 @@ SET(
   mat4.cpp
   vec4.cpp
   vec3.cpp
+  vec2.cpp
   transformations.cpp
   interpolation.cpp
 )
