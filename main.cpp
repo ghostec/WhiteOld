@@ -33,34 +33,37 @@ int main()
 
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
 
-  std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
   std::shared_ptr<Shader> shader( new Shader( "gui" ) );
   std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
   GUIState gui_state = { shader, texture };
 
-  GUIScene gui_scene;
+  GUIManager gui_manager( resource_manager );
 
-  std::shared_ptr<GUIElement> gui_window( new GUIElement( mesh, nullptr, CONTAINER ) );
-  std::shared_ptr<GUIElement> gui_element( new GUIElement( mesh, gui_window, DRAWNABLE ) );
-  gui_window->addChild( gui_element );
+  gui_manager.createGUIScene( "gui_scene" );
+  std::shared_ptr<GUIScene> gui_scene = gui_manager.getGUIScene( "gui_scene" );
+
+  gui_manager.createGUIElement( "gui_element", "gui_scene" );
+
+  std::shared_ptr<GUIElement> gui_element =
+    gui_manager.getGUIElement( "gui_element" );
+
   gui_element->setState( "normal", gui_state );
   gui_element->setState( "normal" );
-  gui_scene.addGUIElement( "window", gui_window );
-  gui_scene.addGUIElement( "element", gui_element );
 
-  gui_window->setParentPercent( 0.25 );
+  gui_element->setParentPercent( 0.50 );
+  gui_element->setOffsetPercent( 0.1 );
 
   //gui_window->setParentPercent( 0.5 );
 
   Renderer renderer( &window );
-  renderer.addScene( gui_scene.getScene() );
+  renderer.addScene( gui_scene->getScene() );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
-    gui_scene.update();
+    gui_scene->update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();

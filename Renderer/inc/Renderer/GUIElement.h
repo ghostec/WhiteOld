@@ -1,6 +1,7 @@
 #ifndef __RENDERER_GUIELEMENT__
 #define __RENDERER_GUIELEMENT__
 
+#include <memory>
 #include "Renderer/Model.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Texture.h"
@@ -52,6 +53,8 @@ class GUIElement : public std::enable_shared_from_this<GUIElement>
     WMath::vec2 getDimensions() { return this->dimensions; }
     std::shared_ptr<Model> getModel() { return this->model; };
     std::shared_ptr<GUIElement> getParent() { return this->parent; }
+    std::vector< std::shared_ptr<GUIElement> >* getChildren()
+      { return &this->child; }
     GUIType getGUIType() { return this->gui_type; }
     bool isDirty() { return this->dirty; }
 };

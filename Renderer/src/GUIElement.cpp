@@ -6,7 +6,6 @@ GUIElement::GUIElement
 {
   this->model.reset( new Model( mesh ) );
   this->parent = parent;
-  //if( parent ) parent->addChild( shared_from_this() );
   this->gui_type = gui_type;
   this->ratio = this->parent_percent = 1.0f;
   this->offset = this->offset_percent = WMath::vec2(0);

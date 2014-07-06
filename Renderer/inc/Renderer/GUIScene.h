@@ -1,6 +1,7 @@
 #ifndef __RENDERER_GUISCENE__
 #define __RENDERER_GUISCENE__
 
+#include <queue>
 #include <map>
 #include <memory>
 #include "Renderer/Scene.h"
@@ -10,16 +11,13 @@
 class GUIScene
 {
   private:
-    std::map< std::string, std::shared_ptr<GUIElement> > gui_elements;
+    std::shared_ptr<GUIElement> window;
     Scene scene;
   public:
-    void addGUIElement( std::string name,
-      std::shared_ptr<GUIElement> gui_element );
+    GUIScene( std::shared_ptr<GUIElement> window );
     void update();
     // getters
     Scene* getScene() { return &this->scene; }
-    std::shared_ptr<GUIElement> getGUIElement( std::string name )
-      { return this->gui_elements[name]; }
 };
 
 #endif

@@ -129,11 +129,11 @@ namespace XMLHelper
       std::string parent_name = parent_el->Attribute( "name" );
       parent_percent = parent_el->FloatAttribute( "percent" );
 
-      gui_manager->createGUIElement( name, parent_name, parent_percent, offset, offset_percent );
+      //gui_manager->createGUIElement( name, parent_name, parent_percent, offset, offset_percent );
     }
     else
     {
-      gui_manager->createGUIElement( name, dimensions, offset, offset_percent );
+      //gui_manager->createGUIElement( name, dimensions, offset, offset_percent );
     }
 
     std::shared_ptr<GUIElement> gui_element = gui_manager->getGUIElement( name );
@@ -207,7 +207,7 @@ namespace XMLHelper
     tinyxml2::XMLDocument doc;
     doc.LoadFile( "../assets/xml/gui.xml" );
 
-    GUIScene gui_scene;
+    //GUIScene gui_scene;
 
     tinyxml2::XMLElement* element = doc.FirstChildElement( "gui_scene" )->FirstChildElement( );
     do
@@ -231,11 +231,11 @@ namespace XMLHelper
         std::shared_ptr<GUIElement> gui_element =
           parseGUIElement( element, gui_manager, resource_manager );
 
-        gui_scene.addGUIElement( name, gui_element );
+        //gui_scene.addGUIElement( name, gui_element );
       }
       element = element->NextSiblingElement();
     } while( element );
 
-    return gui_scene;
+    return nullptr;
   }
 }

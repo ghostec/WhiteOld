@@ -1,20 +1,29 @@
 #include "Renderer/GUIScene.h"
 
-void GUIScene::addGUIElement( std::string name,
-  std::shared_ptr<GUIElement> gui_element )
+GUIScene::GUIScene( std::shared_ptr<GUIElement> window )
 {
-  this->gui_elements[name] = gui_element;
+  this->window = window;
 }
 
 void GUIScene::update()
 {
-  this->scene.getModels( )->clear();
-  for( auto& el : this->gui_elements )
+  this->scene.getModels()->clear();
+
+  std::queue< std::shared_ptr<GUIElement> > el_queue;
+  el_queue.push( this->window );
+
+  while( !el_queue.empty() )
   {
-    if( el.second->isDirty( ) ) el.second->update( );
-    if( el.second->getGUIType() == DRAWNABLE )
-    {
-      this->scene.addModel( el.second->getModel() );
-    }
+    std::cout << el_queue.size() << std::endl;
+    std::shared_ptr<GUIElement> el = el_queue.front();
+    el_queue.pop();
+
+    if( el->isDirty() ) el->update();
+    if( el->getGUIType() == DRAWNABLE ) this->scene.addModel( el->getModel() );
+
+    std::vector< std::shared_ptr<GUIElement> >* children =
+      el->getChildren( );
+
+    for( std::shared_ptr<GUIElement> el : *children ) el_queue.push( el );
   }
 }
