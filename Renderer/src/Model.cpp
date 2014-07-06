@@ -26,3 +26,9 @@ WMath::mat4* Model::getTransformM( )
   this->transform = this->scale * this->rotate * this->translate;
   return &this->transform;
 }
+
+void Model::resetTransform()
+{
+  WMath::mat4 m; 
+  transform = scale = rotate = translate = m;
+}
