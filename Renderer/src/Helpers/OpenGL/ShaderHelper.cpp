@@ -12,14 +12,13 @@ namespace ShaderHelper
     shader->setUniform( "lights[0].ambientCoefficient", 0.005f );
   }
 
-  void setCamera( Shader* shader, Camera* camera )
+  void setCamera(Shader* shader, Camera* camera)
   {
-    shader->setUniform( "camera.view",
+	shader->setUniform( "camera.view",
       camera->getView(), GL_FALSE );
     shader->setUniform( "camera.proj",
       camera->getProj(), GL_FALSE );
   }
-
   void setModelData( Shader* shader, ModelData* model_data )
   {
     for( auto it = model_data->getFloatMap()->begin();

@@ -19,9 +19,12 @@ class Camera
     void setPosition( WMath::vec3 position );
     void setTarget( WMath::vec3 target );
     void setDirty( bool value ) { this->dirty = value; };
+	void setView(WMath::vec3 position, WMath::vec3 target) { this->view = WMath::lookAtRH(position, target, up); };
     // getters
     WMath::mat4* getView() { return &this->view; };
     WMath::mat4* getProj( ) { return &this->proj; };
+	WMath::vec3* getPosition() { return &this->position; };
+	WMath::vec3* getTarget() { return &this->target; };
     bool getDirty() { return this->dirty; };
 };
 

@@ -30,6 +30,7 @@ class Scene
     std::vector< std::shared_ptr<Model> >* getModels()
       { return &this->models; }
     std::shared_ptr<Camera> getCamera() { return this->camera; }
+	std::vector< std::shared_ptr<Light> >* getLights(){ return &this->lights; }
 };
 
 #endif
