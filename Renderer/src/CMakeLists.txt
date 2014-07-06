@@ -67,7 +67,8 @@ SET(
   Light.cpp
   Window.cpp
   Model.cpp
-  SceneEditor.cpp
+  ShadowMapFBO.cpp
+  SceneEditor.cpp  
   GUIManager.cpp
   GUIElement.cpp
   GUIScene.cpp
@@ -93,6 +94,7 @@ SET(
   ModelData.h
   Model.h
   MousePicking.h
+  ShadowMapFBO.h
   SceneEditor.h
   GUIManager.h
   GUIElement.h

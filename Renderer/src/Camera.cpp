@@ -13,10 +13,12 @@ Camera::Camera( WMath::vec3 position, WMath::vec3 target )
 
 void Camera::setPosition( WMath::vec3 position )
 {
+  this->position = position;
   this->dirty = true;
 }
 
 void Camera::setTarget( WMath::vec3 target )
 {
+  this->target = target;
   this->dirty = true;
 }
