@@ -11,9 +11,10 @@ void GUIScene::update()
   this->scene.getModels( )->clear();
   for( auto& el : this->gui_elements )
   {
+    if( el.second->isDirty( ) ) el.second->update( );
     if( el.second->getGUIType() == DRAWNABLE )
     {
-      this->scene.addModel( el.second->getModel( ) );
+      this->scene.addModel( el.second->getModel() );
     }
   }
 }

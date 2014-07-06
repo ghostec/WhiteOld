@@ -25,6 +25,7 @@ class Model
   public:
     Model( std::shared_ptr<Mesh> mesh, ModelType model_type = MODEL_3D );
     void update();
+    void resetTransform();
 
     // setters
     void setShader( std::shared_ptr<Shader> shader );

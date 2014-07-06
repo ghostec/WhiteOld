@@ -5,12 +5,12 @@ namespace WMath
 {
   vec2::vec2()
   {
-    vec[0] = vec[1] = vec[2] = 0.0f;
+    vec[0] = vec[1] = 0.0f;
   }
 
   vec2::vec2( float a )
   {
-    vec[0] = vec[1] = vec[2] = a;
+    vec[0] = vec[1] = a;
   }
 
   vec2::vec2( float x, float y )

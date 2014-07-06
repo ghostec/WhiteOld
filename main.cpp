@@ -32,21 +32,25 @@ int main()
   active_input = &input;
 
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
-  //Scene scene = XMLHelper::loadScene( "example", resource_manager );
 
-  //Light light( WMath::vec3( -3.0f, 0.0f, 2.0f ),
-  //  WMath::vec3( 1.0f, 1.0f, 1.0f ), 0.2f, 0.005f );
+  std::shared_ptr<Mesh> mesh( new Mesh( "square.obj" ) );
+  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
+  std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
+  GUIState gui_state = { shader, texture };
 
-  //scene.addLight( std::shared_ptr<Light>( &light ) );
-  //light.setPosition( WMath::vec3( -3.0f, 0.0f, 2.0f ) );
+  GUIScene gui_scene;
 
-  GUIManager gui_manager( resource_manager );
-
-  GUIScene gui_scene = XMLHelper::loadGUIScene( "gui", &gui_manager, resource_manager );
-  std::shared_ptr<GUIElement> gui_element = gui_manager.getGUIElement( "gui_element" );
-
+  std::shared_ptr<GUIElement> gui_window( new GUIElement( mesh, nullptr, CONTAINER ) );
+  std::shared_ptr<GUIElement> gui_element( new GUIElement( mesh, gui_window, DRAWNABLE ) );
+  gui_window->addChild( gui_element );
+  gui_element->setState( "normal", gui_state );
   gui_element->setState( "normal" );
-  gui_scene.addGUIElement( "name", gui_element );
+  gui_scene.addGUIElement( "window", gui_window );
+  gui_scene.addGUIElement( "element", gui_element );
+
+  gui_window->setParentPercent( 0.25 );
+
+  //gui_window->setParentPercent( 0.5 );
 
   Renderer renderer( &window );
   renderer.addScene( gui_scene.getScene() );
