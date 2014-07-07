@@ -15,11 +15,12 @@ class Renderer
   private:
     Window* window;
     std::vector< Scene* > scenes;
+
+    void drawScene( Scene* scene );
+    void drawModel( std::shared_ptr<Model> model );
   public:
     Renderer( Window* window );
     void render();
-    void drawScene( Scene* scene );
-    void drawModel( std::shared_ptr<Model> model );
     void addScene( Scene* scene );
 };
 
