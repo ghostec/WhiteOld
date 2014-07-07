@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <memory>
+#include "Renderer/Shader.h"
+#include "Renderer/Texture.h"
 #include "Renderer/Mesh.h"
 #include "Renderer/ModelData.h"
 #include "Renderer/Helpers/ShaderHelper.h"

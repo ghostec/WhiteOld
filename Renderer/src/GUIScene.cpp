@@ -14,7 +14,6 @@ void GUIScene::update()
 
   while( !el_queue.empty() )
   {
-    std::cout << el_queue.size() << std::endl;
     std::shared_ptr<GUIElement> el = el_queue.front();
     el_queue.pop();
 

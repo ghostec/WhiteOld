@@ -6,10 +6,8 @@
 #include <string>
 #include <array>
 #include <vector>
-#include <SOIL/SOIL.h>
-#include "Renderer/Helpers/ModelAssetHelper.h"
 #include "Renderer/Shader.h"
-#include "Renderer/Texture.h"
+#include "Renderer/Helpers/ModelAssetHelper.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"

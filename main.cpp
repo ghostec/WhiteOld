@@ -51,7 +51,7 @@ int main()
   gui_element->setState( "normal" );
 
   gui_element->setParentPercent( 0.50 );
-  gui_element->setOffsetPercent( 0.1 );
+  gui_element->addOffsetPercent( WMath::vec2( 0.1 ) );
 
   //gui_window->setParentPercent( 0.5 );
 

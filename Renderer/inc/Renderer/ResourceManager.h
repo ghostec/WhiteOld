@@ -22,7 +22,6 @@ class ResourceManager
     ResourceMap<Texture> texture;
     ResourceMap<Mesh> mesh;
     ResourceMap<Model> model;
-    ResourceMap<GUIElement> gui_element;
   public:
     void addShader( std::string name, std::shared_ptr<Shader> shader )
       { this->shader[name] = shader; }
@@ -38,10 +37,6 @@ class ResourceManager
       std::shared_ptr<Model> model )
       { this->model[name] = model; }
 
-    void addGUIElement( std::string name,
-      std::shared_ptr<GUIElement> gui_element )
-      { this->gui_element[name] = gui_element; }
-
     std::shared_ptr<Shader> getShader( std::string name )
       { return this->shader[name]; }
 
@@ -53,9 +48,6 @@ class ResourceManager
 
     std::shared_ptr<Model> getModel( std::string name )
       { return this->model[name]; }
-
-    std::shared_ptr<GUIElement> getGUIElement( std::string name )
-      { return this->gui_element[name]; }
 };
 
 #endif
