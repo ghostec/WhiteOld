@@ -1,8 +1,11 @@
-White's Lab
+# White's Lab
 
-This is my attempt to create a working game engine.
+This is an attempt to create a game engine.
 
-At first I am going to develop the necessary tool set to make a (generic) platformer game.
+Objectives:
+- Renderer to be Graphics API agnostic.
+- Rely on a small and complete set of core classes
+- Be extensible (The current GUI classes on Renderer as an 'example' of extension).
 
 Requirements:
 
