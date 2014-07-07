@@ -9,11 +9,14 @@ Objectives:
 
 Requirements:
 
-Libraries: GLEW, GLFW3 and OpenGL.
+Libraries: tinyxml2, SOIL, GLEW, GLFW3 and OpenGL.
+tinyxml2 and SOIL files are already included.
 
-On OSX you can install BREW and hit
+Using cmake.
 
-brew install glew
-brew install glfw (you will probably need to use brew tap)
+## [7/6/2014]
 
-OpenGL is provided by the OS.
+![alt text](http://yuml.me/2231fa6c "Complete Class Diagram")
+
+---
+
