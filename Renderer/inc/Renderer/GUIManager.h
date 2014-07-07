@@ -25,9 +25,11 @@ class GUIManager
       std::string parent_name = "", GUIType gui_type = DRAWNABLE );
     // getters
     std::shared_ptr<GUIScene> getGUIScene( std::string name )
-    { return this->gui_scene[name]; }
+      { return this->gui_scene[name]; }
     std::shared_ptr<GUIElement> getGUIElement( std::string name )
       { return this->gui_element[name]; }
+    std::shared_ptr<ResourceManager> getResourceManager()
+      { return this->resource_manager; }
 };
 
 #endif

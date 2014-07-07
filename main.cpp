@@ -21,7 +21,8 @@
 #include "Renderer/Effect.h"
 #include "Renderer/EffectsManager.h"
 #include "Renderer/ResourceManager.h"
-#include "Renderer/Helpers/XMLHelper.h"
+#include "Renderer/Helpers/XMLAssets.h"
+#include "Renderer/Helpers/XMLGUIScene.h"
 #include "Input/Input.h"
 
 int main()
@@ -32,28 +33,11 @@ int main()
   active_input = &input;
 
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
-
-  std::shared_ptr<Shader> shader( new Shader( "gui" ) );
-  std::shared_ptr<Texture> texture( new Texture( "circle.png" ) );
-  GUIState gui_state = { shader, texture };
-
   GUIManager gui_manager( resource_manager );
+  XMLHelper::importAssets( "assets", resource_manager );
+  XMLHelper::importGUIScene( "gui", &gui_manager );
 
-  gui_manager.createGUIScene( "gui_scene" );
   std::shared_ptr<GUIScene> gui_scene = gui_manager.getGUIScene( "gui_scene" );
-
-  gui_manager.createGUIElement( "gui_element", "gui_scene" );
-
-  std::shared_ptr<GUIElement> gui_element =
-    gui_manager.getGUIElement( "gui_element" );
-
-  gui_element->setState( "normal", gui_state );
-  gui_element->setState( "normal" );
-
-  gui_element->setParentPercent( 0.20 );
-  gui_element->addOffsetPercent( WMath::vec2( 0.1, 0.2 ) );
-
-  //gui_window->setParentPercent( 0.5 );
 
   Renderer renderer( &window );
   renderer.addScene( gui_scene->getScene() );

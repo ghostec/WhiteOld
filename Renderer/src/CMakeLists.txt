@@ -39,14 +39,18 @@ SET(
   Helpers_SRCs
   Helpers/ModelAssetHelper.cpp
   Helpers/GLFW.cpp
-  Helpers/XMLHelper.cpp
+  Helpers/XMLAssets.cpp
+  Helpers/XMLScene.cpp
+  Helpers/XMLGUIScene.cpp
 )
 
 SET(
   Helpers_Hs
   Helpers/ModelAssetHelper.h
   Helpers/GLFW.h
-  Helpers/XMLHelper.h
+  Helpers/XMLAssets.h
+  Helpers/XMLScene.h
+  Helpers/XMLGUIScene.h
   Helpers/ShaderHelper.h
 )
 
