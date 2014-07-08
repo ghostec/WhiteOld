@@ -80,16 +80,7 @@ void MousePicking::drawScene( Scene* scene )
   glClearColor( 0.0, 0.0, 0.0, 1.0 );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-  if( &*scene->getCamera() )
-  {
-    ShaderHelper::setCamera( &*this->shader, &*scene->getCamera( ) );
-  }
-  else
-  {
-    WMath::mat4 m;
-    this->shader->setUniform( "camera.view", &m, GL_FALSE );
-    this->shader->setUniform( "camera.proj", &m, GL_FALSE );
-  }
+  ShaderHelper::setCamera( &*this->shader, &*scene->getCamera( ) );
 
   int model_index = 1;
 

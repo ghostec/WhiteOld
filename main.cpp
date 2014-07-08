@@ -45,6 +45,7 @@ int main()
   std::shared_ptr<GUIScene> gui_scene = gui_manager.getGUIScene( "gui_scene" );
   std::shared_ptr<GUIElement> gui_el = gui_manager.getGUIElement( "gui_element" );
   gui_el->setParentPercent( 0.25 );
+  gui_el->setOffsetPercent( WMath::vec2( 0.4 ) );
 
   Renderer renderer( &window );
   renderer.addScene( &scene );
