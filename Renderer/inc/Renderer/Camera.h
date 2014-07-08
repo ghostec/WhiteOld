@@ -9,15 +9,14 @@
 class Camera
 {
   private:
-    WMath::vec3 up;
-    WMath::vec3 position, target;
     WMath::mat4 view;
     WMath::mat4 proj;
     bool dirty;
   public:
-    Camera( WMath::vec3 position, WMath::vec3 target );
-    void setPosition( WMath::vec3 position );
-    void setTarget( WMath::vec3 target );
+    Camera();
+    // setView
+    void setView( WMath::mat4 view ) { this->view = view; }
+    void setProj( WMath::mat4 proj ) { this->proj = proj; }
     void setDirty( bool value ) { this->dirty = value; };
     // getters
     WMath::mat4* getView() { return &this->view; };

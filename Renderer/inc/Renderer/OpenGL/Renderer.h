@@ -22,6 +22,7 @@ class Renderer
     Renderer( Window* window );
     void render();
     void addScene( Scene* scene );
+    void setScenes( std::vector<Scene*> scenes );
 };
 
 #endif

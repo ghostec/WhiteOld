@@ -25,7 +25,7 @@ void test( MousePicking* mouse_picking, std::shared_ptr<ResourceManager> resourc
   int x, y;
   active_input->getMousePos( &x, &y );
   model = mouse_picking->getIdForPosition( x, y );
-  model->setShader( shader );
+  if( model ) model->setShader( shader );
 }
 
 int main()
@@ -40,11 +40,19 @@ int main()
   XMLHelper::importAssets( "assets", resource_manager );
   Scene scene = XMLHelper::importScene( "example", resource_manager );
 
+  GUIManager gui_manager( resource_manager );
+  XMLHelper::importGUIScene( "gui", &gui_manager );
+  std::shared_ptr<GUIScene> gui_scene = gui_manager.getGUIScene( "gui_scene" );
+  std::shared_ptr<GUIElement> gui_el = gui_manager.getGUIElement( "gui_element" );
+  gui_el->setParentPercent( 0.25 );
+
   Renderer renderer( &window );
   renderer.addScene( &scene );
+  renderer.addScene( gui_scene->getScene() );
 
   MousePicking mouse_picking;
-  mouse_picking.setScene( &scene );
+  std::vector<Scene*> scenes = { gui_scene->getScene(), &scene };
+  mouse_picking.setScenes( scenes );
 
   input.registerObserver( "CLICK", std::bind( test, &mouse_picking, resource_manager ), "test" );
 
@@ -53,7 +61,7 @@ int main()
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
-    //gui_scene->update();
+    gui_scene->update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();

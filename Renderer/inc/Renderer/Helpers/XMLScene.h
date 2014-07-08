@@ -10,6 +10,7 @@
 #include "Renderer/Model.h"
 #include "Renderer/Scene.h"
 #include "Renderer/ResourceManager.h"
+#include "Renderer/Helpers/CameraHelper.h"
 
 namespace XMLHelper
 {

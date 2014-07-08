@@ -37,6 +37,7 @@ SET(
 
 SET(
   Helpers_SRCs
+  Helpers/CameraHelper.cpp
   Helpers/ModelAssetHelper.cpp
   Helpers/GLFW.cpp
   Helpers/XMLAssets.cpp
@@ -46,6 +47,7 @@ SET(
 
 SET(
   Helpers_Hs
+  Helpers/CameraHelper.h
   Helpers/ModelAssetHelper.h
   Helpers/GLFW.h
   Helpers/XMLAssets.h

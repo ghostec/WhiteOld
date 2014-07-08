@@ -1,5 +1,10 @@
 #include "Renderer/Scene.h"
 
+Scene::Scene()
+{
+  this->camera.reset( new Camera() );
+}
+
 void Scene::update()
 {
   if( this->camera )

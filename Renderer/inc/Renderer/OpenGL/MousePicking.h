@@ -17,11 +17,11 @@ class MousePicking
   private:
     GLuint frame_buffer, frame_buffer_tex, render_buffer;
     std::shared_ptr<Shader> shader;
-    Scene* scene;
+    std::vector<Scene*> scenes;
   public:
     MousePicking();
-    void setScene( Scene* scene );
-    void draw_picker_colours();
+    void setScenes( std::vector<Scene*> scenes );
+    void drawScene( Scene* scene );
     std::shared_ptr<Model> getIdForPosition( int x, int y );
 };
 

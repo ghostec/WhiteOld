@@ -20,6 +20,7 @@ class Scene
     void updateLightsForShader( std::shared_ptr<Shader> shader );
     void updateCameraForShader( std::shared_ptr<Shader> shader );
   public:
+    Scene();
     void update();
     void addModel( std::shared_ptr<Model> model_instance );
     void addLight( Light light );

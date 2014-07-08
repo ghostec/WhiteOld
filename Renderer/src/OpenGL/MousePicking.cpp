@@ -64,12 +64,12 @@ MousePicking::MousePicking()
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::setScene( Scene* scene )
+void MousePicking::setScenes( std::vector<Scene*> scenes )
 {
-  this->scene = scene;
+  this->scenes = scenes;
 }
 
-void MousePicking::draw_picker_colours()
+void MousePicking::drawScene( Scene* scene )
 {
   int width = 800;
   int height = 600;
@@ -80,21 +80,32 @@ void MousePicking::draw_picker_colours()
   glClearColor( 0.0, 0.0, 0.0, 1.0 );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-  ShaderHelper::setCamera( &*this->shader, &*this->scene->getCamera() );
+  if( &*scene->getCamera() )
+  {
+    ShaderHelper::setCamera( &*this->shader, &*scene->getCamera( ) );
+  }
+  else
+  {
+    WMath::mat4 m;
+    this->shader->setUniform( "camera.view", &m, GL_FALSE );
+    this->shader->setUniform( "camera.proj", &m, GL_FALSE );
+  }
 
   int model_index = 1;
 
-  for( std::shared_ptr<Model> model : *this->scene->getModels() )
+  for( std::shared_ptr<Model> model : *scene->getModels() )
   {
-    std::shared_ptr<Model> n_model( new Model( model->getMesh() ) );
-    n_model->setShader( this->shader );
-    n_model->setTexture( model->getTexture() );
+    std::shared_ptr<Shader> original_shader = model->getShader();
+    model->setShader( this->shader );
 
     WMath::vec3 picking_color = encode_id( model_index );
 
     this->shader->setUniform( "unique_id", picking_color.vec );
     
-    RendererHelper::drawModel( n_model, this->frame_buffer );
+    RendererHelper::drawModel( model, this->frame_buffer );
+
+    model->setShader( original_shader );
+
     model_index += 1;
   }
 
@@ -106,22 +117,29 @@ std::shared_ptr<Model> MousePicking::getIdForPosition( int x, int y )
   int width = 800;
   int height = 600;
 
-  this->draw_picker_colours();
-
-  glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
-  unsigned char data[4] = { 0, 0, 0, 0 };
-  glReadPixels( x, height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
-  glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-
-  int model_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
-
-  if( model_index == 0 ) return nullptr;
-
-  int index = 1;
-
-  for( std::shared_ptr<Model> model : *this->scene->getModels() )
+  for( Scene* scene : this->scenes )
   {
-    if( index == model_index ) return model;
-    index += 1;
+    this->drawScene( scene );
+
+    glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
+    unsigned char data[4] = { 0, 0, 0, 0 };
+    glReadPixels( x, height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
+    glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+
+    int model_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
+
+    if( model_index != 0 )
+    {
+      int index = 1;
+
+      for( std::shared_ptr<Model> model : *scene->getModels() )
+      {
+        if( index == model_index ) return model;
+        index += 1;
+      }
+    }
+
   }
+
+  return nullptr;
 }

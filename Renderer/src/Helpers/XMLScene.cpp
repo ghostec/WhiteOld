@@ -12,7 +12,8 @@ namespace XMLHelper
     WMath::vec3 target( ell->FloatAttribute( "x" ),
       ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
 
-    std::shared_ptr<Camera> camera( new Camera( position, target ) );
+    std::shared_ptr<Camera> camera( new Camera() );
+    CameraHelper::TargetCamera( &*camera, position, target );
     scene->setCamera( camera );
   }
 

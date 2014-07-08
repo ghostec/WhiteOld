@@ -36,3 +36,8 @@ void Renderer::addScene( Scene* scene )
 {
   this->scenes.push_back( scene );
 }
+
+void Renderer::setScenes( std::vector<Scene*> scenes )
+{
+  this->scenes = scenes;
+}
