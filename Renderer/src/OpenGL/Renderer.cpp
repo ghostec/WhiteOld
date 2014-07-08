@@ -26,30 +26,10 @@ void Renderer::drawScene( Scene* scene )
   scene->update();
   std::vector< std::shared_ptr<Model> >*
     model_instances = scene->getModels();
-  for( std::shared_ptr<Model> model_instance : *model_instances )
+  for( std::shared_ptr<Model> model : *model_instances )
   {
-    this->drawModel( model_instance );
+    RendererHelper::drawModel( model );
   }
-}
-
-void Renderer::drawModel( std::shared_ptr<Model> model )
-{
-  model->update();
-  std::shared_ptr<Mesh> mesh = model->getMesh();
-  std::shared_ptr<Shader> shader = model->getShader();
-
-  glBindVertexArray( mesh->getVAO() );
-  shader->use();
-
-  if( model->getModelType() == MODEL_2D )
-    { glDisable( GL_DEPTH_TEST ); }
-  else
-    { glEnable( GL_DEPTH_TEST ); }
-
-  glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
-
-  shader->unuse();
-  glBindVertexArray( 0 );
 }
 
 void Renderer::addScene( Scene* scene )

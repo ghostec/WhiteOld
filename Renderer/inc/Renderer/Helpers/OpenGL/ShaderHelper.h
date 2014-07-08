@@ -7,6 +7,8 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Light.h"
 #include "Renderer/Camera.h"
+#include "Renderer/Mesh.h"
+#include "Renderer/Model.h"
 #include "Renderer/ModelData.h"
 
 namespace ShaderHelper
@@ -14,6 +16,7 @@ namespace ShaderHelper
   void setLight( Shader* shader, Light* light );
   void setCamera( Shader* shader, Camera* camera );
   void setModelData( Shader* shader, ModelData* model_data );
+  void setVertexData( Shader* shader, Mesh* mesh );
 }
 
 #endif

@@ -40,6 +40,7 @@ class Model
     // getters
     std::shared_ptr<Mesh> getMesh() { return this->mesh; };
     std::shared_ptr<Shader> getShader() { return this->shader; };
+    std::shared_ptr<Texture> getTexture() { return this->texture; };
     ModelType getModelType() { return this->model_type; }
 
     WMath::mat4* getTransformM();

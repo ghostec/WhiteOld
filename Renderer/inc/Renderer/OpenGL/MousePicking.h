@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include "Renderer/Scene.h"
 #include "Renderer/Shader.h"
+#include "Renderer/Helpers/RendererHelper.h"
 #include "Renderer/Helpers/ShaderHelper.h"
 #include "Input/Input.h"
 #include "WMath/WMath.h"

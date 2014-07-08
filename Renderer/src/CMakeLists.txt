@@ -51,16 +51,19 @@ SET(
   Helpers/XMLAssets.h
   Helpers/XMLScene.h
   Helpers/XMLGUIScene.h
+  Helpers/RendererHelper.h
   Helpers/ShaderHelper.h
 )
 
 SET(
   Helpers_OpenGL_SRCs
+  Helpers/OpenGL/RendererHelper.cpp
   Helpers/OpenGL/ShaderHelper.cpp
 )
 
 SET(
   Helpers_OpenGL_Hs
+  Helpers/OpenGL/RendererHelper.h
   Helpers/OpenGL/ShaderHelper.h
 )
 

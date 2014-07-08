@@ -34,19 +34,3 @@ Mesh::Mesh( std::string file_path )
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
-
-void Mesh::configureShader( std::shared_ptr<Shader> shader )
-{
-  glBindVertexArray( this->vao );
-  glBindBuffer( GL_ARRAY_BUFFER, this->vbo );
-
-  shader->setVertexAttribute( "vPosition", 3, 3 * sizeof( WMath::vec3 ),
-    0 );
-  shader->setVertexAttribute( "vUV", 3, 3 * sizeof( WMath::vec3 ),
-    sizeof( WMath::vec3 ) );
-  shader->setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
-    2 * sizeof( WMath::vec3 ) );
-
-  glBindBuffer( GL_ARRAY_BUFFER, 0 );
-  glBindVertexArray( 0 );
-}

@@ -11,7 +11,7 @@ Model::Model( std::shared_ptr<Mesh> mesh, ModelType model_type )
 void Model::setShader( std::shared_ptr<Shader> shader )
 {
   this->shader = shader;
-  this->mesh->configureShader( shader );
+  ShaderHelper::setVertexData( &*shader, &*this->mesh );
 }
 
 void Model::update()

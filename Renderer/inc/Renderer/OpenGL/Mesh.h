@@ -22,6 +22,7 @@ class Mesh
     void configureShader( std::shared_ptr<Shader> shader );
     // getters
     GLuint getVAO() { return this->vao; }
+    GLuint getVBO() { return this->vbo; }
     int getVerticesCount() { return this->vertices_count; }
 };
 

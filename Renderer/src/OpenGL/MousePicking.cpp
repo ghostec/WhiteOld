@@ -81,27 +81,22 @@ void MousePicking::draw_picker_colours()
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
   ShaderHelper::setCamera( &*this->shader, &*this->scene->getCamera() );
-  this->shader->use();
 
   int model_index = 1;
 
   for( std::shared_ptr<Model> model : *this->scene->getModels() )
   {
-    model->getMesh()->configureShader( this->shader );
+    std::shared_ptr<Model> n_model( new Model( model->getMesh() ) );
+    n_model->setShader( this->shader );
+    n_model->setTexture( model->getTexture() );
+
     WMath::vec3 picking_color = encode_id( model_index );
 
     this->shader->setUniform( "unique_id", picking_color.vec );
-    this->shader->setUniform( "Model", model->getTransformM(), GL_TRUE );
     
-    glBindVertexArray( model->getMesh()->getVAO( ) );
-    this->shader->use();
-    glDrawArrays( GL_TRIANGLES, 0, model->getMesh()->getVerticesCount() );
-
-    glBindVertexArray( 0 );
+    RendererHelper::drawModel( n_model, this->frame_buffer );
     model_index += 1;
   }
-
-  this->shader->unuse();
 
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }

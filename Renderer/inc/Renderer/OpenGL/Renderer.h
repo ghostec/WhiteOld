@@ -2,6 +2,7 @@
 #define __RENDERER_OPENGLRENDERER__
 
 #include <iostream>
+#include "Renderer/Helpers/RendererHelper.h"
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
 #include "Renderer/Mesh.h"
@@ -17,7 +18,6 @@ class Renderer
     std::vector< Scene* > scenes;
 
     void drawScene( Scene* scene );
-    void drawModel( std::shared_ptr<Model> model );
   public:
     Renderer( Window* window );
     void render();
