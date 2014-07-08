@@ -42,6 +42,5 @@ void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, in
 
 void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 {
-  if( action == GLFW_PRESS )
-  active_input->notify( "CLICK" );
+  if( action == GLFW_PRESS ) active_input->notify( "CLICK" );
 }

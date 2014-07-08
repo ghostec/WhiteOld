@@ -29,8 +29,6 @@ namespace XMLHelper
     float attenuation = el->FirstChildElement( "attenuation" )->FloatAttribute( "value" );
     float ambient_coefficient = el->FirstChildElement( "ambient_coefficient" )->FloatAttribute( "value" );
 
-    std::cout << attenuation << " " << ambient_coefficient << std::endl;
-
     Light light( position, color, attenuation, ambient_coefficient );
     scene->addLight( light );
   }

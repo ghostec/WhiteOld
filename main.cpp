@@ -7,24 +7,26 @@
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
-#include "Renderer/Shader.h"
-#include "Renderer/Mesh.h"
-#include "Renderer/Model.h"
-#include "Renderer/Camera.h"
 #include "Renderer/Scene.h"
-#include "Renderer/Light.h"
-#include "Renderer/MousePicking.h"
-#include "Renderer/SceneEditor.h"
 #include "Renderer/GUIManager.h"
 #include "Renderer/GUIElement.h"
 #include "Renderer/GUIScene.h"
-#include "Renderer/Effect.h"
-#include "Renderer/EffectsManager.h"
 #include "Renderer/ResourceManager.h"
 #include "Renderer/Helpers/XMLAssets.h"
 #include "Renderer/Helpers/XMLScene.h"
 #include "Renderer/Helpers/XMLGUIScene.h"
+#include "Renderer/MousePicking.h"
 #include "Input/Input.h"
+
+void test( MousePicking* mouse_picking, std::shared_ptr<ResourceManager> resource_manager )
+{
+  std::shared_ptr<Model> model;
+  std::shared_ptr<Shader> shader = resource_manager->getShader( "standard2" );
+  int x, y;
+  active_input->getMousePos( &x, &y );
+  model = mouse_picking->getIdForPosition( x, y );
+  model->setShader( shader );
+}
 
 int main()
 {
@@ -34,13 +36,17 @@ int main()
   active_input = &input;
 
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
-  GUIManager gui_manager( resource_manager );
 
   XMLHelper::importAssets( "assets", resource_manager );
   Scene scene = XMLHelper::importScene( "example", resource_manager );
 
   Renderer renderer( &window );
   renderer.addScene( &scene );
+
+  MousePicking mouse_picking;
+  mouse_picking.setScene( &scene );
+
+  input.registerObserver( "CLICK", std::bind( test, &mouse_picking, resource_manager ), "test" );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 

@@ -10,25 +10,6 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene, std::shared_ptr<MousePic
 
 void SceneEditor::selectModelInstance()
 {
-  if( this->selected_model_instance != nullptr )
-  {
-    ;
-    // remove wireframe shader
-  }
-
-  int x, y;
-  active_input->getMousePos( &x, &y );
-    
-  int id = this->mouse_picking->getIdForPosition( x, y );
-
-  if( id == 0 ) 
-  {
-    this->selected_model_instance = nullptr;
-    return;
-  }
-
-  this->selected_model_instance->setShader( this->shader );
-  this->scene->updateCamera();
 }
 
 void SceneEditor::move( )

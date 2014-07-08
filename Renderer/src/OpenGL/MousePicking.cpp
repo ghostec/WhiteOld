@@ -22,66 +22,54 @@ MousePicking::MousePicking()
 
   this->shader.reset( new Shader( "color_picking" ) );
 
-  this->shader->use( );
+  this->shader->use();
 
   // create framebuffer
   this->frame_buffer = 0;
   glGenFramebuffers( 1, &this->frame_buffer );
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
 
-  // attach rendethis->render_bufferuffer to this->frame_buffer so that depth-sorting works
+  // attach this->render_bufferuffer to this->frame_buffer so that depth-sorting works
   this->render_buffer = 0;
   glGenRenderbuffers( 1, &this->render_buffer );
   glBindRenderbuffer( GL_RENDERBUFFER, this->render_buffer );
-  glRenderbufferStorage(
-    GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height
-    );
+  glRenderbufferStorage
+    ( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height );
 
   // create texture to use for rendering second pass
   this->frame_buffer_tex = 0;
   glGenTextures( 1, &this->frame_buffer_tex );
   glBindTexture( GL_TEXTURE_2D, this->frame_buffer_tex );
   // make the texture the same size as the viewport
-  glTexImage2D(
-    GL_TEXTURE_2D,
-    0,
-    GL_RGBA,
-    width,
-    height,
-    0,
-    GL_RGBA,
-    GL_UNSIGNED_BYTE,
-    NULL
-    );
+  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+    GL_UNSIGNED_BYTE, NULL );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
   // attach render buffer (depth) and texture (colour) to this->frame_buffer
-  glFramebufferRenderbuffer(
-    GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, this->render_buffer
-    );
-  glFramebufferTexture2D(
-    GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->frame_buffer_tex, 0
-    );
+  glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+    GL_RENDERBUFFER, this->render_buffer );
+  glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+    this->frame_buffer_tex, 0 );
 
   // redirect fragment shader output 0 used to the texture that we just bound
   GLenum draw_bufs[] = { GL_COLOR_ATTACHMENT0 };
   glDrawBuffers( 1, draw_bufs );
 
-  this->shader->unuse( );
+  this->shader->unuse();
 
   // bind default this->frame_buffer (number 0) so that we render normally next time
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::setScene( std::shared_ptr<Scene> scene )
+void MousePicking::setScene( Scene* scene )
 {
   this->scene = scene;
 }
 
-void MousePicking::draw_picker_colours() 
+void MousePicking::draw_picker_colours()
 {
   int width = 800;
   int height = 600;
@@ -92,15 +80,33 @@ void MousePicking::draw_picker_colours()
   glClearColor( 0.0, 0.0, 0.0, 1.0 );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+  ShaderHelper::setCamera( &*this->shader, &*this->scene->getCamera() );
   this->shader->use();
-  // TODO: Send matrices
 
-  this->shader->unuse( );
+  int model_index = 1;
+
+  for( std::shared_ptr<Model> model : *this->scene->getModels() )
+  {
+    model->getMesh()->configureShader( this->shader );
+    WMath::vec3 picking_color = encode_id( model_index );
+
+    this->shader->setUniform( "unique_id", picking_color.vec );
+    this->shader->setUniform( "Model", model->getTransformM(), GL_TRUE );
+    
+    glBindVertexArray( model->getMesh()->getVAO( ) );
+    this->shader->use();
+    glDrawArrays( GL_TRIANGLES, 0, model->getMesh()->getVerticesCount() );
+
+    glBindVertexArray( 0 );
+    model_index += 1;
+  }
+
+  this->shader->unuse();
 
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-int MousePicking::getIdForPosition( int x, int y )
+std::shared_ptr<Model> MousePicking::getIdForPosition( int x, int y )
 {
   int width = 800;
   int height = 600;
@@ -112,5 +118,15 @@ int MousePicking::getIdForPosition( int x, int y )
   glReadPixels( x, height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 
-  return decode_id( (int) data[0], (int) data[1], (int) data[2] );
+  int model_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
+
+  if( model_index == 0 ) return nullptr;
+
+  int index = 1;
+
+  for( std::shared_ptr<Model> model : *this->scene->getModels() )
+  {
+    if( index == model_index ) return model;
+    index += 1;
+  }
 }

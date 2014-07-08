@@ -2,12 +2,12 @@
 
 void Scene::update()
 {
-  if( this->camera && this->camera->getDirty() == true )
+  if( this->camera )
   {
     this->updateCamera();
     this->camera->setDirty( false );
   }
-  if( this->lights.size() > 0 && this->lights[0].getDirty() == true )
+  if( this->lights.size() > 0 )
   {
     this->updateLights();
     this->lights[0].setDirty( false );

@@ -25,7 +25,7 @@ void Shader::setDrawMode( DrawMode draw_mode )
 }
 
 void Shader::setVertexAttribute(  std::string name, int count, int stride,
-                                  int offset )
+  int offset )
 {
   glUseProgram(this->shader);
   GLint attribute = glGetAttribLocation( this->shader, name.c_str() );
