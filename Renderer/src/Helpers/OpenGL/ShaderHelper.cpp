@@ -4,12 +4,14 @@ namespace ShaderHelper
 {
   void setLight( Shader *shader, Light* light )
   {
-    WMath::vec3 pos = light->getPosition( );
-    float intensities[3] = { 1, 1, 1 };
+    WMath::vec3 pos = light->getPosition();
+    WMath::vec3 col = light->getColor();
+
     shader->setUniform( "lights[0].position", pos.vec );
-    shader->setUniform( "lights[0].intensities", intensities );
-    shader->setUniform( "lights[0].attenuation", 0.2f );
-    shader->setUniform( "lights[0].ambientCoefficient", 0.005f );
+    shader->setUniform( "lights[0].intensities", col.vec );
+    shader->setUniform( "lights[0].attenuation", light->getAttenuation() );
+    shader->setUniform( "lights[0].ambientCoefficient",
+      light->getAmbientCoefficient() );
   }
 
   void setCamera( Shader* shader, Camera* camera )

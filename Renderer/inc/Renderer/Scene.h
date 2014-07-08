@@ -15,14 +15,14 @@ class Scene
 {
   private:
     std::vector< std::shared_ptr<Model> > models;
-    std::vector< std::shared_ptr<Light> > lights;
+    std::vector<Light> lights;
     std::shared_ptr<Camera> camera;
     void updateLightsForShader( std::shared_ptr<Shader> shader );
     void updateCameraForShader( std::shared_ptr<Shader> shader );
   public:
     void update();
     void addModel( std::shared_ptr<Model> model_instance );
-    void addLight( std::shared_ptr<Light> light );
+    void addLight( Light light );
     void updateLights();
     void setCamera( std::shared_ptr<Camera> camera );
     void updateCamera();

@@ -22,6 +22,7 @@
 #include "Renderer/EffectsManager.h"
 #include "Renderer/ResourceManager.h"
 #include "Renderer/Helpers/XMLAssets.h"
+#include "Renderer/Helpers/XMLScene.h"
 #include "Renderer/Helpers/XMLGUIScene.h"
 #include "Input/Input.h"
 
@@ -34,20 +35,19 @@ int main()
 
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
   GUIManager gui_manager( resource_manager );
-  XMLHelper::importAssets( "assets", resource_manager );
-  XMLHelper::importGUIScene( "gui", &gui_manager );
 
-  std::shared_ptr<GUIScene> gui_scene = gui_manager.getGUIScene( "gui_scene" );
+  XMLHelper::importAssets( "assets", resource_manager );
+  Scene scene = XMLHelper::importScene( "example", resource_manager );
 
   Renderer renderer( &window );
-  renderer.addScene( gui_scene->getScene() );
+  renderer.addScene( &scene );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
-    gui_scene->update();
+    //gui_scene->update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();

@@ -7,10 +7,10 @@ void Scene::update()
     this->updateCamera();
     this->camera->setDirty( false );
   }
-  if( this->lights.size() > 0 && this->lights[0]->getDirty() == true )
+  if( this->lights.size() > 0 && this->lights[0].getDirty() == true )
   {
     this->updateLights();
-    this->lights[0]->setDirty( false );
+    this->lights[0].setDirty( false );
   }
 }
 
@@ -19,14 +19,14 @@ void Scene::addModel( std::shared_ptr<Model> model_instance )
   this->models.push_back( model_instance );
 }
 
-void Scene::addLight( std::shared_ptr<Light> light )
+void Scene::addLight( Light light )
 {
   this->lights.push_back( light );
 }
 
 void Scene::updateLightsForShader( std::shared_ptr<Shader> shader )
 {
-  ShaderHelper::setLight( &*shader, &*this->lights[0] );
+  ShaderHelper::setLight( &*shader, &this->lights[0] );
 }
 
 void Scene::updateLights()
