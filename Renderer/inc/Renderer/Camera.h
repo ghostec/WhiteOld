@@ -3,6 +3,8 @@
 
 #include <string>
 #include <memory>
+#include "Renderer/Window.h"
+#include "Renderer/Helpers/CameraHelper.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 
@@ -14,6 +16,7 @@ class Camera
     bool dirty;
   public:
     Camera();
+    void update();
     // setView
     void setView( WMath::mat4 view ) { this->view = view; }
     void setProj( WMath::mat4 proj ) { this->proj = proj; }

@@ -9,6 +9,7 @@ void Scene::update()
 {
   if( this->camera )
   {
+    CameraHelper::updateWindow( &*camera, active_window );
     this->updateCamera();
     this->camera->setDirty( false );
   }

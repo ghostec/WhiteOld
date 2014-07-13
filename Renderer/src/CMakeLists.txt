@@ -24,6 +24,7 @@ SET(
   OpenGL/Renderer.cpp
   OpenGL/MousePicking.cpp
   OpenGL/Texture.cpp
+  OpenGL/Window.cpp
 )
 
 SET(
@@ -33,6 +34,7 @@ SET(
   OpenGL/Renderer.h
   OpenGL/MousePicking.h
   OpenGL/Texture.h
+  OpenGL/Window.h
 )
 
 SET(
@@ -74,7 +76,6 @@ SET(
   Camera.cpp
   Scene.cpp
   Light.cpp
-  Window.cpp
   Model.cpp
   SceneEditor.cpp
   GUIManager.cpp

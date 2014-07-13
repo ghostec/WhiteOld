@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Renderer/Model.h"
+#include "Renderer/Scene.h"
+#include "Renderer/Window.h"
 
 namespace RendererHelper
 {

@@ -2,7 +2,7 @@
 
 namespace GLFWhelper
 {
-  GLFWwindow* CreateWindow()
+  GLFWwindow* CreateWindow( WMath::vec2 dimensions )
   {
     if( ! glfwInit() )
       std::cout << "couldn't initialize GLFW" << std::endl;
@@ -12,11 +12,13 @@ namespace GLFWhelper
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     // set GLFW_DECORATED to GL_FALSE to have a borderless window
     glfwWindowHint( GLFW_DECORATED, GL_TRUE );
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Simple example", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow
+      ( dimensions[0], dimensions[1], "White", NULL, NULL );
+
     if ( !window )
     {
       glfwTerminate();
@@ -26,6 +28,7 @@ namespace GLFWhelper
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback( window, keyboardCallback );
     glfwSetMouseButtonCallback( window, mouseButtonCallback );
+    glfwSetWindowSizeCallback( window, windowResizeCallback );
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -47,5 +50,11 @@ namespace GLFWhelper
       return true;
     else
       return false;
+  }
+
+  void windowResizeCallback( GLFWwindow *window, int w, int h )
+  {
+    active_window->setDimensions( WMath::vec2( w, h ) );
+    glViewport( 0, 0, w, h );
   }
 }

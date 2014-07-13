@@ -13,7 +13,7 @@ namespace XMLHelper
       ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
 
     std::shared_ptr<Camera> camera( new Camera() );
-    CameraHelper::TargetCamera( &*camera, position, target );
+    CameraHelper::targetCamera( &*camera, position, target );
     scene->setCamera( camera );
   }
 

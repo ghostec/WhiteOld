@@ -9,6 +9,7 @@
 #include "Renderer/Mesh.h"
 #include "Renderer/Model.h"
 #include "Renderer/Light.h"
+#include "Renderer/Window.h"
 #include "Renderer/Helpers/ShaderHelper.h"
 
 class Scene

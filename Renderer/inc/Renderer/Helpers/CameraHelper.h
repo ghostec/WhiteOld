@@ -2,13 +2,17 @@
 #define __RENDERER_HELPERS_CAMERAHELPER_
 
 #include "Renderer/Camera.h"
+#include "Renderer/Window.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 
+class Camera;
+
 namespace CameraHelper
 {
-  void TargetCamera
+  void targetCamera
     ( Camera* camera, WMath::vec3 position, WMath::vec3 target );
+  void updateWindow( Camera* camera, Window* window );
 };
 
 #endif
