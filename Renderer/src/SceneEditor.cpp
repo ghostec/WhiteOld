@@ -10,20 +10,22 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene )
 
   active_window->registerObserver( "RESIZE",
     std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
+
+  this->state = NORMAL;
 }
 
 void SceneEditor::initialize()
 {
   active_input->registerObserver
-    ( "CLICK", std::bind( &SceneEditor::selectModel, this ),
+    ( "MOUSE_SCROLL", std::bind( &SceneEditor::mouseScroll, this ),
     "SceneEditor::selectModel" );
 }
 
 void SceneEditor::selectModel()
 {
-  int x, y;
-  active_input->getMousePos( &x, &y );
-  std::shared_ptr<Model> model = mouse_picking.getIdForPosition( x, y );
+  
+  WMath::vec2 mouse_pos =  active_input->getMousePos();
+  std::shared_ptr<Model> model = mouse_picking.getIdForPosition( mouse_pos[0], mouse_pos[1] );
   if( this->selected_model )
   {
     this->selected_model->setShader( this->old_selected_model_shader );
@@ -36,27 +38,88 @@ void SceneEditor::selectModel()
   }
 }
 
+bool isSubset( std::set<int> subset, std::set<int> set )
+{
+  for( std::set<int>::iterator it = subset.begin(); it != subset.end(); ++it )
+  {
+    bool e = false;
+    for( int j = 0; j < set.size(); j++ )
+    {
+      if( set.find( *it ) != set.end() )
+      {
+        e = true;
+        break;
+      }
+    }
+    if( e == false ) return false;
+  }
+  return true;
+}
+
+void SceneEditor::mouseScroll()
+{
+  Camera* camera = &*this->scene->getCamera();
+  const WMath::vec2 scroll_offset = active_input->getMouseScroll();
+  if( scroll_offset[1] > 0 )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( 0, 0, 0.1 ) );
+  }
+  else
+  {
+    WMath::translate( camera->getView(), WMath::vec3( 0, 0, -0.1 ) );
+  }
+}
+
+void rotateCamera( Camera* camera, SceneEditor* scene_editor )
+{
+  static WMath::vec2 last_cursor_pos;
+  if( scene_editor->getState() != ROTATING_CAMERA )
+  {
+    last_cursor_pos = active_input->getMousePos();
+    scene_editor->setState( ROTATING_CAMERA );
+  }
+  else
+  {
+    WMath::vec2 cursor_pos = active_input->getMousePos();
+    WMath::vec2 diff = cursor_pos - last_cursor_pos;
+    WMath::translate( camera->getView( ), WMath::vec3( diff[0] / 100.0f, diff[1] / 100.0f, 0 ) );
+    WMath::rotate_y( camera->getView(), -diff[0] / 10.0f );
+    WMath::rotate_x( camera->getView(), -diff[1] / 10.0f );
+    last_cursor_pos = cursor_pos;
+  }
+}
+
 void SceneEditor::update()
 {
   Camera* camera = &*this->scene->getCamera();
-  const std::set<int> keys = active_input->getKeys();
-  for( int key : keys )
+  const std::set<int> input = active_input->getInput();
+  if( isSubset( std::set<int>{ GLFW_KEY_UP }, input ) )
   {
-    if( key == GLFW_KEY_UP )
+    WMath::translate( camera->getView(), WMath::vec3(0, -0.035, 0) );
+  }
+  else if( isSubset( std::set<int>{ GLFW_KEY_DOWN }, input ) )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( 0, 0.035, 0 ) );
+  }
+  else if( isSubset( std::set<int>{ GLFW_KEY_LEFT }, input ) )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( 0.035, 0, 0 ) );
+  }
+  else if( isSubset( std::set<int>{ GLFW_KEY_RIGHT }, input ) )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( -0.035, 0, 0 ) );
+  }
+
+  if( isSubset( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
+  {
+    rotateCamera( camera, this );
+  }
+  else 
+  {
+    if( isSubset( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
     {
-      WMath::translate( camera->getView(), WMath::vec3(0, -0.035, 0) );
+      this->selectModel( );
     }
-    else if( key == GLFW_KEY_DOWN )
-    {
-      WMath::translate( camera->getView( ), WMath::vec3( 0, 0.035, 0 ) );
-    }
-    else if( key == GLFW_KEY_LEFT )
-    {
-      WMath::translate( camera->getView( ), WMath::vec3( 0.035, 0, 0 ) );
-    }
-    else if( key == GLFW_KEY_RIGHT )
-    {
-      WMath::translate( camera->getView( ), WMath::vec3( -0.035, 0, 0 ) );
-    }
+    this->state = NORMAL; 
   }
 }

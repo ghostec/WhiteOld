@@ -12,11 +12,10 @@
 #include "Renderer/Window.h"
 #include "WMath/WMath.h"
 
-typedef struct Movable_
+typedef enum
 {
-  bool ARROW_UP = false;
-  bool ARROW_DOWN = false;
-} Movable;
+  NORMAL, ROTATING_CAMERA
+} SceneEditorState;
 
 class SceneEditor
 {
@@ -26,12 +25,15 @@ class SceneEditor
     std::shared_ptr<Model> selected_model;
     std::shared_ptr<Shader> old_selected_model_shader;
     std::shared_ptr<Shader> shader;
+    SceneEditorState state;
   public:
-    Movable moves;
     SceneEditor( std::shared_ptr<Scene> scene );
     void initialize();
     void selectModel();
+    void mouseScroll();
     void update();
+    void setState( SceneEditorState state ) { this->state = state; }
+    SceneEditorState getState() { return this->state; }
 };
 
 #endif
