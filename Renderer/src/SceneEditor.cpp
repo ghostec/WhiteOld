@@ -23,9 +23,7 @@ void SceneEditor::initialize()
 
 void SceneEditor::selectModel()
 {
-  
-  WMath::vec2 mouse_pos =  active_input->getMousePos();
-  std::shared_ptr<Model> model = mouse_picking.getIdForPosition( mouse_pos[0], mouse_pos[1] );
+  std::shared_ptr<Model> model = mouse_picking.pick();
   if( this->selected_model )
   {
     this->selected_model->setShader( this->old_selected_model_shader );
@@ -82,6 +80,9 @@ void rotateCamera( Camera* camera, SceneEditor* scene_editor )
   {
     WMath::vec2 cursor_pos = active_input->getMousePos();
     WMath::vec2 diff = cursor_pos - last_cursor_pos;
+
+    std::cout << diff[0] << " " << diff[1] << std::endl;
+
     WMath::translate( camera->getView( ), WMath::vec3( diff[0] / 100.0f, diff[1] / 100.0f, 0 ) );
     WMath::rotate_y( camera->getView(), -diff[0] / 10.0f );
     WMath::rotate_x( camera->getView(), -diff[1] / 10.0f );
@@ -95,19 +96,19 @@ void SceneEditor::update()
   const std::set<int> input = active_input->getInput();
   if( isSubset( std::set<int>{ GLFW_KEY_UP }, input ) )
   {
-    WMath::translate( camera->getView(), WMath::vec3(0, -0.035, 0) );
+    WMath::translate( camera->getView(), WMath::vec3(0, -0.04, 0) );
   }
   else if( isSubset( std::set<int>{ GLFW_KEY_DOWN }, input ) )
   {
-    WMath::translate( camera->getView(), WMath::vec3( 0, 0.035, 0 ) );
+    WMath::translate( camera->getView(), WMath::vec3( 0, 0.04, 0 ) );
   }
   else if( isSubset( std::set<int>{ GLFW_KEY_LEFT }, input ) )
   {
-    WMath::translate( camera->getView(), WMath::vec3( 0.035, 0, 0 ) );
+    WMath::translate( camera->getView(), WMath::vec3( 0.04, 0, 0 ) );
   }
   else if( isSubset( std::set<int>{ GLFW_KEY_RIGHT }, input ) )
   {
-    WMath::translate( camera->getView(), WMath::vec3( -0.035, 0, 0 ) );
+    WMath::translate( camera->getView(), WMath::vec3( -0.04, 0, 0 ) );
   }
 
   if( isSubset( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )

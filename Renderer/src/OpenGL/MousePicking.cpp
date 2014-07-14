@@ -104,8 +104,11 @@ void MousePicking::drawScene( Scene* scene )
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-std::shared_ptr<Model> MousePicking::getIdForPosition( int x, int y )
+std::shared_ptr<Model> MousePicking::pick()
 {
+  WMath::vec2 position = active_input->getMousePos();
+  int x = position[0];
+  int y = position[1];
   for( Scene* scene : this->scenes )
   {
     this->drawScene( scene );

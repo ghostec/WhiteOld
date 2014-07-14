@@ -25,7 +25,7 @@ class MousePicking
     void reset();
     void setScenes( std::vector<Scene*> scenes );
     void drawScene( Scene* scene );
-    std::shared_ptr<Model> getIdForPosition( int x, int y );
+    std::shared_ptr<Model> pick();
 };
 
 #endif
