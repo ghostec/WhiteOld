@@ -17,7 +17,7 @@ namespace ShaderHelper
   void setCamera( Shader* shader, Camera* camera )
   {
     shader->setUniform( "camera.view",
-      camera->getView(), GL_FALSE );
+      camera->getView(), GL_TRUE );
     shader->setUniform( "camera.proj",
       camera->getProj(), GL_FALSE );
   }

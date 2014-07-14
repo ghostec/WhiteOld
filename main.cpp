@@ -15,18 +15,9 @@
 #include "Renderer/Helpers/XMLAssets.h"
 #include "Renderer/Helpers/XMLScene.h"
 #include "Renderer/Helpers/XMLGUIScene.h"
+#include "Renderer/Helpers/CameraHelper.h"
 #include "Renderer/MousePicking.h"
 #include "Input/Input.h"
-
-void test( MousePicking* mouse_picking, std::shared_ptr<ResourceManager> resource_manager )
-{
-  std::shared_ptr<Model> model;
-  std::shared_ptr<Shader> shader = resource_manager->getShader( "standard2" );
-  int x, y;
-  active_input->getMousePos( &x, &y );
-  model = mouse_picking->getIdForPosition( x, y );
-  if( model ) model->setShader( shader );
-}
 
 int main()
 {
@@ -39,18 +30,18 @@ int main()
   std::shared_ptr<ResourceManager> resource_manager( new ResourceManager );
 
   XMLHelper::importAssets( "assets", resource_manager );
-  Scene scene = XMLHelper::importScene( "example", resource_manager );
+  std::shared_ptr<Scene> scene =
+    std::make_shared<Scene>
+    ( XMLHelper::importScene( "example", resource_manager ) );
+  Camera* camera = &*scene->getCamera();
+  CameraHelper::normalCamera( camera );
+  WMath::translate( camera->getView(), WMath::vec3( -1, 1, -10 ) );
 
   Renderer renderer( &window );
-  renderer.addScene( &scene );
+  renderer.addScene( &*scene );
 
-  MousePicking mouse_picking;
-  std::vector<Scene*> scenes = { &scene };
-  mouse_picking.setScenes( scenes );
-
-  window.registerObserver( "RESIZE", std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
-
-  input.registerObserver( "CLICK", std::bind( test, &mouse_picking, resource_manager ), "test" );
+  SceneEditor scene_editor( scene );
+  scene_editor.initialize();
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
