@@ -128,16 +128,19 @@ namespace ModelAssetHelper
   namespace OpenGL
   {
 
-    GLuint CreateShader( GLenum shader_type, std::string file_path)
+    GLuint CreateShader( GLenum shader_type, std::string file_path )
     {
-      std::cout << "Placeholder ModelHelper::CreateShader" << std::endl;
+      std::string shader_file_content;
 
-      std::string shader_file_content = ApplicationHelper::ReadFile( file_path );
-      const GLchar *source_code = shader_file_content.c_str();
+      int file_status =
+        ApplicationHelper::ReadFile( file_path, &shader_file_content );
+
+      if( file_status == -1 ) return 0;
+
+      const GLchar* source_code = shader_file_content.c_str();
 
       // Create and compile the vertex shader
       GLuint shader = glCreateShader( shader_type );
-
 
       glShaderSource(shader, 1, &source_code, NULL);
       glCompileShader(shader);
@@ -149,7 +152,7 @@ namespace ModelAssetHelper
         char buffer[512];
         glGetShaderInfoLog(shader, 512, NULL, buffer);
         std::cout << buffer << std::endl;
-        return 0; // CHECK!!!!!
+        return 0;
       }
       else
       {
@@ -157,10 +160,14 @@ namespace ModelAssetHelper
       }
     }
 
-    GLuint CreateShaderProgram( GLuint vertex_shader, GLuint fragment_shader )
+    GLuint CreateShaderProgram( GLuint vertex_shader, GLuint fragment_shader, GLuint geometry_shader )
     {
       GLuint shader_program = glCreateProgram();
       glAttachShader( shader_program, vertex_shader );
+      if( geometry_shader != 0 )
+      {
+        glAttachShader( shader_program, geometry_shader );
+      }
       glAttachShader( shader_program, fragment_shader );
       glBindFragDataLocation( shader_program, 0, "outColor" );
       glLinkProgram( shader_program );
@@ -168,13 +175,17 @@ namespace ModelAssetHelper
     }
 
     GLuint CreateShaderProgram( std::string vertex_shader_file_path,
-        std::string fragment_shader_file_path )
+      std::string fragment_shader_file_path,
+      std::string geometry_shader_file_path )
     {
       GLuint vertex_shader = CreateShader( GL_VERTEX_SHADER,
           vertex_shader_file_path );
       GLuint fragment_shader = CreateShader( GL_FRAGMENT_SHADER,
           fragment_shader_file_path );
-      return CreateShaderProgram( vertex_shader, fragment_shader );
+      GLuint geometry_shader = CreateShader( GL_GEOMETRY_SHADER,
+         geometry_shader_file_path );
+
+      return CreateShaderProgram( vertex_shader, fragment_shader, geometry_shader );
     }
 
 

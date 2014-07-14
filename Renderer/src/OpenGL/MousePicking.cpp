@@ -17,8 +17,12 @@ int decode_id( int r, int g, int b ) {
 
 MousePicking::MousePicking()
 {
-  int width = 800;
-  int height = 600;
+  this->reset();
+}
+
+void MousePicking::reset()
+{
+  this->window_dimensions = active_window->getDimensions();
 
   this->shader.reset( new Shader( "color_picking" ) );
 
@@ -34,14 +38,14 @@ MousePicking::MousePicking()
   glGenRenderbuffers( 1, &this->render_buffer );
   glBindRenderbuffer( GL_RENDERBUFFER, this->render_buffer );
   glRenderbufferStorage
-    ( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height );
+    ( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, this->window_dimensions[0], this->window_dimensions[1] );
 
   // create texture to use for rendering second pass
   this->frame_buffer_tex = 0;
   glGenTextures( 1, &this->frame_buffer_tex );
   glBindTexture( GL_TEXTURE_2D, this->frame_buffer_tex );
   // make the texture the same size as the viewport
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, this->window_dimensions[0], this->window_dimensions[1], 0, GL_RGBA,
     GL_UNSIGNED_BYTE, NULL );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
@@ -58,7 +62,7 @@ MousePicking::MousePicking()
   GLenum draw_bufs[] = { GL_COLOR_ATTACHMENT0 };
   glDrawBuffers( 1, draw_bufs );
 
-  this->shader->unuse();
+  this->shader->unuse( );
 
   // bind default this->frame_buffer (number 0) so that we render normally next time
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
@@ -71,12 +75,9 @@ void MousePicking::setScenes( std::vector<Scene*> scenes )
 
 void MousePicking::drawScene( Scene* scene )
 {
-  int width = 800;
-  int height = 600;
-
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
 
-  glViewport( 0, 0, width, height );
+  glViewport( 0, 0, this->window_dimensions[0], this->window_dimensions[1] );
   glClearColor( 0.0, 0.0, 0.0, 1.0 );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -105,16 +106,13 @@ void MousePicking::drawScene( Scene* scene )
 
 std::shared_ptr<Model> MousePicking::getIdForPosition( int x, int y )
 {
-  int width = 800;
-  int height = 600;
-
   for( Scene* scene : this->scenes )
   {
     this->drawScene( scene );
 
     glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
     unsigned char data[4] = { 0, 0, 0, 0 };
-    glReadPixels( x, height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
+    glReadPixels( x, this->window_dimensions[1] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
     glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 
     int model_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );

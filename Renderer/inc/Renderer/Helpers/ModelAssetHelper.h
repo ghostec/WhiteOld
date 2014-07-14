@@ -29,10 +29,11 @@ namespace ModelAssetHelper
 
     GLuint CreateShader( GLenum shader_type, std::string file_path);
 
-    GLuint CreateShaderProgram( GLuint vertex_shader, GLuint fragment_shader );
+    GLuint CreateShaderProgram( GLuint vertex_shader, GLuint fragment_shader, GLuint geometry_shader );
 
     GLuint CreateShaderProgram( std::string vertex_shader_file_path,
-        std::string fragment_shader_file_path );
+      std::string fragment_shader_file_path,
+      std::string geometry_shader_file_path = "" );
 
   }
 }
