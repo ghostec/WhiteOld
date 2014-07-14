@@ -49,7 +49,7 @@ namespace XMLHelper
     file_name = "../assets/xml/" + file_name + ".xml";
     doc.LoadFile( file_name.c_str( ) );
 
-    Scene scene;
+    Scene scene( file_name );
 
     tinyxml2::XMLElement* el = doc.RootElement();
 

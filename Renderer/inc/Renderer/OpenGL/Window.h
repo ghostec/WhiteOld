@@ -1,10 +1,12 @@
 #ifndef __RENDERER_OPENGLWINDOW__
 #define __RENDERER_OPENGLWINDOW__
 
+#include <string>
 #include "Renderer/Helpers/GLFW.h"
 #include "WMath/WMath.h"
+#include "Helpers/Observable.h"
 
-class Window
+class Window : public Observable<std::string>
 {
 private:
   GLFWwindow* window;

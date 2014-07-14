@@ -1,13 +1,14 @@
 #include "Renderer/GUIScene.h"
 
-GUIScene::GUIScene( std::shared_ptr<GUIElement> container )
+GUIScene::GUIScene( std::shared_ptr<GUIElement> container, std::string name )
 {
+  this->scene.reset( new Scene( name ) );
   this->container = container;
 }
 
 void GUIScene::update()
 {
-  this->scene.getModels()->clear();
+  this->scene->getModels()->clear();
 
   std::queue< std::shared_ptr<GUIElement> > el_queue; // BFS
   el_queue.push( this->container );
@@ -18,7 +19,7 @@ void GUIScene::update()
     el_queue.pop();
 
     if( el->isDirty() ) el->update();
-    if( el->getGUIType() == DRAWNABLE ) this->scene.addModel( el->getModel() );
+    if( el->getGUIType() == DRAWNABLE ) this->scene->addModel( el->getModel() );
 
     std::vector< std::shared_ptr<GUIElement> >* children =
       el->getChildren( );

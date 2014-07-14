@@ -10,9 +10,7 @@
 
 namespace ApplicationHelper
 {
-
-  std::string ReadFile(const std::string file_path);
-
+  int ReadFile( const std::string file_path, std::string* content );
 }
 
 #endif

@@ -5,23 +5,26 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include <string>
 #include "Input/Input.h"
 #include "Renderer/Mesh.h"
 #include "Renderer/Model.h"
 #include "Renderer/Light.h"
 #include "Renderer/Window.h"
 #include "Renderer/Helpers/ShaderHelper.h"
+#include "Renderer/Helpers/CameraHelper.h"
 
 class Scene
 {
   private:
+    std::string name;
     std::vector< std::shared_ptr<Model> > models;
     std::vector<Light> lights;
     std::shared_ptr<Camera> camera;
     void updateLightsForShader( std::shared_ptr<Shader> shader );
     void updateCameraForShader( std::shared_ptr<Shader> shader );
   public:
-    Scene();
+    Scene( std::string name );
     void update();
     void addModel( std::shared_ptr<Model> model_instance );
     void addLight( Light light );

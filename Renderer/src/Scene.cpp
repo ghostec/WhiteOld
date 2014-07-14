@@ -1,7 +1,8 @@
 #include "Renderer/Scene.h"
 
-Scene::Scene()
+Scene::Scene( std::string name )
 {
+  this->name = name;
   this->camera.reset( new Camera() );
 }
 
@@ -9,7 +10,6 @@ void Scene::update()
 {
   if( this->camera )
   {
-    CameraHelper::updateWindow( &*camera, active_window );
     this->updateCamera();
     this->camera->setDirty( false );
   }
@@ -44,6 +44,9 @@ void Scene::updateLights()
 void Scene::setCamera( std::shared_ptr<Camera> camera )
 {
   this->camera  = camera;
+  std::string text = this->name + "_camera";
+  active_window->registerObserver
+    ( "RESIZE", std::bind( CameraHelper::updateWindow, &*camera ), text );
 }
 
 void Scene::updateCameraForShader( std::shared_ptr<Shader> shader )

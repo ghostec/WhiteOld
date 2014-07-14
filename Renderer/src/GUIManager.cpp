@@ -16,7 +16,7 @@ void GUIManager::createGUIScene( std::string name )
 
   this->gui_element[window_name] = gui_window;
 
-  std::shared_ptr<GUIScene> gui_scene( new GUIScene( gui_window ) );
+  std::shared_ptr<GUIScene> gui_scene( new GUIScene( gui_window, name ) );
   this->gui_scene[name] = gui_scene;
 }
 

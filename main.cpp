@@ -48,6 +48,8 @@ int main()
   std::vector<Scene*> scenes = { &scene };
   mouse_picking.setScenes( scenes );
 
+  window.registerObserver( "RESIZE", std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
+
   input.registerObserver( "CLICK", std::bind( test, &mouse_picking, resource_manager ), "test" );
 
   auto t0 = std::chrono::high_resolution_clock::now();

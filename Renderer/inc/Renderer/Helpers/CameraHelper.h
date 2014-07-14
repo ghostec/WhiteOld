@@ -12,7 +12,7 @@ namespace CameraHelper
 {
   void targetCamera
     ( Camera* camera, WMath::vec3 position, WMath::vec3 target );
-  void updateWindow( Camera* camera, Window* window );
+  void updateWindow( Camera* camera );
 };
 
 #endif

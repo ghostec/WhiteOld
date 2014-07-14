@@ -12,6 +12,7 @@ Window::Window( WMath::vec2 dimensions )
 void Window::setDimensions( WMath::vec2 d )
 {
   this->dimensions = d;
+  this->notify( "RESIZE" );
   this->dirty = true;
 }
 
