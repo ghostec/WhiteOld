@@ -36,10 +36,27 @@ void SceneEditor::selectModel()
   }
 }
 
-void SceneEditor::move( )
+void SceneEditor::update()
 {
-  if( this->moves.ARROW_UP ) ;
-    //WMath::translate( this->selected_model_instance->getTranslateM( ), WMath::vec3( 0.0f, 0.005f, 0.0f ) );
-  if( this->moves.ARROW_DOWN ) ;
-    //WMath::translate( this->selected_model_instance->getTranslateM( ), WMath::vec3( 0.0f, -0.005f, 0.0f ) );
+  Camera* camera = &*this->scene->getCamera();
+  const std::set<int> keys = active_input->getKeys();
+  for( int key : keys )
+  {
+    if( key == GLFW_KEY_UP )
+    {
+      WMath::translate( camera->getView(), WMath::vec3(0, -0.035, 0) );
+    }
+    else if( key == GLFW_KEY_DOWN )
+    {
+      WMath::translate( camera->getView( ), WMath::vec3( 0, 0.035, 0 ) );
+    }
+    else if( key == GLFW_KEY_LEFT )
+    {
+      WMath::translate( camera->getView( ), WMath::vec3( 0.035, 0, 0 ) );
+    }
+    else if( key == GLFW_KEY_RIGHT )
+    {
+      WMath::translate( camera->getView( ), WMath::vec3( -0.035, 0, 0 ) );
+    }
+  }
 }

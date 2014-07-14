@@ -22,21 +22,15 @@ void Input::getMousePos( int* x, int* y )
 
 void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
-  if( key == GLFW_KEY_UP && action == GLFW_PRESS )
+  if( action == GLFW_PRESS )
   {
-    active_input->notify( "ARROW_UP_PRESS" );
+    active_input->addKey( key );
+    //active_input->notify( "KEY_PRESSED" );
   }
-  else if( key == GLFW_KEY_UP && action == GLFW_RELEASE )
+  else if( action == GLFW_RELEASE )
   {
-    active_input->notify( "ARROW_UP_RELEASE" );
-  }
-  else if( key == GLFW_KEY_DOWN && action == GLFW_PRESS )
-  {
-    active_input->notify( "ARROW_DOWN_PRESS" );
-  }
-  else if( key == GLFW_KEY_DOWN && action == GLFW_RELEASE )
-  {
-    active_input->notify( "ARROW_DOWN_RELEASE" );
+    active_input->removeKey( key );
+    //active_input->notify( "KEY_RELEASED" );
   }
 }
 

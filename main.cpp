@@ -48,6 +48,7 @@ int main()
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
+    scene_editor.update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();

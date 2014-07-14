@@ -2,11 +2,15 @@
 #define __RENDERER_SCENEEDITOR__
 
 #include <vector>
+#include <set>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "Renderer/Scene.h"
 #include "Renderer/Model.h"
 #include "Renderer/Shader.h"
 #include "Renderer/MousePicking.h"
 #include "Renderer/Window.h"
+#include "WMath/WMath.h"
 
 typedef struct Movable_
 {
@@ -27,7 +31,7 @@ class SceneEditor
     SceneEditor( std::shared_ptr<Scene> scene );
     void initialize();
     void selectModel();
-    void move();
+    void update();
 };
 
 #endif
