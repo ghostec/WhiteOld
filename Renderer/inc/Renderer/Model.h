@@ -26,7 +26,7 @@ class Model
     ModelType model_type;
   public:
     Model( std::shared_ptr<Mesh> mesh, ModelType model_type = MODEL_3D );
-    void update();
+    void use(); void unuse();
     void resetTransform();
 
     // setters

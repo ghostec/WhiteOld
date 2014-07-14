@@ -39,6 +39,23 @@ namespace XMLHelper
   {
     const char* name = el->FirstChildElement( "name" )->GetText();
     std::shared_ptr<Model> model = resource_manager->getModel( name );
+
+    tinyxml2::XMLElement* ell = el->FirstChildElement( "position" );
+    if( ell )
+    {
+      WMath::vec3 position( ell->FloatAttribute( "x" ),
+        ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
+      WMath::translate( model->getTranslateM(), position );
+    }
+
+    ell = el->FirstChildElement( "scale" );
+    if( ell )
+    {
+      WMath::vec3 scale( ell->FloatAttribute( "x" ),
+        ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
+      WMath::scale( model->getScaleM( ), scale );
+    }
+
     scene->addModel( model );
   }
 

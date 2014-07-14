@@ -81,8 +81,6 @@ void rotateCamera( Camera* camera, SceneEditor* scene_editor )
     WMath::vec2 cursor_pos = active_input->getMousePos();
     WMath::vec2 diff = cursor_pos - last_cursor_pos;
 
-    std::cout << diff[0] << " " << diff[1] << std::endl;
-
     WMath::translate( camera->getView( ), WMath::vec3( diff[0] / 100.0f, diff[1] / 100.0f, 0 ) );
     WMath::rotate_y( camera->getView(), -diff[0] / 10.0f );
     WMath::rotate_x( camera->getView(), -diff[1] / 10.0f );

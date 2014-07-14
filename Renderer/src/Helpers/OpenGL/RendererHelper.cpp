@@ -4,7 +4,7 @@ namespace RendererHelper
 {
   void drawModel( std::shared_ptr<Model> model, GLuint frame_buffer )
   {
-    model->update();
+    model->use();
     std::shared_ptr<Mesh> mesh = model->getMesh();
     std::shared_ptr<Shader> shader = model->getShader();
 
@@ -24,5 +24,7 @@ namespace RendererHelper
 
     shader->unuse();
     glBindVertexArray( 0 );
+
+    model->unuse();
   }
 }

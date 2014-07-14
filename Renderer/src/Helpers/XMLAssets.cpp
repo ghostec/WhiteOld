@@ -31,21 +31,22 @@ namespace XMLHelper
   void importModel( tinyxml2::XMLElement* el,
     std::shared_ptr<ResourceManager> resource_manager )
   {
-    const char* name = el->FirstChildElement( "name" )->GetText();
-    const char* mesh_name = el->FirstChildElement( "mesh" )->GetText();
-    const char* shader_name = el->FirstChildElement( "shader" )->GetText();
-    const char* texture_name = el->FirstChildElement( "texture" )->GetText();
-
+    const char* name = el->FirstChildElement( "name" )->GetText(); 
+    
+    const char* mesh_name = el->FirstChildElement( "mesh" )->GetText( );
     std::shared_ptr<Mesh> mesh = resource_manager->getMesh( mesh_name );
+    std::shared_ptr<Model> model( new Model( mesh ) );
 
+    const char* shader_name = el->FirstChildElement( "shader" )->GetText();
     std::shared_ptr<Shader> shader =
       resource_manager->getShader( shader_name );
+    model->setShader( shader );
 
-    std::shared_ptr<Texture> texture =
-      resource_manager->getTexture( texture_name );
-
-    std::shared_ptr<Model> model( new Model( mesh ) );
-    model->setTexture( texture ); model->setShader( shader );
+    if( el->FirstChildElement( "texture" ) )
+    {
+      const char* texture_name = el->FirstChildElement( "texture" )->GetText();
+      model->setTexture( resource_manager->getTexture( texture_name ) );
+    }
 
     resource_manager->addModel( name, model );
   }
