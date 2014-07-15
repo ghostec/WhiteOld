@@ -10,30 +10,38 @@
 #include "Renderer/Shader.h"
 #include "Renderer/MousePicking.h"
 #include "Renderer/Window.h"
+#include "Renderer/ResourceManager.h"
+#include "Renderer/Helpers/XMLAssets.h"
 #include "WMath/WMath.h"
 
 typedef enum
 {
-  NORMAL, ROTATING_CAMERA
+  NO_SELECTION, MODEL_SELECTED, MOVING_MODEL, MOVING_CAMERA, ROTATING_CAMERA
 } SceneEditorState;
 
 class SceneEditor
 {
   private:
+    std::shared_ptr<ResourceManager> resource_manager;
     std::shared_ptr<Scene> scene;
     MousePicking mouse_picking;
     std::shared_ptr<Model> selected_model;
     std::shared_ptr<Shader> old_selected_model_shader;
     std::shared_ptr<Shader> shader;
+    std::set< std::shared_ptr<Model> > cant_select;
     SceneEditorState state;
   public:
-    SceneEditor( std::shared_ptr<Scene> scene );
+    SceneEditor( std::shared_ptr<Scene> scene,
+      std::shared_ptr<ResourceManager> resource_manager );
     void initialize();
-    void selectModel();
+    std::shared_ptr<Model> getSelectedModel() { return this->selected_model; }
+    void moveSelectedModel();
+    void selectModel( std::shared_ptr<Model> model );
     void mouseScroll();
     void update();
     void setState( SceneEditorState state ) { this->state = state; }
     SceneEditorState getState() { return this->state; }
+    std::shared_ptr<Scene> getScene() { return this->scene; }
 };
 
 #endif

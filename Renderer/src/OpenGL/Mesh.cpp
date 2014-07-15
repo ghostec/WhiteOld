@@ -17,6 +17,8 @@ Mesh::Mesh( std::string file_path )
   ModelAssetHelper::ImportOBJ( file_path.c_str(),
     vertices, uvs, normals, elements );
 
+  this->dimensions = ModelAssetHelper::calculateDimensions( vertices );
+
   std::vector< WMath::vec3 > new_vertices;
   for( int i = 0; i < elements.size(); i++ )
   {

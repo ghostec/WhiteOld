@@ -85,6 +85,24 @@ namespace ModelAssetHelper
 
   }
 
+  WMath::vec3 calculateDimensions( std::vector<WMath::vec3>& vertices )
+  {
+    WMath::vec3 min, max;
+    min = max = vertices[0];
+
+    for( const WMath::vec3 v : vertices )
+    {
+      if( v[0] < min[0] ) min[0] = v[0];
+      if( v[0] > max[0] ) max[0] = v[0];
+      if( v[1] < min[1] ) min[1] = v[1];
+      if( v[1] > max[1] ) max[1] = v[1];
+      if( v[2] < min[2] ) min[2] = v[2];
+      if( v[2] > max[2] ) max[2] = v[2];
+    }
+
+    return max - min;
+  }
+
   std::vector< WMath::vec3 > 
     CalculateNormalsAveraged( std::vector< WMath::vec3 >& vertices,
                               std::vector < std::array<GLushort, 3> >& elements )

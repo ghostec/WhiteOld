@@ -40,7 +40,7 @@ int main()
   Renderer renderer( &window );
   renderer.addScene( &*scene );
 
-  SceneEditor scene_editor( scene );
+  SceneEditor scene_editor( scene, resource_manager );
   scene_editor.initialize();
 
   auto t0 = std::chrono::high_resolution_clock::now();

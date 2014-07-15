@@ -42,6 +42,7 @@ class Model
     std::shared_ptr<Shader> getShader() { return this->shader; };
     std::shared_ptr<Texture> getTexture() { return this->texture; };
     ModelType getModelType() { return this->model_type; }
+    WMath::vec3 getDimensions();
 
     WMath::mat4* getTransformM();
     WMath::mat4* getTranslateM() { return &this->translate; };

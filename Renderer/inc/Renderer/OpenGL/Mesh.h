@@ -17,6 +17,7 @@ class Mesh
   private:
     GLuint vao, vbo;
     int vertices_count;
+    WMath::vec3 dimensions;
   public:
     Mesh( std::string file_path );
     void configureShader( std::shared_ptr<Shader> shader );
@@ -24,6 +25,7 @@ class Mesh
     GLuint getVAO() { return this->vao; }
     GLuint getVBO() { return this->vbo; }
     int getVerticesCount() { return this->vertices_count; }
+    WMath::vec3 getDimensions() { return this->dimensions; }
 };
 
 #endif

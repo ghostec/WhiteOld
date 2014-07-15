@@ -24,6 +24,8 @@ namespace ModelAssetHelper
     CalculateNormalsAveraged( std::vector<WMath::vec3>& vertices,
                               std::vector< std::array<GLushort, 3> >& elements );
 
+  WMath::vec3 calculateDimensions( std::vector<WMath::vec3>& vertices );
+
   namespace OpenGL
   {
 

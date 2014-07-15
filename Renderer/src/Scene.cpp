@@ -25,6 +25,12 @@ void Scene::addModel( std::shared_ptr<Model> model_instance )
   this->models.push_back( model_instance );
 }
 
+void Scene::removeModel( std::shared_ptr<Model> model )
+{
+  this->models.erase( std::remove_if( this->models.begin(), this->models.end(),
+    [&]( std::shared_ptr<Model>& m ){ return m == model; } ), this->models.end() );
+}
+
 void Scene::addLight( Light light )
 {
   this->lights.push_back( light );

@@ -26,7 +26,8 @@ class Scene
   public:
     Scene( std::string name );
     void update();
-    void addModel( std::shared_ptr<Model> model_instance );
+    void addModel( std::shared_ptr<Model> model );
+    void removeModel( std::shared_ptr<Model> model );
     void addLight( Light light );
     void updateLights();
     void setCamera( std::shared_ptr<Camera> camera );
