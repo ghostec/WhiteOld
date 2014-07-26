@@ -5,13 +5,13 @@ namespace ModelAssetHelper
   void parseFaceOBJ(  std::istringstream& s,
                       std::vector< std::array<GLushort, 3> >& elements )
   {
-    std::tr1::cmatch values;
+    std::cmatch values;
     std::string text;
 
-    std::tr1::regex rx_v( "([0-9]+)" );
-    std::tr1::regex rx_vt( "([0-9]+)\/([0-9]+)" );
-    std::tr1::regex rx_vn( "([0-9]+)\/\/([0-9]+)" );
-    std::tr1::regex rx_vtn( "([0-9]+)\/([0-9]+)\/([0-9]+)" );
+    std::regex rx_v( "([0-9]+)" );
+    std::regex rx_vt( "([0-9]+)\/([0-9]+)" );
+    std::regex rx_vn( "([0-9]+)\/\/([0-9]+)" );
+    std::regex rx_vtn( "([0-9]+)\/([0-9]+)\/([0-9]+)" );
 
     for( int i = 0; i < 3; i++ )
     {
@@ -19,24 +19,24 @@ namespace ModelAssetHelper
       std::array<GLushort, 3> elem;
       if( std::regex_match( text, rx_v ) )
       {
-        std::tr1::regex_search( text.c_str( ), values, rx_v );
+        std::regex_search( text.c_str( ), values, rx_v );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
       }
       else if( std::regex_match( text, rx_vt ) )
       {
-        std::tr1::regex_search( text.c_str( ), values, rx_vt );
+        std::regex_search( text.c_str( ), values, rx_vt );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
         elem[1] = atoi( values[2].str( ).c_str( ) ) - 1;
       }
       else if( std::regex_match( text, rx_vn ) )
       {
-        std::tr1::regex_search( text.c_str( ), values, rx_vt );
+        std::regex_search( text.c_str( ), values, rx_vt );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
         elem[2] = atoi( values[2].str( ).c_str( ) ) - 1;
       }
       else if( std::regex_match( text, rx_vtn ) )
       {
-        std::tr1::regex_search( text.c_str( ), values, rx_vtn );
+        std::regex_search( text.c_str( ), values, rx_vtn );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
         elem[1] = atoi( values[2].str( ).c_str( ) ) - 1;
         elem[2] = atoi( values[3].str( ).c_str( ) ) - 1;
@@ -46,7 +46,7 @@ namespace ModelAssetHelper
   }
 
   void ImportOBJ( const char* filename, std::vector<WMath::vec3>& vertices,
-                  std::vector<WMath::vec3>& uvs, 
+                  std::vector<WMath::vec3>& uvs,
                   std::vector<WMath::vec3>& normals,
                   std::vector< std::array<GLushort, 3> > &elements )
   {
@@ -54,9 +54,9 @@ namespace ModelAssetHelper
     if( !in ) { std::cerr << "Cannot open " << filename << std::endl; exit( 1 ); }
 
     std::string line;
-    while( getline( in, line ) ) 
+    while( getline( in, line ) )
     {
-      if( line.substr( 0, 2 ) == "v " ) 
+      if( line.substr( 0, 2 ) == "v " )
       {
         std::istringstream s( line.substr( 2 ) );
         WMath::vec3 v; s >> v[0]; s >> v[1]; s >> v[2];
@@ -74,7 +74,7 @@ namespace ModelAssetHelper
         WMath::vec3 n; s >> n[0]; s >> n[1]; s >> n[2];
         normals.push_back( n );
       }
-      else if( line.substr( 0, 2 ) == "f " ) 
+      else if( line.substr( 0, 2 ) == "f " )
       {
         std::istringstream s( line.substr( 2 ) );
         parseFaceOBJ( s, elements );
@@ -103,7 +103,7 @@ namespace ModelAssetHelper
     return max - min;
   }
 
-  std::vector< WMath::vec3 > 
+  std::vector< WMath::vec3 >
     CalculateNormalsAveraged( std::vector< WMath::vec3 >& vertices,
                               std::vector < std::array<GLushort, 3> >& elements )
   {

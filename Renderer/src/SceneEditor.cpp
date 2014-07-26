@@ -61,14 +61,12 @@ void showMoveArrows( SceneEditor* scene_editor,
   std::shared_ptr<Model> arrow = resource_manager->getModel( "arrow" );
   scene_editor->getScene()->addModel( arrow );
   updateMoveArrows( scene_editor, resource_manager );
-  
-  
 }
 
 template<typename T>
 bool isSubset( std::set<T> subset, std::set<T> set )
 {
-  for( std::set<T>::iterator it = subset.begin(); it != subset.end(); ++it )
+  for( typename std::set<T>::iterator it = subset.begin(); it != subset.end(); ++it )
   {
     bool e = false;
     for( int j = 0; j < set.size( ); j++ )

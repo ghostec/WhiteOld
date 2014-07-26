@@ -46,7 +46,7 @@ public:
   }
 
 private:
-  std::map<Event, std::vector< ObserverPair >> observers_;
+  std::map<Event, std::vector< ObserverPair > > observers_;
 };
 
 #endif

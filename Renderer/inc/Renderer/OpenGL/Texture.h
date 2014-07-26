@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <GL/glew.h>
-#include <SOIL/SOIL.h>
+#include "SOIL/SOIL.h"
 #include "Renderer/Shader.h"
 
 class Texture

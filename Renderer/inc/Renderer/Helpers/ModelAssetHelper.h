@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <regex>
 #include <array>
+#include <memory>
 #include <GL/glew.h>
 #include "WMath/WMath.h"
 #include "Helpers/Application.h"
