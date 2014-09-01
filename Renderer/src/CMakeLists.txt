@@ -134,7 +134,13 @@ ENDFOREACH()
 
 add_library( Renderer ${Renderer_SRCs} ${Renderer_Hs_PATHs} )
 
-target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} ${White_SOURCE_DIR}/Renderer/src/SOIL/libSOIL.dylib WMath)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  SET( SOIL_LIB libSOIL.dylib )
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  SET( SOIL_LIB soil.lib )
+endif()
+
+target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} ${White_SOURCE_DIR}/Renderer/src/SOIL/${SOIL_LIB} WMath)
 
 source_group("Source Files\\Helpers" FILES ${Helpers_SRCs})
 source_group("Header Files\\Helpers" FILES ${Helpers_Hs_PATHs})
