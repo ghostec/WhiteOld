@@ -23,7 +23,7 @@ int main()
 {
   Window window( WMath::vec2( 800, 600 ) );
   active_window = &window;
-  
+
   Input input( window.getWindow() );
   active_input = &input;
 

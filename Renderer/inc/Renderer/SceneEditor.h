@@ -30,6 +30,10 @@ class SceneEditor
     std::shared_ptr<Shader> shader;
     std::set< std::shared_ptr<Model> > cant_select;
     SceneEditorState state;
+
+    void update_NO_SELECTION__MODEL_SELECTED();
+    void update_ROTATING_CAMERA();
+    void update_MOVING_MODEL();
   public:
     SceneEditor( std::shared_ptr<Scene> scene,
       std::shared_ptr<ResourceManager> resource_manager );

@@ -153,68 +153,83 @@ void rotateCamera( Camera* camera, SceneEditor* scene_editor )
   }
 }
 
-void SceneEditor::update()
+void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
 {
   Camera* camera = &*this->scene->getCamera();
   std::set<int> input = active_input->getInput();
 
-  if( this->state == NO_SELECTION || this->state == MODEL_SELECTED )
+  if( isSubset( std::set<int>{ GLFW_KEY_UP }, input ) )
   {
-    if( isSubset( std::set<int>{ GLFW_KEY_UP }, input ) )
-    {
-      WMath::translate( camera->getView(), WMath::vec3( 0, -0.04, 0 ) );
-    }
-    else if( isSubset<int>( std::set<int>{ GLFW_KEY_DOWN }, input ) )
-    {
-      WMath::translate( camera->getView(), WMath::vec3( 0, 0.04, 0 ) );
-    }
-    else if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT }, input ) )
-    {
-      WMath::translate( camera->getView(), WMath::vec3( 0.04, 0, 0 ) );
-    }
-    else if( isSubset<int>( std::set<int>{ GLFW_KEY_RIGHT }, input ) )
-    {
-      WMath::translate( camera->getView(), WMath::vec3( -0.04, 0, 0 ) );
-    }
-    else if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
-    {
-      rotateCamera( camera, this );
-    }
-    else if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
-    {
-      std::shared_ptr<Model> model = mouse_picking.pick( );
-      if( isSubset< std::shared_ptr<Model> >
+    WMath::translate( camera->getView(), WMath::vec3( 0, -0.04, 0 ) );
+  }
+  else if( isSubset<int>( std::set<int>{ GLFW_KEY_DOWN }, input ) )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( 0, 0.04, 0 ) );
+  }
+  else if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT }, input ) )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( 0.04, 0, 0 ) );
+  }
+  else if( isSubset<int>( std::set<int>{ GLFW_KEY_RIGHT }, input ) )
+  {
+    WMath::translate( camera->getView(), WMath::vec3( -0.04, 0, 0 ) );
+  }
+  else if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
+  {
+    rotateCamera( camera, this );
+  }
+  else if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
+  {
+    std::shared_ptr<Model> model = mouse_picking.pick( );
+    if( isSubset< std::shared_ptr<Model> >
         ( std::set< std::shared_ptr<Model> >{ model }, this->cant_select ) )
+    {
+      if( model == resource_manager->getModel( "arrow" ) )
       {
-        if( model == resource_manager->getModel( "arrow" ) )
-        {
-          this->moveSelectedModel();
-        }
+        this->moveSelectedModel();
       }
-      else this->selectModel( model );
     }
+    else this->selectModel( model );
   }
+}
+
+void SceneEditor::update_ROTATING_CAMERA()
+{
+  Camera* camera = &*this->scene->getCamera();
+  std::set<int> input = active_input->getInput();
+
+  if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
+  {
+    rotateCamera( camera, this );
+  }
+  else
+  {
+    if( this->selected_model ) this->state = MODEL_SELECTED;
+    else this->state = NO_SELECTION;
+  }
+}
+
+void SceneEditor::update_MOVING_MODEL()
+{
+  Camera* camera = &*this->scene->getCamera();
+  std::set<int> input = active_input->getInput();
+
+  if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
+  {
+    this->moveSelectedModel( );
+  }
+  else
+  {
+    this->state = MODEL_SELECTED;
+  }
+}
+
+void SceneEditor::update()
+{
+  if( this->state == NO_SELECTION || this->state == MODEL_SELECTED )
+    update_NO_SELECTION__MODEL_SELECTED();
   else if( this->state == ROTATING_CAMERA )
-  {
-    if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
-    {
-      rotateCamera( camera, this );
-    }
-    else
-    {
-      if( this->selected_model ) this->state = MODEL_SELECTED;
-      else this->state = NO_SELECTION;
-    }
-  }
+    update_ROTATING_CAMERA();
   else if( this->state == MOVING_MODEL )
-  {
-    if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
-    {
-      this->moveSelectedModel( );
-    }
-    else
-    {
-      this->state = MODEL_SELECTED;
-    }
-  }
+    update_MOVING_MODEL();
 }
