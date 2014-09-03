@@ -120,7 +120,7 @@ void SceneEditor::moveSelectedModel( SceneEditorAxis direction )
 
     float value = (diff[0] - diff[1]) / 100.0f;
     if( dir == SEA_X ) dT[0] = value;
-    else if( dir == SEA_Y ) dT[1] = -value;
+    else if( dir == SEA_Y ) dT[1] = value;
     else if( dir == SEA_Z ) dT[2] = -value;
 
     WMath::translate( this->selected_model->getTranslateM(), dT );
