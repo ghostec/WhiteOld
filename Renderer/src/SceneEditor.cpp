@@ -11,7 +11,12 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   this->resource_manager = resource_manager;
   XMLHelper::importAssets( "assets_SceneEditor", resource_manager );
 
-  this->cant_select.insert( resource_manager->getModel( "arrow" ) );
+  this->cant_select
+    .insert( resource_manager->getModel( "SceneEditor_arrow_x" ) );
+  this->cant_select
+    .insert( resource_manager->getModel( "SceneEditor_arrow_y" ) );
+  this->cant_select
+    .insert( resource_manager->getModel( "SceneEditor_arrow_z" ) );
 
   active_window->registerObserver( "RESIZE",
     std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
@@ -30,36 +35,49 @@ void updateMoveArrows( SceneEditor* scene_editor,
   ResourceManager* resource_manager )
 {
   Model* model = &*scene_editor->getSelectedModel();
-  Model* arrow = &*resource_manager->getModel( "arrow" );
-  arrow->resetTransform();
-  *arrow->getTranslateM() = *model->getTranslateM();
-  WMath::vec3 d =
-    0.5f * ( model->getDimensions() + arrow->getDimensions() );
-  WMath::rotate_z( arrow->getScaleM(), -90.0f );
-  WMath::translate( arrow->getTranslateM(), WMath::vec3( d[1], 0, 0 ) );
+  WMath::vec3 model_dimensions = model->getDimensions();
+
+  Model* arrow_x = &*resource_manager->getModel( "SceneEditor_arrow_x" );
+  arrow_x->resetTransform();
+
+  Model* arrow_y = &*resource_manager->getModel( "SceneEditor_arrow_y" );
+  arrow_y->resetTransform();
+
+  Model* arrow_z = &*resource_manager->getModel( "SceneEditor_arrow_z" );
+  arrow_z->resetTransform();
+
+  *arrow_x->getTranslateM() = *arrow_y->getTranslateM() =
+    *arrow_z->getTranslateM() = *model->getTranslateM();
+  float dx = 0.5f * ( model_dimensions[0] + arrow_x->getDimensions()[0] );
+  WMath::rotate_z( arrow_x->getRotateM(), -90.0f );
+  WMath::translate( arrow_x->getTranslateM(), WMath::vec3( dx, 0, 0 ) );
+  float dy = 0.5f * ( model_dimensions[1] + arrow_y->getDimensions()[1] );
+  WMath::translate( arrow_y->getTranslateM(), WMath::vec3( 0, dy, 0 ) );
+  float dz = 0.5f * ( model_dimensions[2] + arrow_x->getDimensions()[2] );
+  WMath::rotate_x( arrow_z->getRotateM(), 90.0f );
+  WMath::translate( arrow_z->getTranslateM(), WMath::vec3( 0, 0, dz ) );
 }
 
 void hideMoveArrows( std::shared_ptr<Scene> scene,
   std::shared_ptr<ResourceManager> resource_manager )
 {
-  std::shared_ptr<Model> arrow = resource_manager->getModel( "arrow" );
-  scene->removeModel( arrow );
+  scene->removeModel( resource_manager->getModel( "SceneEditor_arrow_x" ) );
+  scene->removeModel( resource_manager->getModel( "SceneEditor_arrow_y" ) );
+  scene->removeModel( resource_manager->getModel( "SceneEditor_arrow_z" ) );
 }
 
 void showMoveArrows( SceneEditor* scene_editor,
   ResourceManager* resource_manager )
 {
-  /*
-  std::shared_ptr<Model> arrow = resource_manager->getModel( "arrow" );
-  arrow->resetTransform();
-  WMath::vec3 d = 
-    0.5f * ( selected_model->getDimensions() + arrow->getDimensions() );
-  WMath::translate( arrow->getTranslateM(), WMath::vec3( 0, d[1], 0 ) );
-  scene->addModel( arrow );
-  */
+  std::shared_ptr<Model> arrow;
 
-  std::shared_ptr<Model> arrow = resource_manager->getModel( "arrow" );
+  arrow = resource_manager->getModel( "SceneEditor_arrow_x" );
   scene_editor->getScene()->addModel( arrow );
+  arrow = resource_manager->getModel( "SceneEditor_arrow_y" );
+  scene_editor->getScene()->addModel( arrow );
+  arrow = resource_manager->getModel( "SceneEditor_arrow_z" );
+  scene_editor->getScene()->addModel( arrow );
+
   updateMoveArrows( scene_editor, resource_manager );
 }
 
@@ -82,11 +100,14 @@ bool isSubset( std::set<T> subset, std::set<T> set )
   return true;
 }
 
-void SceneEditor::moveSelectedModel()
+void SceneEditor::moveSelectedModel( SceneEditorAxis direction )
 {
   static WMath::vec2 last_cursor_pos;
+  static SceneEditorAxis dir;
+
   if( this->state != MOVING_MODEL )
   {
+    dir = direction;
     last_cursor_pos = active_input->getMousePos();
     this->state = MOVING_MODEL;
   }
@@ -95,7 +116,14 @@ void SceneEditor::moveSelectedModel()
     WMath::vec2 cursor_pos = active_input->getMousePos();
     WMath::vec2 diff = cursor_pos - last_cursor_pos;
 
-    WMath::translate( this->selected_model->getTranslateM(), WMath::vec3( diff[0] / 100.0f, 0, 0 ) );
+    WMath::vec3 dT(0);
+
+    float value = (diff[0] - diff[1]) / 100.0f;
+    if( dir == SEA_X ) dT[0] = value;
+    else if( dir == SEA_Y ) dT[1] = -value;
+    else if( dir == SEA_Z ) dT[2] = -value;
+
+    WMath::translate( this->selected_model->getTranslateM(), dT );
     updateMoveArrows( this, &*this->resource_manager );
     last_cursor_pos = cursor_pos;
   }
@@ -180,14 +208,16 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
   }
   else if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
   {
-    std::shared_ptr<Model> model = mouse_picking.pick( );
+    std::shared_ptr<Model> model = mouse_picking.pick();
     if( isSubset< std::shared_ptr<Model> >
         ( std::set< std::shared_ptr<Model> >{ model }, this->cant_select ) )
     {
-      if( model == resource_manager->getModel( "arrow" ) )
-      {
-        this->moveSelectedModel();
-      }
+      if( model == resource_manager->getModel( "SceneEditor_arrow_x" ) )
+        this->moveSelectedModel( SEA_X );
+      else if( model == resource_manager->getModel( "SceneEditor_arrow_y" ) )
+        this->moveSelectedModel( SEA_Y );
+      else if( model == resource_manager->getModel( "SceneEditor_arrow_z" ) )
+        this->moveSelectedModel( SEA_Z );
     }
     else this->selectModel( model );
   }
@@ -216,7 +246,8 @@ void SceneEditor::update_MOVING_MODEL()
 
   if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
   {
-    this->moveSelectedModel( );
+    // select model
+    this->moveSelectedModel();
   }
   else
   {

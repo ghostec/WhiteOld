@@ -19,6 +19,11 @@ typedef enum
   NO_SELECTION, MODEL_SELECTED, MOVING_MODEL, MOVING_CAMERA, ROTATING_CAMERA
 } SceneEditorState;
 
+typedef enum
+{
+  SEA_X, SEA_Y, SEA_Z, SEA_NONE
+} SceneEditorAxis;
+
 class SceneEditor
 {
   private:
@@ -31,6 +36,9 @@ class SceneEditor
     std::set< std::shared_ptr<Model> > cant_select;
     SceneEditorState state;
 
+    void moveSelectedModel( SceneEditorAxis direction = SEA_NONE );
+    void selectModel( std::shared_ptr<Model> model );
+    void mouseScroll();
     void update_NO_SELECTION__MODEL_SELECTED();
     void update_ROTATING_CAMERA();
     void update_MOVING_MODEL();
@@ -39,9 +47,6 @@ class SceneEditor
       std::shared_ptr<ResourceManager> resource_manager );
     void initialize();
     std::shared_ptr<Model> getSelectedModel() { return this->selected_model; }
-    void moveSelectedModel();
-    void selectModel( std::shared_ptr<Model> model );
-    void mouseScroll();
     void update();
     void setState( SceneEditorState state ) { this->state = state; }
     SceneEditorState getState() { return this->state; }
