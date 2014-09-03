@@ -213,11 +213,20 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
         ( std::set< std::shared_ptr<Model> >{ model }, this->cant_select ) )
     {
       if( model == resource_manager->getModel( "SceneEditor_arrow_x" ) )
+      {
         this->moveSelectedModel( SEA_X );
+        model->setTexture( resource_manager->getTexture( "yellow" ) );
+      }
       else if( model == resource_manager->getModel( "SceneEditor_arrow_y" ) )
+      {
         this->moveSelectedModel( SEA_Y );
+        model->setTexture( resource_manager->getTexture( "yellow" ) );
+      }
       else if( model == resource_manager->getModel( "SceneEditor_arrow_z" ) )
+      {
         this->moveSelectedModel( SEA_Z );
+        model->setTexture( resource_manager->getTexture( "yellow" ) );
+      }
     }
     else this->selectModel( model );
   }
@@ -251,6 +260,12 @@ void SceneEditor::update_MOVING_MODEL()
   }
   else
   {
+    resource_manager->getModel( "SceneEditor_arrow_x" )
+      ->setTexture( resource_manager->getTexture( "red" ) );
+    resource_manager->getModel( "SceneEditor_arrow_y" )
+      ->setTexture( resource_manager->getTexture( "blue" ) );
+    resource_manager->getModel( "SceneEditor_arrow_z" )
+      ->setTexture( resource_manager->getTexture( "green" ) );
     this->state = MODEL_SELECTED;
   }
 }

@@ -17,10 +17,12 @@ namespace ModelAssetHelper
     {
       s >> text;
       std::array<GLushort, 3> elem;
+
       if( std::regex_match( text, rx_v ) )
       {
         std::regex_search( text.c_str( ), values, rx_v );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
+        std::cout << elem[0] << std::endl;
       }
       else if( std::regex_match( text, rx_vt ) )
       {
@@ -30,7 +32,7 @@ namespace ModelAssetHelper
       }
       else if( std::regex_match( text, rx_vn ) )
       {
-        std::regex_search( text.c_str( ), values, rx_vt );
+        std::regex_search( text.c_str( ), values, rx_vn );
         elem[0] = atoi( values[1].str( ).c_str( ) ) - 1;
         elem[2] = atoi( values[2].str( ).c_str( ) ) - 1;
       }
