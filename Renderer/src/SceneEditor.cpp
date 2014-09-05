@@ -185,6 +185,25 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
 {
   Camera* camera = &*this->scene->getCamera();
   std::set<int> input = active_input->getInput();
+  static std::shared_ptr<Model> model_hovered = nullptr;
+  static std::shared_ptr<Texture> texture_hovered = nullptr;
+
+  if( model_hovered )
+  {
+    model_hovered->setTexture( texture_hovered );
+    model_hovered = nullptr; texture_hovered = nullptr;
+  }
+
+  std::shared_ptr<Model> model = mouse_picking.pick();
+
+  if( model == resource_manager->getModel( "SceneEditor_arrow_x" ) || 
+    model == resource_manager->getModel( "SceneEditor_arrow_y" ) || 
+    model == resource_manager->getModel( "SceneEditor_arrow_z" ) )
+  {
+    model_hovered = model;
+    texture_hovered = model->getTexture();
+    model->setTexture( resource_manager->getTexture( "yellow" ) );
+  }
 
   if( isSubset( std::set<int>{ GLFW_KEY_UP }, input ) )
   {
@@ -208,7 +227,6 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
   }
   else if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
   {
-    std::shared_ptr<Model> model = mouse_picking.pick();
     if( isSubset< std::shared_ptr<Model> >
         ( std::set< std::shared_ptr<Model> >{ model }, this->cant_select ) )
     {
