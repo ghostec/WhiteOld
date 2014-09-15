@@ -10,8 +10,6 @@
 #include "Helpers/Observable.h"
 #include "WMath/WMath.h"
 
-#define Key int
-
 class Input : public Observable<std::string>
 {
   private:
@@ -20,7 +18,7 @@ class Input : public Observable<std::string>
     WMath::vec2 mouse_scroll_offset;
   public:
     Input( GLFWwindow* window );
-    bool isKeyPressed( Key key );
+    bool isKeyPressed( int Key );
     WMath::vec2 getMousePos();
     void setMouseScroll( WMath::vec2 mouse_scroll_offset );
     const WMath::vec2 getMouseScroll() { return this->mouse_scroll_offset; }
@@ -31,7 +29,7 @@ class Input : public Observable<std::string>
 
 extern Input* active_input;
 
-void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, int mods );
+void intboardCallback( GLFWwindow* window, int Key, int scancode, int action, int mods );
 void mouseScrollCallback( GLFWwindow* window, double xoffset, double yoffset );
 void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods );
 

@@ -18,6 +18,7 @@
 #include "Renderer/Helpers/CameraHelper.h"
 #include "Renderer/MousePicking.h"
 #include "Input/Input.h"
+#include "btBulletDynamicsCommon.h"
 
 int main()
 {

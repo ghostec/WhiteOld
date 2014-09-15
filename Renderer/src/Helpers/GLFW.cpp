@@ -26,7 +26,7 @@ namespace GLFWhelper
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback( window, keyboardCallback );
+    glfwSetKeyCallback( window, intboardCallback );
     glfwSetMouseButtonCallback( window, mouseButtonCallback );
     glfwSetScrollCallback( window, mouseScrollCallback );
     glfwSetWindowSizeCallback( window, windowResizeCallback );
@@ -45,9 +45,9 @@ namespace GLFWhelper
     return window;
   }
 
-  bool isKeyPressed( GLFWwindow *window, int key )
+  bool isintPressed( GLFWwindow *window, int Key )
   {
-    if( glfwGetKey( window, key ) == GLFW_PRESS )
+    if( glfwGetKey( window, Key ) == GLFW_PRESS )
       return true;
     else
       return false;

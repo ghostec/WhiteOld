@@ -11,7 +11,7 @@
 namespace GLFWhelper
 {
   GLFWwindow* CreateWindow( WMath::vec2 dimensions );
-  bool isKeyPressed( GLFWwindow *window, int key );
+  bool isintPressed( GLFWwindow *window, int Key );
   void windowResizeCallback( GLFWwindow *window, int w, int h );
 }
 
