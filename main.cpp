@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <memory>
+#include <btBulletDynamicsCommon.h>
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
@@ -18,7 +19,6 @@
 #include "Renderer/Helpers/CameraHelper.h"
 #include "Renderer/MousePicking.h"
 #include "Input/Input.h"
-#include "btBulletDynamicsCommon.h"
 
 int main()
 {
