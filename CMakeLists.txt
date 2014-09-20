@@ -9,7 +9,8 @@ subdirs(WMath Input Renderer Physics tinyxml2)
 
 include_directories( ${White_SOURCE_DIR} ${White_SOURCE_DIR}/inc
   ${White_SOURCE_DIR}/Input/inc ${White_SOURCE_DIR}/WMath/inc
-  ${White_SOURCE_DIR}/Renderer/inc ${White_SOURCE_DIR}/Physics/inc )
+  ${White_SOURCE_DIR}/Renderer/inc ${White_SOURCE_DIR}/Physics/inc
+  ${White_SOURCE_DIR}/bullet3-master/src  )
 
 SET( SRCs_DIR src )
 

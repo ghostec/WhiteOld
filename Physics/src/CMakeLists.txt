@@ -23,11 +23,13 @@ find_library(LINEAR_MATH_LIBRARY
 SET(
   Physics_SRCs
   PhysicsManager.cpp
+  Body.cpp
 )
 
 SET(
   Physics_Hs
   PhysicsManager.h
+  Body.h
 )
 
 SET( Physics_Hs_DIR  ../inc/Physics )
@@ -39,4 +41,4 @@ ENDFOREACH()
 add_library( Physics ${Physics_SRCs} ${Physics_Hs_PATHs} )
 
 target_link_libraries(Physics ${BULLET_DYNAMICS_LIBRARY}
-  ${BULLET_COLLISION_LIBRARY} ${LINEAR_MATH_LIBRARY})
+  ${BULLET_COLLISION_LIBRARY} ${LINEAR_MATH_LIBRARY} Renderer)

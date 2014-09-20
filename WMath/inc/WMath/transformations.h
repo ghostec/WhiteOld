@@ -6,6 +6,7 @@
 
 namespace WMath
 {
+  void setOrigin( mat4* t_matrix, vec3 v );
   void translate( mat4* t_matrix, vec3 v );
   void scale( mat4* t_matrix, vec3 v );
   void rotate_x( mat4* t_matrix, float degrees );

@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <memory>
-#include <btBulletDynamicsCommon.h>
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
@@ -19,6 +18,7 @@
 #include "Renderer/Helpers/CameraHelper.h"
 #include "Renderer/MousePicking.h"
 #include "Input/Input.h"
+#include "Physics/PhysicsManager.h"
 
 int main()
 {
@@ -44,11 +44,19 @@ int main()
   SceneEditor scene_editor( scene, resource_manager );
   scene_editor.initialize();
 
+  PhysicsManager physics_manager;
+  std::shared_ptr<Body> body, plane;
+  body.reset( new Body( resource_manager->getModel( "cube" ) ) );
+  plane.reset( new Body( resource_manager->getModel( "plane" ), true ) );
+  physics_manager.addBody( body );
+  physics_manager.addBody( plane );
+
   auto t0 = std::chrono::high_resolution_clock::now();
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
+    physics_manager.update();
     scene_editor.update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );

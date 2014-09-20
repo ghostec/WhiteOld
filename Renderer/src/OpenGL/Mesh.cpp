@@ -10,12 +10,11 @@ Mesh::Mesh( std::string file_path )
   glGenBuffers(1, &this->vbo);
   glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
 
-  std::vector< WMath::vec3 > vertices, uvs, normals;
-  std::vector< std::array<GLushort, 3> > elements;
+  std::vector< WMath::vec3 > uvs, normals;
 
   file_path = "../assets/models/" + file_path;
   ModelAssetHelper::ImportOBJ( file_path.c_str(),
-    vertices, uvs, normals, elements );
+    this->vertices, uvs, normals, this->elements );
 
   this->dimensions = ModelAssetHelper::calculateDimensions( vertices );
 

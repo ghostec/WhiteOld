@@ -2,6 +2,15 @@
 
 namespace WMath
 {
+  void setOrigin( mat4* t_matrix, vec3 v )
+  {
+    mat4 m;
+    m[0][3] = v[0];
+    m[1][3] = v[1];
+    m[2][3] = v[2];
+    ( *t_matrix ) = m;
+  }
+
   void translate( mat4* t_matrix, vec3 v )
   {
     mat4 m;
