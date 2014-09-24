@@ -47,14 +47,6 @@ void Scene::updateLights()
     this->updateLightsForShader( model_instance->getShader() );
 }
 
-void Scene::setCamera( std::shared_ptr<Camera> camera )
-{
-  this->camera  = camera;
-  std::string text = this->name + "_camera";
-  active_window->registerObserver
-    ( "RESIZE", std::bind( CameraHelper::updateWindow, &*camera ), text );
-}
-
 void Scene::updateCameraForShader( std::shared_ptr<Shader> shader )
 {
   ShaderHelper::setCamera( &*shader, &*this->camera );
@@ -64,4 +56,17 @@ void Scene::updateCamera()
 {
   for( std::shared_ptr<Model> model : this->models )
     this->updateCameraForShader( model->getShader() );
+}
+
+void Scene::setCamera( std::shared_ptr<Camera> camera )
+{
+  this->camera = camera;
+  std::string text = this->name + "_camera";
+  active_window->registerObserver
+    ( "RESIZE", std::bind( CameraHelper::updateWindow, &*camera ), text );
+}
+
+void Scene::setSceneGraph( std::shared_ptr<SceneGraph> scene_graph )
+{
+  this->scene_graph = scene_graph;
 }

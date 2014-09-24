@@ -8,6 +8,7 @@
 #include "Renderer/Mesh.h"
 #include "Renderer/Model.h"
 #include "Renderer/Scene.h"
+#include "Renderer/SceneGraph.h"
 #include "Renderer/SceneEditor.h"
 #include "Input/Input.h"
 

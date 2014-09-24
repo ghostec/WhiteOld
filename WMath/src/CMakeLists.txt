@@ -7,6 +7,7 @@ SET(
   vec4.cpp
   vec3.cpp
   vec2.cpp
+  quaternion.cpp
   transformations.cpp
   interpolation.cpp
 )

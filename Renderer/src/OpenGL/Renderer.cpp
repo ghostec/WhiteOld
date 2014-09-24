@@ -24,11 +24,11 @@ void Renderer::render()
 void Renderer::drawScene( Scene* scene )
 {
   scene->update();
-  std::vector< std::shared_ptr<Model> >*
-    model_instances = scene->getModels();
-  for( std::shared_ptr<Model> model : *model_instances )
+  std::shared_ptr<SceneGraph> scene_graph = scene->getSceneGraph();
+
+  for( std::shared_ptr<SGNode> sg_node : scene_graph->getNodes() )
   {
-    RendererHelper::drawModel( model );
+    RendererHelper::drawSGNode( sg_node );
   }
 }
 

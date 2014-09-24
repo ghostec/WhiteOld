@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 #include "Input/Input.h"
-#include "Renderer/Mesh.h"
+#include "Renderer/SceneGraph.h"
 #include "Renderer/Model.h"
 #include "Renderer/Light.h"
 #include "Renderer/Window.h"
@@ -21,6 +21,7 @@ class Scene
     std::vector< std::shared_ptr<Model> > models;
     std::vector<Light> lights;
     std::shared_ptr<Camera> camera;
+    std::shared_ptr<SceneGraph> scene_graph;
     void updateLightsForShader( std::shared_ptr<Shader> shader );
     void updateCameraForShader( std::shared_ptr<Shader> shader );
   public:
@@ -30,12 +31,15 @@ class Scene
     void removeModel( std::shared_ptr<Model> model );
     void addLight( Light light );
     void updateLights();
-    void setCamera( std::shared_ptr<Camera> camera );
     void updateCamera();
     // getters
     std::vector< std::shared_ptr<Model> >* getModels()
       { return &this->models; }
     std::shared_ptr<Camera> getCamera() { return this->camera; }
+    std::shared_ptr<SceneGraph> getSceneGraph() { return this->scene_graph; }
+    // setters
+    void setCamera( std::shared_ptr<Camera> camera );
+    void setSceneGraph( std::shared_ptr<SceneGraph> scene_graph );
 };
 
 #endif

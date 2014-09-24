@@ -5,6 +5,11 @@
 #include "btBulletDynamicsCommon.h"
 #include "Physics/Body.h"
 
+typedef enum _PhysicsState
+{
+  ON, OFF
+} PhysicsState;
+
 class PhysicsManager
 {
   private:
@@ -14,10 +19,14 @@ class PhysicsManager
     btSequentialImpulseConstraintSolver*    solver;
     btDiscreteDynamicsWorld*                world;
     std::vector< std::shared_ptr<Body> >    bodies;
+    PhysicsState state;
   public:
     PhysicsManager();
     void addBody( std::shared_ptr<Body> );
     void update();
+    void turnOn() { this->state = ON; }
+    void turnOff() { this->state = OFF; }
+    PhysicsState getState() { return this->state; }
 };
 
 #endif

@@ -1,10 +1,13 @@
 #include "Physics/Body.h"
 
-Body::Body( std::shared_ptr<Model> model, bool is_static )
+Body::Body( std::shared_ptr<SGNode> sg_node, bool is_static )
 {
-  this->model = model;
+  static float test = 0;
+  this->sg_node = sg_node;
 
   btTriangleMesh* mesh = new btTriangleMesh();
+
+  std::shared_ptr<Model> model = sg_node->getModel();
 
   const std::vector< std::array< GLushort, 3 > > elements =
     model->getMesh()->getElements();
@@ -24,11 +27,12 @@ Body::Body( std::shared_ptr<Model> model, bool is_static )
     mesh->addTriangle( bv1, bv2, bv3 );
   }
 
-  this->shape = new btBvhTriangleMeshShape( mesh, true );
-
   if( !is_static )
   {
-    btVector3 position = btVector3( 0, 10, 0 );
+    this->shape = new btBoxShape( btVector3( 1, 1, 1 ) );
+    btVector3 position = btVector3( 0, 10+test, 0 );
+    sg_node->setTranslate( WMath::vec3( 0, 10+test, 0 ) );
+    test+=5;
 
     btDefaultMotionState* motionState = new btDefaultMotionState( btTransform( btQuaternion( 0, 0, 0, 1 ), position ) );
 
@@ -38,8 +42,8 @@ Body::Body( std::shared_ptr<Model> model, bool is_static )
 
     btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo( bodyMass, motionState, shape, bodyInertia );
 
-    //bodyCI.m_restitution = 1.0f;
-    //bodyCI.m_friction = 0.5f;
+    bodyCI.m_restitution = 0.5f;
+    bodyCI.m_friction = 0.5f;
 
     this->body = new btRigidBody( bodyCI );
 
@@ -47,8 +51,9 @@ Body::Body( std::shared_ptr<Model> model, bool is_static )
   }
   else
   {
+    this->shape = new btBoxShape( btVector3( 20, 0, 20 ) );
     btDefaultMotionState* groundMotionState =
-      new btDefaultMotionState( btTransform( btQuaternion( 0, 0, 0, 1 ), btVector3( 0, -1, 0 ) ) );
+      new btDefaultMotionState( btTransform( btQuaternion( 0, 0, 0, 1 ), btVector3( 0, 0, 0 ) ) );
     btRigidBody::btRigidBodyConstructionInfo
       groundRigidBodyCI( 0, groundMotionState, this->shape, btVector3( 0, 0, 0 ) );
     this->body = new btRigidBody( groundRigidBodyCI );

@@ -84,6 +84,8 @@ SET(
   Effect.cpp
   EffectsManager.cpp
   ResourceManager.cpp
+  SceneGraph.cpp
+  SGNode.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
   ${Helpers_OpenGL_SRCs}
@@ -111,6 +113,8 @@ SET(
   EffectsManager.h
   ResourceManager.h
   Texture.h
+  SceneGraph.h
+  SGNode.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
   ${Helpers_OpenGL_Hs}

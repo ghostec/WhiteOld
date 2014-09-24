@@ -29,6 +29,7 @@ class Model
     Model( std::shared_ptr<Mesh> mesh, ModelType model_type = MODEL_3D );
     void use(); void unuse();
     void resetTransform();
+    void setTransform( WMath::mat4* t );
 
     // setters
     void setShader( std::shared_ptr<Shader> shader );

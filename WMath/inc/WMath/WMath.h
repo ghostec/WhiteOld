@@ -58,6 +58,17 @@ namespace WMath
       vec4& operator[]( int index );
   };
 
+  class quaternion
+  {
+    public:
+      float vec[4];
+      quaternion();
+      quaternion( float x, float y, float z, float w );
+      quaternion( vec3 v, float w );
+      const float& operator[] ( int index ) const;
+      float& operator[] ( int index );
+  };
+
   vec2 operator*( const float& f, const vec2& v );
   vec2 operator*( const vec2& v, const float& f );
   vec2 operator+( const vec2& v1, const vec2& v2 );
@@ -82,6 +93,8 @@ namespace WMath
   float dot( vec3 v1, vec3 v2 );
   vec3 normalize( vec3 v );
   vec3 cross( vec3 v1, vec3 v2 );
+
+  quaternion normalize( quaternion v );
 
   float* value_ptr( mat4* m );
 }

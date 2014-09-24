@@ -27,4 +27,14 @@ namespace RendererHelper
 
     model->unuse();
   }
+
+  void drawSGNode( std::shared_ptr<SGNode> sg_node )
+  {
+    std::shared_ptr<Model> model = sg_node->getModel();
+    WMath::mat4 t = WMath::scaleM( sg_node->getScale() )
+      * WMath::rotateM( sg_node->getRotate() )
+      * WMath::translateM( sg_node->getTranslate() );
+    model->setTransform( &t );
+    drawModel( model );
+  }
 }

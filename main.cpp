@@ -17,6 +17,8 @@
 #include "Renderer/Helpers/XMLGUIScene.h"
 #include "Renderer/Helpers/CameraHelper.h"
 #include "Renderer/MousePicking.h"
+#include "Renderer/SceneGraph.h"
+#include "Renderer/SGNode.h"
 #include "Input/Input.h"
 #include "Physics/PhysicsManager.h"
 
@@ -36,7 +38,16 @@ int main()
     ( XMLHelper::importScene( "example", resource_manager ) );
   Camera* camera = &*scene->getCamera();
   CameraHelper::normalCamera( camera );
-  WMath::translate( camera->getView(), WMath::vec3( -1, 1, -10 ) );
+  WMath::translate( camera->getView(), WMath::vec3( -1, -4, -13 ) );
+
+  std::shared_ptr<SceneGraph> scene_graph( new SceneGraph( ) );
+  std::shared_ptr<SGNode> sg_node_cube( new SGNode( resource_manager->getModel( "cube" ) ) );
+  std::shared_ptr<SGNode> sg_node_cube2( new SGNode( resource_manager->getModel( "cube2" ) ) );
+  std::shared_ptr<SGNode> sg_node_plane( new SGNode( resource_manager->getModel( "plane" ) ) );
+  scene_graph->addNode( sg_node_cube ); scene_graph->addNode( sg_node_cube2 );
+  scene_graph->addNode( sg_node_plane );
+
+  scene->setSceneGraph( scene_graph );
 
   Renderer renderer( &window );
   renderer.addScene( &*scene );
@@ -45,10 +56,12 @@ int main()
   scene_editor.initialize();
 
   PhysicsManager physics_manager;
-  std::shared_ptr<Body> body, plane;
-  body.reset( new Body( resource_manager->getModel( "cube" ) ) );
-  plane.reset( new Body( resource_manager->getModel( "plane" ), true ) );
+  std::shared_ptr<Body> body, body2, plane;
+  body.reset( new Body( sg_node_cube ) );
+  body2.reset( new Body( sg_node_cube2 ) );
+  plane.reset( new Body( sg_node_plane, true ) );
   physics_manager.addBody( body );
+  physics_manager.addBody( body2 );
   physics_manager.addBody( plane );
 
   auto t0 = std::chrono::high_resolution_clock::now();

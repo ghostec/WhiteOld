@@ -14,9 +14,14 @@ void Model::setShader( std::shared_ptr<Shader> shader )
   ShaderHelper::setVertexData( &*shader, &*this->mesh );
 }
 
+void Model::setTransform( WMath::mat4* t )
+{
+  this->shader->setUniform( "Model", t, GL_TRUE );
+}
+
 void Model::use()
 {
-  this->shader->setUniform( "Model", this->getTransformM(), GL_TRUE );
+  //this->shader->setUniform( "Model", this->getTransformM( ), GL_TRUE );
   if( this->texture ) this->texture->use( this->shader );
   ShaderHelper::setModelData( &*this->shader, &*this->model_data );
 }
