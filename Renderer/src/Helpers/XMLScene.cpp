@@ -83,6 +83,11 @@ namespace XMLHelper
         ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
       sg_node->setScale( scale );
     }
+    else
+    {
+      WMath::vec3 scale( 1.0 );
+      sg_node->setScale( scale );
+    }
 
     scene_graph->addNode( sg_node );
   }

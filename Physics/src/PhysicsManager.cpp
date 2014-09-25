@@ -41,7 +41,5 @@ void PhysicsManager::update()
     q[2] = body->getBody()->getWorldTransform().getRotation()[2];
     q[3] = body->getBody()->getWorldTransform().getRotation()[3];
     body->getSGNode()->setRotate( q );
-
-    body->getSGNode( )->setScale( WMath::vec3( 1.0 ) );
   }
 }
