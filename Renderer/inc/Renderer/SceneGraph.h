@@ -15,6 +15,7 @@ class SceneGraph
   public:
     void addNode( std::shared_ptr<SGNode> node );
     std::vector< std::shared_ptr<SGNode> > getNodes() { return this->nodes; }
+    std::shared_ptr<SGNode> getNode( std::string name );
 };
 
 #endif

@@ -1,5 +1,5 @@
 #ifndef __PHYSICS_PHYSICSMANAGER__
-#define __PHYSICS_PHYSICSEMANAGER__
+#define __PHYSICS_PHYSICSMANAGER__
 
 #include <vector>
 #include "btBulletDynamicsCommon.h"

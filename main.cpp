@@ -21,6 +21,7 @@
 #include "Renderer/SGNode.h"
 #include "Input/Input.h"
 #include "Physics/PhysicsManager.h"
+#include "Physics/Helpers/XMLPhysics.h"
 
 int main()
 {
@@ -40,36 +41,21 @@ int main()
   CameraHelper::normalCamera( camera );
   WMath::translate( camera->getView(), WMath::vec3( -1, -4, -13 ) );
 
-  std::shared_ptr<SceneGraph> scene_graph( new SceneGraph( ) );
-  std::shared_ptr<SGNode> sg_node_cube( new SGNode( resource_manager->getModel( "cube" ) ) );
-  std::shared_ptr<SGNode> sg_node_cube2( new SGNode( resource_manager->getModel( "cube2" ) ) );
-  std::shared_ptr<SGNode> sg_node_plane( new SGNode( resource_manager->getModel( "plane" ) ) );
-  scene_graph->addNode( sg_node_cube ); scene_graph->addNode( sg_node_cube2 );
-  scene_graph->addNode( sg_node_plane );
-
-  scene->setSceneGraph( scene_graph );
-
   Renderer renderer( &window );
   renderer.addScene( &*scene );
 
   SceneEditor scene_editor( scene, resource_manager );
   scene_editor.initialize();
 
-  PhysicsManager physics_manager;
-  std::shared_ptr<Body> body, body2, plane;
-  body.reset( new Body( sg_node_cube ) );
-  body2.reset( new Body( sg_node_cube2 ) );
-  plane.reset( new Body( sg_node_plane, true ) );
-  physics_manager.addBody( body );
-  physics_manager.addBody( body2 );
-  physics_manager.addBody( plane );
+  std::shared_ptr<PhysicsManager> physics_manager( new PhysicsManager );
+  XMLHelper::importPhysics( "physics_example", scene->getSceneGraph(), physics_manager );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
-    physics_manager.update();
+    physics_manager->update();
     scene_editor.update();
     renderer.render();
     while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );

@@ -16,13 +16,15 @@ class SGNode
     WMath::quaternion rotate;
     std::shared_ptr<Model> model;
     std::vector< std::shared_ptr<SGNode> > children;
+    std::string name;
   public:
-    SGNode( std::shared_ptr<Model> model ) { this->model = model; }
+    SGNode( std::string name, std::shared_ptr<Model> model );
     void addChild( std::shared_ptr<SGNode> child );
     //getters
     WMath::vec3 getTranslate() { return this->translate; }
     WMath::vec3 getScale() { return this->scale; }
     WMath::quaternion getRotate() { return this->rotate; }
+    std::string getName() { return this->name; }
     std::shared_ptr<Model> getModel() { return this->model; }
     std::vector< std::shared_ptr<SGNode> > getChildren()
       { return this->children; }
