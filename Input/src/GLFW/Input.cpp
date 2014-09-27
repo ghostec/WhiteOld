@@ -2,6 +2,25 @@
 
 Input* active_input;
 
+template<typename T>
+bool isSubset( std::set<T> subset, std::set<T> set )
+{
+  for( typename std::set<T>::iterator it = subset.begin( ); it != subset.end( ); ++it )
+  {
+    bool e = false;
+    for( int j = 0; j < set.size( ); j++ )
+    {
+      if( set.find( *it ) != set.end( ) )
+      {
+        e = true;
+        break;
+      }
+    }
+    if( e == false ) return false;
+  }
+  return true;
+}
+
 Input::Input( GLFWwindow* window )
 {
   this->window = window;
@@ -22,6 +41,17 @@ WMath::vec2 Input::getMousePos()
 void Input::setMouseScroll( WMath::vec2 mouse_scroll_offset )
 {
   this->mouse_scroll_offset = mouse_scroll_offset;
+}
+
+bool Input::hasInput( std::set<int> input, InputState state )
+{
+  // TODO: implement RELEASE
+  if( isSubset<int>( input, this->input ) )
+  {
+    if( state == PRESS ) for( int i : input ) this->input.erase( i );
+    return true;
+  }
+  else return false;
 }
 
 void intboardCallback( GLFWwindow* window, int Key, int scancode, int action, int mods )

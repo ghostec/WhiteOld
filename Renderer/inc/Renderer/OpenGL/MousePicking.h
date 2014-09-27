@@ -8,6 +8,7 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Helpers/RendererHelper.h"
 #include "Renderer/Helpers/ShaderHelper.h"
+#include "Renderer/SGNode.h"
 #include "Renderer/Window.h"
 #include "Input/Input.h"
 #include "WMath/WMath.h"
@@ -25,7 +26,7 @@ class MousePicking
     void reset();
     void setScenes( std::vector<Scene*> scenes );
     void drawScene( Scene* scene );
-    std::shared_ptr<Model> pick();
+    std::shared_ptr<SGNode> pick();
 };
 
 #endif

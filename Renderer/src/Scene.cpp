@@ -20,17 +20,6 @@ void Scene::update()
   }
 }
 
-void Scene::addModel( std::shared_ptr<Model> model_instance )
-{
-  this->models.push_back( model_instance );
-}
-
-void Scene::removeModel( std::shared_ptr<Model> model )
-{
-  this->models.erase( std::remove_if( this->models.begin(), this->models.end(),
-    [&]( std::shared_ptr<Model>& m ){ return m == model; } ), this->models.end() );
-}
-
 void Scene::addLight( Light light )
 {
   this->lights.push_back( light );
@@ -43,7 +32,7 @@ void Scene::updateLightsForShader( std::shared_ptr<Shader> shader )
 
 void Scene::updateLights()
 {
-  for( std::shared_ptr<Model> model_instance : this->models )
+  for( std::shared_ptr<Model> model_instance : this->scene_graph->getModels() )
     this->updateLightsForShader( model_instance->getShader() );
 }
 
@@ -54,7 +43,8 @@ void Scene::updateCameraForShader( std::shared_ptr<Shader> shader )
 
 void Scene::updateCamera()
 {
-  for( std::shared_ptr<Model> model : this->models )
+  //std::cout << this->scene_graph->getModels( ).size() << std::endl;
+  for( std::shared_ptr<Model> model : this->scene_graph->getModels() )
     this->updateCameraForShader( model->getShader() );
 }
 

@@ -18,7 +18,6 @@ class Scene
 {
   private:
     std::string name;
-    std::vector< std::shared_ptr<Model> > models;
     std::vector<Light> lights;
     std::shared_ptr<Camera> camera;
     std::shared_ptr<SceneGraph> scene_graph;
@@ -27,14 +26,10 @@ class Scene
   public:
     Scene( std::string name );
     void update();
-    void addModel( std::shared_ptr<Model> model );
-    void removeModel( std::shared_ptr<Model> model );
     void addLight( Light light );
     void updateLights();
     void updateCamera();
     // getters
-    std::vector< std::shared_ptr<Model> >* getModels()
-      { return &this->models; }
     std::shared_ptr<Camera> getCamera() { return this->camera; }
     std::shared_ptr<SceneGraph> getSceneGraph() { return this->scene_graph; }
     // setters

@@ -5,18 +5,25 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
 {
   this->shader.reset( new Shader( "wireframe" ) );
   this->scene = scene;
-  this->selected_model = nullptr;
+  this->selected_sg_node = nullptr;
   std::vector<Scene*> scenes = { &*scene };
   this->mouse_picking.setScenes( scenes );
   this->resource_manager = resource_manager;
   XMLHelper::importAssets( "assets_SceneEditor", resource_manager );
 
-  this->cant_select
-    .insert( resource_manager->getModel( "SceneEditor_arrow_x" ) );
-  this->cant_select
-    .insert( resource_manager->getModel( "SceneEditor_arrow_y" ) );
-  this->cant_select
-    .insert( resource_manager->getModel( "SceneEditor_arrow_z" ) );
+  std::shared_ptr<Model> model_arrow_x = resource_manager->getModel( "SceneEditor_arrow_x" );
+  std::shared_ptr<SGNode> node_arrow_x( new SGNode( "arrow_x", model_arrow_x ) );
+
+  std::shared_ptr<Model> model_arrow_y = resource_manager->getModel( "SceneEditor_arrow_y" );
+  std::shared_ptr<SGNode> node_arrow_y( new SGNode( "arrow_y", model_arrow_y ) );
+
+  std::shared_ptr<Model> model_arrow_z = resource_manager->getModel( "SceneEditor_arrow_z" );
+  std::shared_ptr<SGNode> node_arrow_z( new SGNode( "arrow_z", model_arrow_z ) );
+
+  std::shared_ptr<SceneGraph> scene_graph = scene->getSceneGraph();
+  scene_graph->addNode( node_arrow_x );
+  scene_graph->addNode( node_arrow_y );
+  scene_graph->addNode( node_arrow_z );
 
   active_window->registerObserver( "RESIZE",
     std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
@@ -34,73 +41,45 @@ void SceneEditor::initialize()
 void updateMoveArrows( SceneEditor* scene_editor,
   ResourceManager* resource_manager )
 {
-  Model* model = &*scene_editor->getSelectedModel();
+  SGNode* sg_node = &*scene_editor->getSelectedSGNode();
+  Model* model = &*sg_node->getModel();
+
   WMath::vec3 model_dimensions = model->getDimensions();
 
-  Model* arrow_x = &*resource_manager->getModel( "SceneEditor_arrow_x" );
-  arrow_x->resetTransform();
+  std::shared_ptr<SceneGraph> scene_graph =
+    scene_editor->getScene()->getSceneGraph();
 
-  Model* arrow_y = &*resource_manager->getModel( "SceneEditor_arrow_y" );
-  arrow_y->resetTransform();
+  std::shared_ptr<Model> model_arrow_x = resource_manager->getModel( "SceneEditor_arrow_x" );
+  std::shared_ptr<Model> model_arrow_y = resource_manager->getModel( "SceneEditor_arrow_y" );
+  std::shared_ptr<Model> model_arrow_z = resource_manager->getModel( "SceneEditor_arrow_z" );
 
-  Model* arrow_z = &*resource_manager->getModel( "SceneEditor_arrow_z" );
-  arrow_z->resetTransform();
+  std::shared_ptr<SGNode> node_arrow_x = scene_graph->getNode( "arrow_x" );
+  std::shared_ptr<SGNode> node_arrow_y = scene_graph->getNode( "arrow_y" );
+  std::shared_ptr<SGNode> node_arrow_z = scene_graph->getNode( "arrow_z" );
 
-  *arrow_x->getTranslateM() = *arrow_y->getTranslateM() =
-    *arrow_z->getTranslateM() = *model->getTranslateM();
-  float dx = 0.5f * ( model_dimensions[0] + arrow_x->getDimensions()[0] );
-  WMath::rotate_z( arrow_x->getRotateM(), -90.0f );
-  WMath::translate( arrow_x->getTranslateM(), WMath::vec3( dx, 0, 0 ) );
-  float dy = 0.5f * ( model_dimensions[1] + arrow_y->getDimensions()[1] );
-  WMath::translate( arrow_y->getTranslateM(), WMath::vec3( 0, dy, 0 ) );
-  float dz = 0.5f * ( model_dimensions[2] + arrow_x->getDimensions()[2] );
-  WMath::rotate_x( arrow_z->getRotateM(), 90.0f );
-  WMath::translate( arrow_z->getTranslateM(), WMath::vec3( 0, 0, dz ) );
+  float dx = 0.5f * ( model_dimensions[0] + model_arrow_x->getDimensions()[0] );
+  node_arrow_x->setTranslate( sg_node->getTranslate() + WMath::vec3( dx, 0, 0 ) );
+  //WMath::rotate_z( arrow_x->getRotateM(), -90.0f );
+  float dy = 0.5f * ( model_dimensions[1] + model_arrow_y->getDimensions()[1] );
+  node_arrow_y->setTranslate( sg_node->getTranslate() + WMath::vec3( 0, dy, 0 ) );
+  float dz = 0.5f * ( model_dimensions[2] + model_arrow_z->getDimensions()[2] );
+  node_arrow_z->setTranslate( sg_node->getTranslate() + WMath::vec3( 0, 0, dz ) );
+  //WMath::rotate_x( arrow_z->getRotateM(), 90.0f );
 }
 
 void hideMoveArrows( std::shared_ptr<Scene> scene,
   std::shared_ptr<ResourceManager> resource_manager )
 {
-  scene->removeModel( resource_manager->getModel( "SceneEditor_arrow_x" ) );
-  scene->removeModel( resource_manager->getModel( "SceneEditor_arrow_y" ) );
-  scene->removeModel( resource_manager->getModel( "SceneEditor_arrow_z" ) );
+
 }
 
 void showMoveArrows( SceneEditor* scene_editor,
   ResourceManager* resource_manager )
 {
-  std::shared_ptr<Model> arrow;
-
-  arrow = resource_manager->getModel( "SceneEditor_arrow_x" );
-  scene_editor->getScene()->addModel( arrow );
-  arrow = resource_manager->getModel( "SceneEditor_arrow_y" );
-  scene_editor->getScene()->addModel( arrow );
-  arrow = resource_manager->getModel( "SceneEditor_arrow_z" );
-  scene_editor->getScene()->addModel( arrow );
-
   updateMoveArrows( scene_editor, resource_manager );
 }
 
-template<typename T>
-bool isSubset( std::set<T> subset, std::set<T> set )
-{
-  for( typename std::set<T>::iterator it = subset.begin(); it != subset.end(); ++it )
-  {
-    bool e = false;
-    for( int j = 0; j < set.size( ); j++ )
-    {
-      if( set.find( *it ) != set.end( ) )
-      {
-        e = true;
-        break;
-      }
-    }
-    if( e == false ) return false;
-  }
-  return true;
-}
-
-void SceneEditor::moveSelectedModel( SceneEditorAxis direction )
+void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
 {
   static WMath::vec2 last_cursor_pos;
   static SceneEditorAxis dir;
@@ -123,25 +102,28 @@ void SceneEditor::moveSelectedModel( SceneEditorAxis direction )
     else if( dir == SEA_Y ) dT[1] = value;
     else if( dir == SEA_Z ) dT[2] = -value;
 
-    WMath::translate( this->selected_model->getTranslateM(), dT );
+    this->selected_sg_node->setTranslate( this->selected_sg_node->getTranslate() + dT );
     updateMoveArrows( this, &*this->resource_manager );
     last_cursor_pos = cursor_pos;
   }
 }
 
-void SceneEditor::selectModel( std::shared_ptr<Model> model )
+void SceneEditor::selectSGNode( std::shared_ptr<SGNode> sg_node )
 {
-  if( this->selected_model )
+  if( this->selected_sg_node )
   {
-    this->selected_model->setShader( this->old_selected_model_shader );
+    this->selected_sg_node->setModel( this->old_selected_model );
     hideMoveArrows( this->scene, this->resource_manager );
     this->state = NO_SELECTION;
   }
-  if( model )
+  if( sg_node )
   {
-    this->old_selected_model_shader = model->getShader( );
-    this->selected_model = model;
-    this->selected_model->setShader( this->shader );
+    this->old_selected_model = sg_node->getModel();
+    this->selected_sg_node = sg_node;
+    std::shared_ptr<Model> modified_model( new Model( old_selected_model->getMesh() ) );
+    modified_model->setShader( resource_manager->getShader("wireframe") );
+    modified_model->setTexture( old_selected_model->getTexture() );
+    this->selected_sg_node->setModel( modified_model );
     showMoveArrows( this, &*this->resource_manager );
     this->state = MODEL_SELECTED;
   } 
@@ -184,84 +166,65 @@ void rotateCamera( Camera* camera, SceneEditor* scene_editor )
 void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
 {
   Camera* camera = &*this->scene->getCamera();
-  std::set<int> input = active_input->getInput();
-  static std::shared_ptr<Model> model_hovered = nullptr;
+  static std::shared_ptr<SGNode> sg_node_hovered = nullptr;
   static std::shared_ptr<Texture> texture_hovered = nullptr;
 
-  if( model_hovered )
+  if( sg_node_hovered )
   {
-    model_hovered->setTexture( texture_hovered );
-    model_hovered = nullptr; texture_hovered = nullptr;
+    sg_node_hovered->getModel()->setTexture( texture_hovered );
+    sg_node_hovered = nullptr; texture_hovered = nullptr;
   }
 
-  std::shared_ptr<Model> model = mouse_picking.pick();
+  std::shared_ptr<SGNode> sg_node = mouse_picking.pick();
 
-  if( model == resource_manager->getModel( "SceneEditor_arrow_x" ) || 
-    model == resource_manager->getModel( "SceneEditor_arrow_y" ) || 
-    model == resource_manager->getModel( "SceneEditor_arrow_z" ) )
+  /*
+  if( sg_node == this->scene->getSceneGraph()->getNode( "arrow_x" ) || 
+    sg_node == this->scene->getSceneGraph()->getNode( "arrow_y" ) ||
+    sg_node == this->scene->getSceneGraph()->getNode( "arrow_z" ) )
   {
-    model_hovered = model;
-    texture_hovered = model->getTexture();
-    model->setTexture( resource_manager->getTexture( "yellow" ) );
+    sg_node_hovered = sg_node;
+    texture_hovered = sg_node->getModel()->getTexture();
+    sg_node->getModel()->setTexture( resource_manager->getTexture( "yellow" ) );
   }
+  */
 
-  if( isSubset( std::set<int>{ GLFW_KEY_UP }, input ) )
+  if( active_input->hasInput( std::set<int>{ GLFW_KEY_UP }, HOLD ) )
   {
     WMath::translate( camera->getView(), WMath::vec3( 0, -0.04, 0 ) );
   }
-  else if( isSubset<int>( std::set<int>{ GLFW_KEY_DOWN }, input ) )
+  else if( active_input->hasInput( std::set<int>{ GLFW_KEY_DOWN }, HOLD ) )
   {
     WMath::translate( camera->getView(), WMath::vec3( 0, 0.04, 0 ) );
   }
-  else if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT }, input ) )
+  else if( active_input->hasInput( std::set<int>{ GLFW_KEY_LEFT }, HOLD ) )
   {
     WMath::translate( camera->getView(), WMath::vec3( 0.04, 0, 0 ) );
   }
-  else if( isSubset<int>( std::set<int>{ GLFW_KEY_RIGHT }, input ) )
+  else if( active_input->hasInput( std::set<int>{ GLFW_KEY_RIGHT }, HOLD ) )
   {
     WMath::translate( camera->getView(), WMath::vec3( -0.04, 0, 0 ) );
   }
-  else if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
+  else if( active_input->hasInput( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, HOLD ) )
   {
     rotateCamera( camera, this );
   }
-  else if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
+  else if( active_input->hasInput( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, HOLD ) )
   {
-    if( isSubset< std::shared_ptr<Model> >
-        ( std::set< std::shared_ptr<Model> >{ model }, this->cant_select ) )
-    {
-      if( model == resource_manager->getModel( "SceneEditor_arrow_x" ) )
-      {
-        this->moveSelectedModel( SEA_X );
-        model->setTexture( resource_manager->getTexture( "yellow" ) );
-      }
-      else if( model == resource_manager->getModel( "SceneEditor_arrow_y" ) )
-      {
-        this->moveSelectedModel( SEA_Y );
-        model->setTexture( resource_manager->getTexture( "yellow" ) );
-      }
-      else if( model == resource_manager->getModel( "SceneEditor_arrow_z" ) )
-      {
-        this->moveSelectedModel( SEA_Z );
-        model->setTexture( resource_manager->getTexture( "yellow" ) );
-      }
-    }
-    else this->selectModel( model );
+    this->selectSGNode( sg_node );
   }
 }
 
 void SceneEditor::update_ROTATING_CAMERA()
 {
   Camera* camera = &*this->scene->getCamera();
-  std::set<int> input = active_input->getInput();
 
-  if( isSubset<int>( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, input ) )
+  if( active_input->hasInput( std::set<int>{ GLFW_KEY_LEFT_ALT, GLFW_MOUSE_BUTTON_1 }, HOLD ) )
   {
     rotateCamera( camera, this );
   }
   else
   {
-    if( this->selected_model ) this->state = MODEL_SELECTED;
+    if( this->selected_sg_node ) this->state = MODEL_SELECTED;
     else this->state = NO_SELECTION;
   }
 }
@@ -269,12 +232,11 @@ void SceneEditor::update_ROTATING_CAMERA()
 void SceneEditor::update_MOVING_MODEL()
 {
   Camera* camera = &*this->scene->getCamera();
-  std::set<int> input = active_input->getInput();
 
-  if( isSubset<int>( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, input ) )
+  if( active_input->hasInput( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, HOLD ) )
   {
     // select model
-    this->moveSelectedModel();
+    this->moveSelectedSGNode();
   }
   else
   {

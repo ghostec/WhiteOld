@@ -5,7 +5,7 @@ namespace WMath
 {
   quaternion::quaternion()
   {
-    vec[0] = vec[1] = vec[2] = vec[3] = 0.0f;
+    vec[0] = vec[1] = vec[2] = 0.0f; vec[3] = 1.0f;
   }
 
   quaternion::quaternion( float x, float y, float z, float w )

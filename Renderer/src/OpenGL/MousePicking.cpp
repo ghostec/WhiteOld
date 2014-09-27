@@ -83,28 +83,28 @@ void MousePicking::drawScene( Scene* scene )
 
   ShaderHelper::setCamera( &*this->shader, &*scene->getCamera( ) );
 
-  int model_index = 1;
+  int node_index = 1;
 
-  for( std::shared_ptr<Model> model : *scene->getModels() )
+  for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getNodes() )
   {
+    std::shared_ptr<Model> model = sg_node->getModel();
     std::shared_ptr<Shader> original_shader = model->getShader();
     model->setShader( this->shader );
-
-    WMath::vec3 picking_color = encode_id( model_index );
-
-    this->shader->setUniform( "unique_id", picking_color.vec );
-    
+    WMath::vec3 picking_color = encode_id( node_index );
+    this->shader->setUniform( "unique_id", picking_color.vec ); 
+    WMath::mat4 t = WMath::scaleM( sg_node->getScale( ) )
+      * WMath::rotateM( sg_node->getRotate( ) )
+      * WMath::translateM( sg_node->getTranslate( ) );
+    model->setTransform( &t );
     RendererHelper::drawModel( model, this->frame_buffer );
-
     model->setShader( original_shader );
-
-    model_index += 1;
+    node_index += 1;
   }
 
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-std::shared_ptr<Model> MousePicking::pick()
+std::shared_ptr<SGNode> MousePicking::pick()
 {
   WMath::vec2 position = active_input->getMousePos();
   int x = position[0];
@@ -118,15 +118,15 @@ std::shared_ptr<Model> MousePicking::pick()
     glReadPixels( x, this->window_dimensions[1] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
     glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 
-    int model_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
+    int node_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
 
-    if( model_index != 0 )
+    if( node_index != 0 )
     {
       int index = 1;
 
-      for( std::shared_ptr<Model> model : *scene->getModels() )
+      for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getNodes() )
       {
-        if( index == model_index ) return model;
+        if( index == node_index ) return sg_node;
         index += 1;
       }
     }

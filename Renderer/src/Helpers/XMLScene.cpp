@@ -34,31 +34,6 @@ namespace XMLHelper
     scene->addLight( light );
   }
 
-  void importModel( tinyxml2::XMLElement* el, Scene* scene,
-    std::shared_ptr<ResourceManager> resource_manager )
-  {
-    const char* name = el->FirstChildElement( "name" )->GetText();
-    std::shared_ptr<Model> model = resource_manager->getModel( name );
-
-    tinyxml2::XMLElement* ell = el->FirstChildElement( "position" );
-    if( ell )
-    {
-      WMath::vec3 position( ell->FloatAttribute( "x" ),
-        ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      WMath::translate( model->getTranslateM(), position );
-    }
-
-    ell = el->FirstChildElement( "scale" );
-    if( ell )
-    {
-      WMath::vec3 scale( ell->FloatAttribute( "x" ),
-        ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      WMath::scale( model->getScaleM( ), scale );
-    }
-
-    scene->addModel( model );
-  }
-
   void createSGNode( tinyxml2::XMLElement* el,
     std::shared_ptr<SceneGraph> scene_graph,
     std::shared_ptr<ResourceManager> resource_manager )
@@ -107,8 +82,6 @@ namespace XMLHelper
 
     while( el )
     {
-      if( strcmp( el->Name(), "model" ) == 0 )
-        importModel( el, &scene, resource_manager );
       if( strcmp( el->Name( ), "sg_node" ) == 0 )
         createSGNode( el, scene_graph, resource_manager );
       else if( strcmp( el->Name(), "light" ) == 0 )

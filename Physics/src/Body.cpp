@@ -30,9 +30,8 @@ Body::Body( std::shared_ptr<SGNode> sg_node, bool is_static )
   if( !is_static )
   {
     this->shape = new btBoxShape( btVector3( 1, 1, 1 ) );
-    btVector3 position = btVector3( 0, 10+test, 0 );
-    sg_node->setTranslate( WMath::vec3( 0, 10+test, 0 ) );
-    test+=5;
+    WMath::vec3 p = sg_node->getTranslate();
+    btVector3 position = btVector3( p[0], p[1], p[2] );
 
     btDefaultMotionState* motionState = new btDefaultMotionState( btTransform( btQuaternion( 0, 0, 0, 1 ), position ) );
 
@@ -42,8 +41,8 @@ Body::Body( std::shared_ptr<SGNode> sg_node, bool is_static )
 
     btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo( bodyMass, motionState, shape, bodyInertia );
 
-    bodyCI.m_restitution = 0.5f;
-    bodyCI.m_friction = 0.5f;
+    bodyCI.m_restitution = 0.4f;
+    bodyCI.m_friction = 0.6f;
 
     this->body = new btRigidBody( bodyCI );
 
