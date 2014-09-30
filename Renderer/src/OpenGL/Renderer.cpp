@@ -26,12 +26,16 @@ void Renderer::drawScene( Scene* scene )
   scene->update();
   std::shared_ptr<SceneGraph> scene_graph = scene->getSceneGraph();
 
-  //std::cout << scene_graph->getNodes().size() << std::endl;
-
-  for( std::shared_ptr<SGNode> sg_node : scene_graph->getNodes() )
+  for( auto node : scene_graph->getNode( "root" )->getChildren() )
   {
-    RendererHelper::drawSGNode( sg_node );
+    RendererHelper::drawSGNode( node );
   }
+
+  PropagatedSGNodeData propagated_node_data;
+  PropagatedSGNode propagated_node =
+    { scene_graph->getNodes()[0], propagated_node_data };
+
+  //RendererHelper::drawPropagatedSGNode( propagated_node );
 }
 
 void Renderer::addScene( Scene* scene )

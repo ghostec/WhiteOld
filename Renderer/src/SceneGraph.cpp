@@ -2,8 +2,8 @@
 
 void SceneGraph::addModel( std::shared_ptr<Model> model )
 {
+  if( model == nullptr ) return;
   bool found = false;
-  std::cout << "ae" << std::endl;
   for( std::pair< std::shared_ptr<Model>, int> m : this->models_map )
   {
     if( m.first == model )
@@ -21,6 +21,7 @@ void SceneGraph::addModel( std::shared_ptr<Model> model )
 
 void SceneGraph::removeModel( std::shared_ptr<Model> model )
 {
+  if( model == nullptr ) return;
   bool remove = false;
   for( std::pair< std::shared_ptr<Model>, int> m : this->models_map )
   {
@@ -55,11 +56,23 @@ void SceneGraph::removeNode( std::shared_ptr<SGNode> node )
 
 std::shared_ptr<SGNode> SceneGraph::getNode( std::string name )
 {
-  // TODO: depth
-  for( std::shared_ptr<SGNode> sg_node : this->nodes )
-  {
-    if( sg_node->getName() == name ) return sg_node;
-  }
+  std::queue< std::shared_ptr<SGNode> > q;
+  std::vector< std::shared_ptr<SGNode> > v;
+  q.push( this->nodes[0] ); v.push_back( this->nodes[0] );
 
-  return nullptr;
+  if( strcmp( this->nodes[0]->getName( ).c_str( ), name.c_str( ) ) == 0 ) return this->nodes[0];
+
+  while( !q.empty() )
+  {
+    std::shared_ptr<SGNode> n = q.front(); q.pop();
+    
+    for( std::shared_ptr<SGNode> c : n->getChildren() )
+    {
+      if( strcmp( c->getName().c_str(), name.c_str() ) == 0 ) return c;
+      if( std::find( v.begin(), v.end(), c ) == v.end() )
+      {
+        v.push_back(c); q.push(c);
+      }
+    }
+  }
 }

@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <queue>
 #include "Renderer/SGNode.h"
 
 class SGNode;

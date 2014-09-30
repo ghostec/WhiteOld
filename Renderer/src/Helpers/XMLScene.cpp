@@ -37,7 +37,7 @@ namespace XMLHelper
   void createSGNode( tinyxml2::XMLElement* el,
     std::shared_ptr<SceneGraph> scene_graph,
     std::shared_ptr<ResourceManager> resource_manager )
-  {
+  { 
     const char* name = el->FirstChildElement( "name" )->GetText();
     const char* model_name = el->FirstChildElement( "model" )->GetText();
     std::shared_ptr<Model> model = resource_manager->getModel( model_name );
@@ -64,7 +64,8 @@ namespace XMLHelper
       sg_node->setScale( scale );
     }
 
-    scene_graph->addNode( sg_node );
+    std::shared_ptr<SGNode> root = scene_graph->getNode( "root" );
+    root->addChild( sg_node );
   }
 
   Scene importScene( std::string file_name,
@@ -77,6 +78,9 @@ namespace XMLHelper
     Scene scene( file_name );
     std::shared_ptr<SceneGraph> scene_graph( new SceneGraph );
     scene.setSceneGraph( scene_graph );
+    
+    std::shared_ptr<SGNode> root( new SGNode( "root", nullptr ) );
+    scene_graph->addNode(root);
 
     tinyxml2::XMLElement* el = doc.RootElement();
 
