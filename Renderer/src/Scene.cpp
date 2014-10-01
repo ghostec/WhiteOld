@@ -8,41 +8,15 @@ Scene::Scene( std::string name )
 
 void Scene::update()
 {
-  std::vector< std::shared_ptr<Model> > models;
-  std::vector< std::shared_ptr<Shader> > shaders;
-  std::queue< std::shared_ptr<SGNode> > bfs_q;
-  std::vector< std::shared_ptr<SGNode> > bfs_v;
-
-  bfs_q.push( this->scene_graph->getRootSGNode() );
-  bfs_v.push_back( this->scene_graph->getRootSGNode() );
-
-  while( !bfs_q.empty() )
+  if( this->camera )
   {
-    std::shared_ptr<SGNode> n = bfs_q.front(); bfs_q.pop();
-    std::shared_ptr<Model> model = n->getModel();
-
-    if( model && 
-      ( std::find( models.begin(), models.end(), model ) == models.end() ) )
-    {
-      std::shared_ptr<Shader> shader = model->getShader();
-
-      if( std::find( shaders.begin(), shaders.end(), shader ) == shaders.end() )
-      {
-        ShaderHelper::setLight( &*shader, &this->lights[0] );
-        ShaderHelper::setCamera( &*shader, &*this->camera );
-        shaders.push_back( shader );
-      }
-
-      models.push_back( model );
-    }
-
-    for( auto c : n->getChildren() )
-    {
-      if( std::find( bfs_v.begin(), bfs_v.end(), c ) == bfs_v.end() )
-      {
-        bfs_q.push( c ); bfs_v.push_back( c );
-      }
-    }
+    this->updateCamera();
+    this->camera->setDirty( false );
+  }
+  if( this->lights.size() > 0 )
+  {
+    this->updateLights();
+    this->lights[0].setDirty( false );
   }
 }
 
@@ -56,9 +30,22 @@ void Scene::updateLightsForShader( std::shared_ptr<Shader> shader )
   ShaderHelper::setLight( &*shader, &this->lights[0] );
 }
 
+void Scene::updateLights()
+{
+  for( std::shared_ptr<Model> model_instance : this->scene_graph->getModels() )
+    this->updateLightsForShader( model_instance->getShader() );
+}
+
 void Scene::updateCameraForShader( std::shared_ptr<Shader> shader )
 {
   ShaderHelper::setCamera( &*shader, &*this->camera );
+}
+
+void Scene::updateCamera()
+{
+  //std::cout << this->scene_graph->getModels( ).size() << std::endl;
+  for( std::shared_ptr<Model> model : this->scene_graph->getModels() )
+    this->updateCameraForShader( model->getShader() );
 }
 
 void Scene::setCamera( std::shared_ptr<Camera> camera )

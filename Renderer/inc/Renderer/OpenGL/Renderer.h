@@ -2,7 +2,6 @@
 #define __RENDERER_OPENGLRENDERER__
 
 #include <iostream>
-#include <memory>
 #include "Renderer/Helpers/RendererHelper.h"
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
@@ -11,7 +10,6 @@
 #include "Renderer/Scene.h"
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SceneEditor.h"
-#include "WMath/WMath.h"
 #include "Input/Input.h"
 
 class Renderer
@@ -19,7 +17,7 @@ class Renderer
   private:
     Window* window;
     std::vector< Scene* > scenes;
-    // methods
+
     void drawScene( Scene* scene );
   public:
     Renderer( Window* window );

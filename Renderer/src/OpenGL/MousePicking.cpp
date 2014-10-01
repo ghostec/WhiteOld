@@ -85,7 +85,7 @@ void MousePicking::drawScene( Scene* scene )
 
   int node_index = 1;
 
-  for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getRootSGNode()->getChildren() )
+  for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getNodes() )
   {
     std::shared_ptr<Model> model = sg_node->getModel();
     std::shared_ptr<Shader> original_shader = model->getShader();
@@ -124,7 +124,7 @@ std::shared_ptr<SGNode> MousePicking::pick()
     {
       int index = 1;
 
-      for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getRootSGNode()->getChildren() )
+      for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getNodes() )
       {
         if( index == node_index ) return sg_node;
         index += 1;

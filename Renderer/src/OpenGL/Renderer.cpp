@@ -25,7 +25,13 @@ void Renderer::drawScene( Scene* scene )
 {
   scene->update();
   std::shared_ptr<SceneGraph> scene_graph = scene->getSceneGraph();
-  RendererHelper::drawSceneGraph( scene_graph );
+
+  //std::cout << scene_graph->getNodes().size() << std::endl;
+
+  for( std::shared_ptr<SGNode> sg_node : scene_graph->getNodes() )
+  {
+    RendererHelper::drawSGNode( sg_node );
+  }
 }
 
 void Renderer::addScene( Scene* scene )

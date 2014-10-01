@@ -7,7 +7,7 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   this->scene = scene;
   this->selected_sg_node = nullptr;
   std::vector<Scene*> scenes = { &*scene };
-  // this->mouse_picking.setScenes( scenes );
+  this->mouse_picking.setScenes( scenes );
   this->resource_manager = resource_manager;
   XMLHelper::importAssets( "assets_SceneEditor", resource_manager );
 
@@ -21,12 +21,12 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   std::shared_ptr<SGNode> node_arrow_z( new SGNode( "arrow_z", model_arrow_z ) );
 
   std::shared_ptr<SceneGraph> scene_graph = scene->getSceneGraph();
-  scene_graph->addSGNode( node_arrow_x );
-  scene_graph->addSGNode( node_arrow_y );
-  scene_graph->addSGNode( node_arrow_z );
+  scene_graph->addNode( node_arrow_x );
+  scene_graph->addNode( node_arrow_y );
+  scene_graph->addNode( node_arrow_z );
 
-//  active_window->registerObserver( "RESIZE",
-//    std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
+  active_window->registerObserver( "RESIZE",
+    std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
 
   this->state = NO_SELECTION;
 }
@@ -53,9 +53,9 @@ void updateMoveArrows( SceneEditor* scene_editor,
   std::shared_ptr<Model> model_arrow_y = resource_manager->getModel( "SceneEditor_arrow_y" );
   std::shared_ptr<Model> model_arrow_z = resource_manager->getModel( "SceneEditor_arrow_z" );
 
-  std::shared_ptr<SGNode> node_arrow_x = scene_graph->findSGNode( "arrow_x" );
-  std::shared_ptr<SGNode> node_arrow_y = scene_graph->findSGNode( "arrow_y" );
-  std::shared_ptr<SGNode> node_arrow_z = scene_graph->findSGNode( "arrow_z" );
+  std::shared_ptr<SGNode> node_arrow_x = scene_graph->getNode( "arrow_x" );
+  std::shared_ptr<SGNode> node_arrow_y = scene_graph->getNode( "arrow_y" );
+  std::shared_ptr<SGNode> node_arrow_z = scene_graph->getNode( "arrow_z" );
 
   float dx = 0.5f * ( model_dimensions[0] + model_arrow_x->getDimensions()[0] );
   node_arrow_x->setTranslate( sg_node->getTranslate() + WMath::vec3( dx, 0, 0 ) );
@@ -175,7 +175,7 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
     sg_node_hovered = nullptr; texture_hovered = nullptr;
   }
 
-  std::shared_ptr<SGNode> sg_node; //= mouse_picking.pick();
+  std::shared_ptr<SGNode> sg_node = mouse_picking.pick();
 
   /*
   if( sg_node == this->scene->getSceneGraph()->getNode( "arrow_x" ) || 

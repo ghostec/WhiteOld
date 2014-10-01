@@ -12,13 +12,13 @@ void SGNode::addChild( std::shared_ptr<SGNode> child )
   this->children.push_back( child );
 }
 
-void SGNode::removeChild( std::string name )
-{
-  this->children.erase( std::remove_if( this->children.begin(), this->children.end(),
-    [&] ( std::shared_ptr<SGNode>& n ){ return n->getName() == name; } ), this->children.end() );
-}
-
 void SGNode::setModel( std::shared_ptr<Model> model )
 {
+  if( this->scene_graph )
+  {
+    this->scene_graph->removeModel( this->model );
+    this->scene_graph->addModel( model );
+  }
+
   this->model = model;
 }

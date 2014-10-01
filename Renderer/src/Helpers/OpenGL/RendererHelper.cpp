@@ -30,52 +30,11 @@ namespace RendererHelper
 
   void drawSGNode( std::shared_ptr<SGNode> sg_node )
   {
-    const std::shared_ptr<Model> model = sg_node->getModel();
+    std::shared_ptr<Model> model = sg_node->getModel();
     WMath::mat4 t = WMath::scaleM( sg_node->getScale() )
       * WMath::rotateM( sg_node->getRotate() )
       * WMath::translateM( sg_node->getTranslate() );
     model->setTransform( &t );
     drawModel( model );
-  }
-
-  void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph )
-  {
-    std::queue<PropagatedSGNode> bfs_q;
-    std::vector< std::shared_ptr<SGNode> > bfs_v;
-
-    PropagatedSGNode p_sg_node;
-    p_sg_node.sg_node = scene_graph->getRootSGNode();
-
-    bfs_q.push( p_sg_node );
-    bfs_v.push_back( scene_graph->getRootSGNode() );
-
-    while( !bfs_q.empty( ) )
-    {
-      PropagatedSGNode p_n = bfs_q.front( ); bfs_q.pop( );
-      std::shared_ptr<SGNode> n = p_n.sg_node;
-      std::shared_ptr<Model> model = n->getModel();
-
-      p_n.translate = p_n.translate + n->getTranslate();
-      p_n.scale = n->getScale();
-      p_n.rotate = n->getRotate();
-
-      if( model )
-      {
-        WMath::mat4 t = WMath::scaleM( p_n.scale )
-          * WMath::rotateM( p_n.rotate )
-          * WMath::translateM( p_n.translate );
-        model->setTransform( &t );
-        drawModel( model );
-      }
-
-      for( auto c : n->getChildren( ) )
-      {
-        if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
-        {
-          p_n.sg_node = c;
-          bfs_q.push( p_n ); bfs_v.push_back( c );
-        }
-      }
-    }
   }
 }
