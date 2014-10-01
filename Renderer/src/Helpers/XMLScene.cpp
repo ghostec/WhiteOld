@@ -37,7 +37,7 @@ namespace XMLHelper
   void createSGNode( tinyxml2::XMLElement* el,
     std::shared_ptr<SceneGraph> scene_graph,
     std::shared_ptr<ResourceManager> resource_manager )
-  {
+  { 
     const char* name = el->FirstChildElement( "name" )->GetText();
     const char* model_name = el->FirstChildElement( "model" )->GetText();
     std::shared_ptr<Model> model = resource_manager->getModel( model_name );

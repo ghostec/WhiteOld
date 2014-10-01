@@ -6,6 +6,7 @@
 #include <queue>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Renderer/Renderer.h"
 #include "Renderer/Model.h"
 #include "Renderer/Scene.h"
 #include "Renderer/SceneGraph.h"
@@ -20,6 +21,16 @@ typedef struct _PropagatedSGNode
   WMath::quaternion rotate;
   std::shared_ptr<SGNode> sg_node;
 } PropagatedSGNode;
+
+typedef struct _PropagatedSGNodeData
+{
+  _PropagatedSGNodeData() : translate(0), scale(1), rotate() {};
+  WMath::vec3 translate;
+  WMath::vec3 scale;
+  WMath::quaternion rotate;
+} PropagatedSGNodeData;
+
+typedef std::pair< std::shared_ptr<SGNode>, PropagatedSGNodeData > PropagatedSGNode;
 
 namespace RendererHelper
 {
