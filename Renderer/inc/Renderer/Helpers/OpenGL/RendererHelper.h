@@ -2,6 +2,8 @@
 #define __RENDERER_HELPERS_OPENGL_RENDERERHELPER__
 
 #include <memory>
+#include <vector>
+#include <queue>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Renderer/Model.h"
@@ -9,6 +11,15 @@
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SGNode.h"
 #include "Renderer/Window.h"
+#include "WMath/WMath.h"
+
+typedef struct _PropagatedSGNode
+{
+  _PropagatedSGNode() : translate(0), scale(1), rotate() {}
+  WMath::vec3 translate, scale;
+  WMath::quaternion rotate;
+  std::shared_ptr<SGNode> sg_node;
+} PropagatedSGNode;
 
 namespace RendererHelper
 {
