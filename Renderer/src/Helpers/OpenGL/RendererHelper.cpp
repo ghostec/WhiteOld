@@ -37,4 +37,12 @@ namespace RendererHelper
     model->setTransform( &t );
     drawModel( model );
   }
+
+  void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph )
+  {
+    for( auto c : scene_graph->getRootSGNode()->getChildren() )
+    {
+      drawSGNode( c );
+    }
+  }
 }

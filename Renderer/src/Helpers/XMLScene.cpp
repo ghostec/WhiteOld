@@ -64,7 +64,7 @@ namespace XMLHelper
       sg_node->setScale( scale );
     }
 
-    scene_graph->addNode( sg_node );
+    scene_graph->addSGNode( sg_node );
   }
 
   Scene importScene( std::string file_name,
@@ -75,7 +75,7 @@ namespace XMLHelper
     doc.LoadFile( file_name.c_str( ) );
 
     Scene scene( file_name );
-    std::shared_ptr<SceneGraph> scene_graph( new SceneGraph );
+    std::shared_ptr<SceneGraph> scene_graph( new SceneGraph() );
     scene.setSceneGraph( scene_graph );
 
     tinyxml2::XMLElement* el = doc.RootElement();
