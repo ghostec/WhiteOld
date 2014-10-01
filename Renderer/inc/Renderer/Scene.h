@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <queue>
 #include "Input/Input.h"
 #include "Renderer/SceneGraph.h"
 #include "Renderer/Model.h"
@@ -27,8 +28,6 @@ class Scene
     Scene( std::string name );
     void update();
     void addLight( Light light );
-    void updateLights();
-    void updateCamera();
     // getters
     std::shared_ptr<Camera> getCamera() { return this->camera; }
     std::shared_ptr<SceneGraph> getSceneGraph() { return this->scene_graph; }

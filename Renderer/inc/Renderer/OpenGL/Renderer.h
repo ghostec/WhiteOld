@@ -17,7 +17,7 @@ class Renderer
   private:
     Window* window;
     std::vector< Scene* > scenes;
-
+    // methods
     void drawScene( Scene* scene );
   public:
     Renderer( Window* window );

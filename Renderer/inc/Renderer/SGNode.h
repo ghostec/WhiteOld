@@ -8,14 +8,10 @@
 #include <string>
 #include "Model.h"
 #include "WMath/WMath.h"
-#include "SceneGraph.h"
-
-class SceneGraph;
 
 class SGNode
 {
   private:
-    SceneGraph* scene_graph;
     WMath::vec3 translate, scale;
     WMath::quaternion rotate;
     std::shared_ptr<Model> model;
@@ -24,6 +20,7 @@ class SGNode
   public:
     SGNode( std::string name, std::shared_ptr<Model> model );
     void addChild( std::shared_ptr<SGNode> child );
+    void removeChild( std::string name );
     //getters
     WMath::vec3 getTranslate() { return this->translate; }
     WMath::vec3 getScale() { return this->scale; }
@@ -37,7 +34,6 @@ class SGNode
     void setScale( WMath::vec3 s ) { this->scale = s; }
     void setRotate( WMath::quaternion r ) { this->rotate = r; }
     void setModel( std::shared_ptr<Model> model );
-    void setSceneGraph( SceneGraph* sg ) { this->scene_graph = sg; }
 };
 
 #endif
