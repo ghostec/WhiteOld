@@ -31,16 +31,15 @@ bool Input::isKeyPressed( int Key )
   return GLFWhelper::isintPressed( this->window, Key );
 }
 
-void Input::addInput( int i, InputState state )
-{
-  if( state == PRESS ) this->press.insert( i );
-  else this->hold.insert( i );
+void Input::addInput( int i )
+{ 
+  this->input.insert( i );
 }
 
-void Input::removeInput( int i, InputState state )
+void Input::removeInput( int i )
 {
-  if( state == PRESS ) this->press.erase( i );
-  else this->hold.erase( i );
+  this->_press.erase( i );
+  this->input.erase( i );
 }
 
 WMath::vec2 Input::getMousePos()
@@ -58,13 +57,13 @@ void Input::setMouseScroll( WMath::vec2 mouse_scroll_offset )
 bool Input::hasInput( std::set<int> input, InputState state )
 {
   // TODO: implement RELEASE
-  std::set<int>* set;
-  if( state == PRESS ) set = &this->press;
-  else set = &this->hold;
-
-  if( isSubset<int>( input, *set ) )
+  if( isSubset<int>( input, this->input ) )
   {
-    if( state == PRESS ) for( int i : input ) this->press.erase( i );
+    if( state == PRESS )
+    {
+      if( isSubset<int>( input, this->_press ) ) return false;
+      else for( int i : input ) this->_press.insert( i );
+    }
     return true;
   }
   else return false;
@@ -75,12 +74,11 @@ void keyboardCallback( GLFWwindow* window, int key, int scancode, int action, in
 {
   if( action == GLFW_PRESS )
   {
-    active_input->addInput( key, HOLD );
+    active_input->addInput( key );
   }
   else if( action == GLFW_RELEASE )
   {
-    active_input->addInput( key, PRESS );
-    active_input->removeInput( key, HOLD );
+    active_input->removeInput( key );
   }
 }
 
@@ -94,11 +92,10 @@ void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 {
   if( action == GLFW_PRESS )
   {
-    active_input->addInput( button, HOLD );
+    active_input->addInput( button );
   }
   else if( action == GLFW_RELEASE )
   {
-    active_input->addInput( button, PRESS );
-    active_input->removeInput( button, HOLD );
+    active_input->removeInput( button );
   }
 }

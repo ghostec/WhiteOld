@@ -55,10 +55,15 @@ int main()
   while(  window.isOpen() &&
           !active_input->isKeyPressed( GLFW_KEY_ESCAPE ) )
   {
+    if( active_input->hasInput( std::set<int>{ GLFW_KEY_P }, PRESS ) )
+      physics_manager->toggle();
+
     physics_manager->update();
     scene_editor.update();
     renderer.render();
-    while( std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::high_resolution_clock::now() - t0 ).count() < 16.6666666667 );
+    while( std::chrono::duration_cast< std::chrono::milliseconds >
+      ( std::chrono::high_resolution_clock::now() - t0 ).count()
+      < 16.6666666667 );
     t0 = std::chrono::high_resolution_clock::now();
   }
 

@@ -22,7 +22,7 @@ class Input : public Observable<std::string>
 {
   private:
     GLFWwindow* window;
-    std::set<int> press, hold;
+    std::set<int> input, _press;
     WMath::vec2 mouse_scroll_offset;
   public:
     Input( GLFWwindow* window );
@@ -30,8 +30,7 @@ class Input : public Observable<std::string>
     WMath::vec2 getMousePos();
     void setMouseScroll( WMath::vec2 mouse_scroll_offset );
     const WMath::vec2 getMouseScroll() { return this->mouse_scroll_offset; }
-    void addInput( int i, InputState state );
-    void removeInput( int i, InputState state );
+    void addInput( int i ); void removeInput( int i );
     bool hasInput( std::set<int> input, InputState state = PRESS );
 };
 

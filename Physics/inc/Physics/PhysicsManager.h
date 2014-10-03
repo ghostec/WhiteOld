@@ -24,6 +24,7 @@ class PhysicsManager
     PhysicsManager();
     void addBody( std::shared_ptr<Body> );
     void update();
+    void toggle() { if( state == ON ) state = OFF; else state = ON; }
     void turnOn() { this->state = ON; }
     void turnOff() { this->state = OFF; }
     PhysicsState getState() { return this->state; }
