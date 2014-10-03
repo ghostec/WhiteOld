@@ -26,7 +26,7 @@ namespace GLFWhelper
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback( window, intboardCallback );
+    glfwSetKeyCallback( window, keyboardCallback );
     glfwSetMouseButtonCallback( window, mouseButtonCallback );
     glfwSetScrollCallback( window, mouseScrollCallback );
     glfwSetWindowSizeCallback( window, windowResizeCallback );

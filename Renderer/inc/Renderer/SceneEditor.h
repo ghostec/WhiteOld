@@ -16,6 +16,11 @@
 #include "Renderer/SceneGraph.h"
 #include "WMath/WMath.h"
 
+typedef struct _SceneEditorData
+{
+  std::shared_ptr<SGNode> arrow_x, arrow_y, arrow_z;
+} SceneEditorData;
+
 typedef enum
 {
   NO_SELECTION, MODEL_SELECTED, MOVING_MODEL, MOVING_CAMERA, ROTATING_CAMERA
@@ -36,7 +41,10 @@ class SceneEditor
     std::shared_ptr<Model> old_selected_model;
     std::shared_ptr<Shader> shader;
     SceneEditorState state;
-
+    SceneEditorData data;
+    // methods
+    void showMoveArrows();
+    void hideMoveArrows();
     void moveSelectedSGNode( SceneEditorAxis direction = SEA_NONE );
     void selectSGNode( std::shared_ptr<SGNode> sg_node );
     void mouseScroll();

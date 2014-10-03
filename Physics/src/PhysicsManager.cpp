@@ -26,6 +26,8 @@ void PhysicsManager::addBody( std::shared_ptr<Body> body )
 
 void PhysicsManager::update()
 {
+  if( this->state == OFF ) return;
+
   this->world->stepSimulation( 1 / 60.f, 10 );
   for( std::shared_ptr<Body> body : this->bodies )
   {

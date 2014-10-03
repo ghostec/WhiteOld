@@ -7,7 +7,7 @@ namespace XMLHelper
     std::shared_ptr<PhysicsManager> physics_manager )
   {
     const char* sg_node_name = el->FirstChildElement( "sg_node" )->GetText();
-    std::shared_ptr<SGNode> sg_node = scene_graph->getNode( sg_node_name );
+    std::shared_ptr<SGNode> sg_node = scene_graph->findSGNode( sg_node_name );
 
     std::shared_ptr<Body> body;
 
