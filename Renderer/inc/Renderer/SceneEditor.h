@@ -39,6 +39,7 @@ class SceneEditor
     MousePicking mouse_picking;
     std::shared_ptr<SGNode> selected_sg_node;
     std::shared_ptr<Model> old_selected_model;
+    std::set< std::shared_ptr<SGNode> > locked_sg_nodes;
     std::shared_ptr<Shader> shader;
     SceneEditorState state;
     SceneEditorData data;

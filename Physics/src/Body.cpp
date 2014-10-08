@@ -58,3 +58,15 @@ Body::Body( std::shared_ptr<SGNode> sg_node, bool is_static )
     this->body = new btRigidBody( groundRigidBodyCI );
   }
 }
+
+void Body::update()
+{
+  // TODO: propagate parent->child transforms
+  btTransform tr; this->body->getMotionState()->getWorldTransform( tr );
+  WMath::vec3 p = this->sg_node->getTranslate();
+  WMath::quaternion q = this->sg_node->getRotate();
+  btVector3 position = btVector3( p[0], p[1], p[2] );
+  tr.setOrigin( position );
+  tr.setRotation( btQuaternion( q[0], q[1], q[2], q[3] ) );
+  this->body->setWorldTransform( tr );
+}

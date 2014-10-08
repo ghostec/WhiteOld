@@ -49,7 +49,7 @@ namespace RendererHelper
     bfs_q.push( p_sg_node );
     bfs_v.push_back( scene_graph->getRootSGNode() );
 
-    while( !bfs_q.empty( ) )
+    while( !bfs_q.empty() )
     {
       PropagatedSGNode p_n = bfs_q.front( ); bfs_q.pop( );
       std::shared_ptr<SGNode> n = p_n.sg_node;
@@ -57,12 +57,14 @@ namespace RendererHelper
 
       p_n.translate = p_n.translate + n->getTranslate();
       p_n.scale = n->getScale();
-      p_n.rotate = n->getRotate();
+      p_n.rotate = p_n.rotate * n->getRotate();
+
+      WMath::vec3 pivot = n->getPivot();
 
       if( model )
       {
         WMath::mat4 t = WMath::scaleM( p_n.scale )
-          * WMath::rotateM( p_n.rotate )
+          * WMath::translateM( pivot ) * WMath::rotateM( p_n.rotate ) * WMath::translateM( -pivot )
           * WMath::translateM( p_n.translate );
         model->setTransform( &t );
         drawModel( model );
@@ -70,7 +72,7 @@ namespace RendererHelper
 
       for( auto c : n->getChildren( ) )
       {
-        if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
+        if( std::find( bfs_v.begin(), bfs_v.end(), c ) == bfs_v.end() )
         {
           p_n.sg_node = c;
           bfs_q.push( p_n ); bfs_v.push_back( c );

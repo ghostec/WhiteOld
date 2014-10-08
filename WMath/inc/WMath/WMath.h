@@ -63,8 +63,8 @@ namespace WMath
     public:
       float vec[4];
       quaternion();
-      quaternion( float x, float y, float z, float w );
-      quaternion( vec3 v, float w );
+      quaternion( float x, float y, float z, float degrees );
+      quaternion( vec3 v, float degrees );
       const float& operator[] ( int index ) const;
       float& operator[] ( int index );
   };
@@ -78,10 +78,13 @@ namespace WMath
   vec3 operator*( const vec3& v, const float& f );
   vec3 operator+( const vec3& v1, const vec3& v2 );
   vec3 operator-( const vec3& v1, const vec3& v2 );
+  vec3 operator-( const vec3& v );
 
   vec4 operator*( const mat4& m, const vec4& v );
   vec4 operator*( const vec4& v, const mat4& m );
   mat4 operator*( const mat4& m1, const mat4& m2 );
+
+  quaternion operator*( const quaternion& q1, const quaternion& q2 );
 
   mat4 lookAtRH( vec3 eye, vec3 target, vec3 up );
   mat4 OpenGlFrustum( float l, float r, float b, float t, float n, float f );

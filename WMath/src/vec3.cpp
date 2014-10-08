@@ -52,6 +52,10 @@ namespace WMath
   {
     return vec3( v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2] );
   }
+  vec3 operator-( const vec3& v )
+  {
+    return vec3( -v[0], -v[1], -v[2] );
+  }
 
   float dot( vec3 v1, vec3 v2 )
   {

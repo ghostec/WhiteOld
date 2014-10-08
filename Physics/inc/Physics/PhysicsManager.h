@@ -4,6 +4,8 @@
 #include <vector>
 #include "btBulletDynamicsCommon.h"
 #include "Physics/Body.h"
+#include "Renderer/SGNode.h"
+#include "Renderer/SceneGraph.h"
 
 typedef enum _PhysicsState
 {
@@ -24,7 +26,7 @@ class PhysicsManager
     PhysicsManager();
     void addBody( std::shared_ptr<Body> );
     void update();
-    void toggle() { if( state == ON ) state = OFF; else state = ON; }
+    void toggle();
     void turnOn() { this->state = ON; }
     void turnOff() { this->state = OFF; }
     PhysicsState getState() { return this->state; }

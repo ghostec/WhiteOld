@@ -15,6 +15,7 @@ class Body
     std::shared_ptr<SGNode> sg_node;
   public:
     Body( std::shared_ptr<SGNode> sg_node, bool is_static = false );
+    void update();
     btRigidBody* getBody() { return this->body; }
     std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
 };

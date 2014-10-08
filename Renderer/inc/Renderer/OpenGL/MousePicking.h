@@ -1,6 +1,7 @@
 #ifndef __RENDERER_MOUSEPICKINGOPENGL__
 #define __RENDERER_MOUSEPICKINGOPENGL__
 
+#include <queue>
 #include <vector>
 #include <memory>
 #include <GL/glew.h>
@@ -19,12 +20,12 @@ class MousePicking
   private:
     GLuint frame_buffer, frame_buffer_tex, render_buffer;
     std::shared_ptr<Shader> shader;
-    std::vector<Scene*> scenes;
+    std::shared_ptr<Scene> scene;
     WMath::vec2 window_dimensions;
   public:
     MousePicking();
     void reset();
-    void setScenes( std::vector<Scene*> scenes );
+    void setScene( std::shared_ptr<Scene> scene );
     void drawScene( Scene* scene );
     std::shared_ptr<SGNode> pick();
 };

@@ -6,8 +6,7 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   this->shader.reset( new Shader( "wireframe" ) );
   this->scene = scene;
   this->selected_sg_node = nullptr;
-  std::vector<Scene*> scenes = { &*scene };
-  this->mouse_picking.setScenes( scenes );
+  this->mouse_picking.setScene( scene );
   this->resource_manager = resource_manager;
   XMLHelper::importAssets( "assets_SceneEditor", resource_manager );
 
@@ -19,6 +18,10 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
 
   std::shared_ptr<Model> model_arrow_z = resource_manager->getModel( "SceneEditor_arrow_z" );
   this->data.arrow_z.reset( new SGNode( "arrow_z", model_arrow_z ) );
+
+  this->locked_sg_nodes.insert( data.arrow_x );
+  this->locked_sg_nodes.insert( data.arrow_y );
+  this->locked_sg_nodes.insert( data.arrow_z );
 
   active_window->registerObserver( "RESIZE",
     std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
@@ -54,6 +57,7 @@ void SceneEditor::showMoveArrows()
   float dx = 0.5f * ( model_dimensions[0] +
     this->data.arrow_x->getModel()->getDimensions()[0] );
   this->data.arrow_x->setTranslate( WMath::vec3( dx, 0, 0 ) );
+  this->data.arrow_x->setRotate( WMath::quaternion(0,0,1,180) );
 
   float dy = 0.5f * ( model_dimensions[1] +
     this->data.arrow_y->getModel()->getDimensions()[1] );
@@ -62,6 +66,8 @@ void SceneEditor::showMoveArrows()
   float dz = 0.5f * ( model_dimensions[2] +
     this->data.arrow_z->getModel()->getDimensions()[0] );
   this->data.arrow_z->setTranslate( WMath::vec3( 0, 0, dz ) );
+
+  //this->data.arrow_x->setPivot( - WMath::vec3( dx, dy, dz ) );
 }
 
 void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
@@ -161,16 +167,15 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
 
   std::shared_ptr<SGNode> sg_node = mouse_picking.pick();
 
-  /*
-  if( sg_node == this->scene->getSceneGraph()->getNode( "arrow_x" ) || 
-    sg_node == this->scene->getSceneGraph()->getNode( "arrow_y" ) ||
-    sg_node == this->scene->getSceneGraph()->getNode( "arrow_z" ) )
+  
+  if( sg_node && ( sg_node->getName() == "arrow_x" 
+    || sg_node->getName() == "arrow_y"
+    || sg_node->getName() == "arrow_z" ) )
   {
     sg_node_hovered = sg_node;
     texture_hovered = sg_node->getModel()->getTexture();
     sg_node->getModel()->setTexture( resource_manager->getTexture( "yellow" ) );
   }
-  */
 
   if( active_input->hasInput( std::set<int>{ GLFW_KEY_UP }, HOLD ) )
   {
@@ -194,7 +199,13 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
   }
   else if( active_input->hasInput( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, PRESS ) )
   {
-    this->selectSGNode( sg_node );
+    if( sg_node && ( sg_node->getName() == "arrow_x"
+      || sg_node->getName() == "arrow_y"
+      || sg_node->getName() == "arrow_z" ) )
+    {
+      if( sg_node->getName() == "arrow_x" ) moveSelectedSGNode( SEA_X );
+    }
+    else this->selectSGNode( sg_node );
   }
 }
 

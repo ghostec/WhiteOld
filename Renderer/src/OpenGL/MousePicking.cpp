@@ -68,9 +68,9 @@ void MousePicking::reset()
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::setScenes( std::vector<Scene*> scenes )
+void MousePicking::setScene( std::shared_ptr<Scene> scene )
 {
-  this->scenes = scenes;
+  this->scene = scene;
 }
 
 void MousePicking::drawScene( Scene* scene )
@@ -81,24 +81,56 @@ void MousePicking::drawScene( Scene* scene )
   glClearColor( 0.0, 0.0, 0.0, 1.0 );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-  ShaderHelper::setCamera( &*this->shader, &*scene->getCamera( ) );
+  ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
 
   int node_index = 1;
 
-  for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getRootSGNode()->getChildren() )
+  std::queue<PropagatedSGNode> bfs_q;
+  std::vector< std::shared_ptr<SGNode> > bfs_v;
+
+  PropagatedSGNode p_sg_node;
+  p_sg_node.sg_node = scene->getSceneGraph()->getRootSGNode();
+
+  bfs_q.push( p_sg_node );
+  bfs_v.push_back( p_sg_node.sg_node );
+
+  while( !bfs_q.empty() )
   {
-    std::shared_ptr<Model> model = sg_node->getModel();
-    std::shared_ptr<Shader> original_shader = model->getShader();
-    model->setShader( this->shader );
-    WMath::vec3 picking_color = encode_id( node_index );
-    this->shader->setUniform( "unique_id", picking_color.vec ); 
-    WMath::mat4 t = WMath::scaleM( sg_node->getScale( ) )
-      * WMath::rotateM( sg_node->getRotate( ) )
-      * WMath::translateM( sg_node->getTranslate( ) );
-    model->setTransform( &t );
-    RendererHelper::drawModel( model, this->frame_buffer );
-    model->setShader( original_shader );
+    PropagatedSGNode p_n = bfs_q.front(); bfs_q.pop();
+    std::shared_ptr<SGNode> n = p_n.sg_node;
+
+    p_n.translate = p_n.translate + n->getTranslate( );
+    p_n.scale = n->getScale( );
+    p_n.rotate = p_n.rotate * n->getRotate( );
+
+    std::shared_ptr<Model> model = n->getModel();
+
+    if( model )
+    {
+      std::shared_ptr<Shader> original_shader = model->getShader( );
+      model->setShader( this->shader );
+      WMath::vec3 picking_color = encode_id( node_index );
+      this->shader->setUniform( "unique_id", picking_color.vec );
+      WMath::vec3 pivot = n->getPivot( );
+      WMath::mat4 t = WMath::scaleM( p_n.scale )
+        * WMath::translateM( pivot ) * WMath::rotateM( p_n.rotate ) * WMath::translateM( -pivot )
+        * WMath::translateM( p_n.translate );
+      model->setTransform( &t );
+      RendererHelper::drawModel( model, this->frame_buffer );
+      model->setShader( original_shader );
+    }
+
+    for( auto c : n->getChildren( ) )
+    {
+      if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
+      {
+        p_n.sg_node = c;
+        bfs_q.push( p_n ); bfs_v.push_back( c );
+      }
+    }
+
     node_index += 1;
+    
   }
 
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
@@ -109,26 +141,41 @@ std::shared_ptr<SGNode> MousePicking::pick()
   WMath::vec2 position = active_input->getMousePos();
   int x = position[0];
   int y = position[1];
-  for( Scene* scene : this->scenes )
+
+  this->drawScene( &*this->scene );
+
+  glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
+  unsigned char data[4] = { 0, 0, 0, 0 };
+  glReadPixels( x, this->window_dimensions[1] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
+  glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+
+  int node_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
+
+  if( node_index != 0 )
   {
-    this->drawScene( scene );
+    int index = 1;
 
-    glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
-    unsigned char data[4] = { 0, 0, 0, 0 };
-    glReadPixels( x, this->window_dimensions[1] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
-    glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+    std::queue< std::shared_ptr<SGNode> > bfs_q;
+    std::vector< std::shared_ptr<SGNode> > bfs_v;
 
-    int node_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
+    bfs_q.push( scene->getSceneGraph( )->getRootSGNode() );
+    bfs_v.push_back( bfs_q.front() );
 
-    if( node_index != 0 )
+    while( !bfs_q.empty( ) )
     {
-      int index = 1;
+      std::shared_ptr<SGNode> sg_node = bfs_q.front(); bfs_q.pop();
 
-      for( std::shared_ptr<SGNode> sg_node : scene->getSceneGraph()->getRootSGNode()->getChildren() )
+      if( index == node_index ) return sg_node;
+
+      for( auto c : sg_node->getChildren() )
       {
-        if( index == node_index ) return sg_node;
-        index += 1;
+        if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
+        {
+          bfs_q.push( c ); bfs_v.push_back( c );
+        }
       }
+        
+      index += 1;
     }
 
   }

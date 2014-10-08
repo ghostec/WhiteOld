@@ -2,6 +2,8 @@
 
 PhysicsManager::PhysicsManager()
 {
+  this->state = OFF;
+
   broadphase = new btDbvtBroadphase();
   collisionConfiguration = new btDefaultCollisionConfiguration();
   dispatcher = new btCollisionDispatcher( collisionConfiguration );
@@ -22,6 +24,16 @@ void PhysicsManager::addBody( std::shared_ptr<Body> body )
 {
   this->bodies.push_back( body );
   this->world->addRigidBody( body->getBody() );
+}
+
+void PhysicsManager::toggle()
+{
+  if( state == ON ) state = OFF; 
+  else
+  {
+    state = ON;
+    for( auto b : this->bodies ) b->update();
+  }
 }
 
 void PhysicsManager::update()

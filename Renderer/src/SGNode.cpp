@@ -4,7 +4,8 @@ SGNode::SGNode( std::string name, std::shared_ptr<Model> model )
 {
   this->name = name;
   this->model = model;
-  this->setScale( WMath::vec3(1) );
+  this->scale = WMath::vec3(1);
+  this->pivot = WMath::vec3(0);
 }
 
 void SGNode::addChild( std::shared_ptr<SGNode> child )

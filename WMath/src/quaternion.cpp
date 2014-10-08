@@ -8,20 +8,20 @@ namespace WMath
     vec[0] = vec[1] = vec[2] = 0.0f; vec[3] = 1.0f;
   }
 
-  quaternion::quaternion( float x, float y, float z, float w )
+  quaternion::quaternion( float x, float y, float z, float degrees )
   {
     vec[0] = x;
     vec[1] = y;
     vec[2] = z;
-    vec[3] = w;
+    vec[3] = cos( degrees * PI / 180.0f );
   }
 
-  quaternion::quaternion( vec3 v, float w )
+  quaternion::quaternion( vec3 v, float degrees )
   {
     vec[0] = v[0];
     vec[1] = v[1];
     vec[2] = v[2];
-    vec[3] = w;
+    vec[3] = cos( degrees * PI / 180.0f );
   }
 
   const float& quaternion::operator[] ( int index ) const
