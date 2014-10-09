@@ -35,7 +35,7 @@ namespace XMLHelper
     
     const char* mesh_name = el->FirstChildElement( "mesh" )->GetText( );
     std::shared_ptr<Mesh> mesh = resource_manager->getMesh( mesh_name );
-    std::shared_ptr<Model> model( new Model( mesh ) );
+    std::shared_ptr<Model> model( new Model( name, mesh ) );
 
     const char* shader_name = el->FirstChildElement( "shader" )->GetText();
     std::shared_ptr<Shader> shader =

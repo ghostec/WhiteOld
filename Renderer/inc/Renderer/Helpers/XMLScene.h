@@ -1,6 +1,8 @@
 #ifndef __RENDERER_HELPERS_XMLSCENE__
 #define __RENDERER_HELPERS_XMLSCENE__
 
+#include <queue>
+#include <vector>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -22,6 +24,9 @@ namespace XMLHelper
     std::shared_ptr<ResourceManager> resource_manager );
   Scene importScene( std::string file_name,
     std::shared_ptr<ResourceManager> resource_manager );
+
+
+  void exportScene( std::string file_name, Scene* scene );
 }
 
 #endif

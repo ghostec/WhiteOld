@@ -1,8 +1,10 @@
 #include "Renderer/SceneEditor.h"
 
 SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
-  std::shared_ptr<ResourceManager> resource_manager )
+  std::shared_ptr<ResourceManager> resource_manager,
+  std::shared_ptr<PhysicsManager> physics_manager )
 {
+  this->physics_manager = physics_manager;
   this->shader.reset( new Shader( "wireframe" ) );
   this->scene = scene;
   this->selected_sg_node = nullptr;
@@ -110,7 +112,7 @@ void SceneEditor::selectSGNode( std::shared_ptr<SGNode> sg_node )
   {
     this->old_selected_model = sg_node->getModel();
     this->selected_sg_node = sg_node;
-    std::shared_ptr<Model> modified_model( new Model( old_selected_model->getMesh() ) );
+    std::shared_ptr<Model> modified_model( new Model( old_selected_model->getName(), old_selected_model->getMesh() ) );
     modified_model->setShader( this->shader );
     modified_model->setTexture( old_selected_model->getTexture() );
     this->selected_sg_node->setModel( modified_model );
@@ -204,9 +206,27 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
       || sg_node->getName() == "arrow_z" ) )
     {
       if( sg_node->getName() == "arrow_x" ) moveSelectedSGNode( SEA_X );
+      else if( sg_node->getName() == "arrow_y" ) moveSelectedSGNode( SEA_Y );
+      else moveSelectedSGNode( SEA_Z );
     }
     else this->selectSGNode( sg_node );
   }
+  else if( active_input->hasInput( std::set<int>{ GLFW_KEY_LEFT_CONTROL, GLFW_KEY_C  }, PRESS ) )
+  {
+    this->clipboard_sg_node = selected_sg_node;
+  }
+  else if( active_input->hasInput( std::set<int>{ GLFW_KEY_LEFT_CONTROL, GLFW_KEY_V  }, PRESS ) )
+  {
+    std::shared_ptr<SGNode> new_sg_node( new SGNode( "copy" + this->clipboard_sg_node->getName(), this->clipboard_sg_node->getModel() ) );
+    new_sg_node->setTranslate( this->clipboard_sg_node->getTranslate() );
+    this->scene->getSceneGraph()->addSGNode( new_sg_node );
+
+    std::shared_ptr<Body> body( new Body( new_sg_node ) );
+    this->physics_manager->addBody( body );
+
+    selectSGNode( new_sg_node );
+  }
+
 }
 
 void SceneEditor::update_ROTATING_CAMERA()

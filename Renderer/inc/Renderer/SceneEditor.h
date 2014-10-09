@@ -15,6 +15,8 @@
 #include "Renderer/SGNode.h"
 #include "Renderer/SceneGraph.h"
 #include "WMath/WMath.h"
+#include "Physics/Body.h"
+#include "Physics/PhysicsManager.h"
 
 typedef struct _SceneEditorData
 {
@@ -34,10 +36,12 @@ typedef enum
 class SceneEditor
 {
   private:
+    std::shared_ptr<PhysicsManager> physics_manager;
     std::shared_ptr<ResourceManager> resource_manager;
     std::shared_ptr<Scene> scene;
     MousePicking mouse_picking;
     std::shared_ptr<SGNode> selected_sg_node;
+    std::shared_ptr<SGNode> clipboard_sg_node;
     std::shared_ptr<Model> old_selected_model;
     std::set< std::shared_ptr<SGNode> > locked_sg_nodes;
     std::shared_ptr<Shader> shader;
@@ -55,7 +59,8 @@ class SceneEditor
   public:
     //std::set< std::shared_ptr<SGNode> > cant_select;
     SceneEditor( std::shared_ptr<Scene> scene,
-      std::shared_ptr<ResourceManager> resource_manager );
+      std::shared_ptr<ResourceManager> resource_manager,
+      std::shared_ptr<PhysicsManager> physics_manager );
     void initialize();
     std::shared_ptr<SGNode> getSelectedSGNode() { return this->selected_sg_node; }
     void update();

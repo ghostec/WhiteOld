@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 #include "Renderer/Shader.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Mesh.h"
@@ -18,6 +19,7 @@ typedef enum ModelType
 class Model
 {
   private:
+    std::string name;
     std::shared_ptr<Mesh> mesh;
     std::shared_ptr<Shader> shader;
     std::shared_ptr<ModelData> model_data;
@@ -26,7 +28,7 @@ class Model
     ModelType model_type;
     bool transform_is_dirty;
   public:
-    Model( std::shared_ptr<Mesh> mesh, ModelType model_type = MODEL_3D );
+    Model( std::string name, std::shared_ptr<Mesh> mesh, ModelType model_type = MODEL_3D );
     void use(); void unuse();
     void resetTransform();
     void setTransform( WMath::mat4* t );
@@ -40,6 +42,7 @@ class Model
     void setTransformDirty() { this->transform_is_dirty = true; }
 
     // getters
+    std::string getName() { return this->name; }
     std::shared_ptr<Mesh> getMesh() { return this->mesh; };
     std::shared_ptr<Shader> getShader() { return this->shader; };
     std::shared_ptr<Texture> getTexture() { return this->texture; };

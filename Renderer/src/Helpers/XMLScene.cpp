@@ -93,4 +93,72 @@ namespace XMLHelper
 
     return scene;
   }
+
+  void exportScene( std::string file_name, Scene* scene )
+  {
+    tinyxml2::XMLDocument doc;
+    file_name = "../assets/xml/" + file_name + ".xml";
+
+    std::queue< std::pair< std::shared_ptr<SGNode>, std::string > > bfs_q;
+    std::vector< std::shared_ptr<SGNode> > bfs_v;
+
+    std::pair< std::shared_ptr<SGNode>, std::string > root;
+    root.first = scene->getSceneGraph()->getRootSGNode();
+    root.second = "";
+
+    bfs_q.push( root );
+    bfs_v.push_back( scene->getSceneGraph()->getRootSGNode() );
+
+    while( !bfs_q.empty() )
+    {
+      std::pair< std::shared_ptr<SGNode>, std::string > p = bfs_q.front();
+      std::shared_ptr<SGNode> n = p.first;
+      std::string parent = p.second;
+      bfs_q.pop();
+
+      if( n->getModel() )
+      {
+        tinyxml2::XMLElement* el = doc.NewElement( "sg_node" );
+        tinyxml2::XMLElement* el_name = doc.NewElement( "name" );
+        tinyxml2::XMLElement* el_model = doc.NewElement( "model" );
+        tinyxml2::XMLElement* el_position = doc.NewElement( "position" );
+
+        tinyxml2::XMLText* name_text = doc.NewText( n->getName().c_str() );
+        tinyxml2::XMLText* model_text = doc.NewText( n->getModel()->getName().c_str() );
+        
+        WMath::vec3 p = n->getTranslate();
+        el_position->SetAttribute( "x", std::to_string( p[0] ).c_str() );
+        el_position->SetAttribute( "y", std::to_string( p[1] ).c_str() );
+        el_position->SetAttribute( "z", std::to_string( p[2] ).c_str() );
+
+        el_name->InsertEndChild( name_text );
+        el_model->InsertEndChild( model_text );
+        el->InsertEndChild( el_name );
+        el->InsertEndChild( el_model );
+        el->InsertEndChild( el_position );
+
+        if( parent != "root" )
+        {
+          tinyxml2::XMLElement* el_parent = doc.NewElement( "parent" );
+          tinyxml2::XMLText* parent_text = doc.NewText( parent.c_str() );
+          el_parent->InsertEndChild( parent_text );
+          el->InsertEndChild( el_parent );
+        }
+
+        doc.InsertEndChild( el );
+      }
+
+      for( auto c : n->getChildren() )
+      {
+        if( std::find( bfs_v.begin(), bfs_v.end(), c ) == bfs_v.end() )
+        {
+          std::pair< std::shared_ptr<SGNode>, std::string > pair;
+          pair.first = c; pair.second = n->getName();
+          bfs_q.push( pair ); bfs_v.push_back( c );
+        }
+      }
+    }
+
+    doc.SaveFile( file_name.c_str() );
+  }
 }

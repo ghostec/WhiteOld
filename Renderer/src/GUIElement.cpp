@@ -4,7 +4,7 @@ GUIElement::GUIElement
   ( std::shared_ptr<Mesh> mesh, std::shared_ptr<GUIElement> parent,
   GUIType gui_type )
 {
-  this->model.reset( new Model( mesh ) );
+  this->model.reset( new Model( "gui", mesh ) );
   this->parent = parent;
   this->gui_type = gui_type;
   this->ratio = this->parent_percent = 1.0f;

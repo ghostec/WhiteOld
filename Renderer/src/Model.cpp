@@ -1,8 +1,8 @@
 #include "Renderer/Model.h"
 
-Model::Model( std::shared_ptr<Mesh> mesh, ModelType model_type )
+Model::Model( std::string name, std::shared_ptr<Mesh> mesh, ModelType model_type )
 {
-  static int id = 1;
+  this->name = name;
   this->mesh = mesh;
   this->model_data.reset( new ModelData );
   this->model_type = model_type;
