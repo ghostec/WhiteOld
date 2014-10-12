@@ -65,8 +65,6 @@ void Scene::setCamera( std::shared_ptr<Camera> camera )
 {
   this->camera = camera;
   std::string text = this->name + "_camera";
-  active_window->registerObserver
-    ( "RESIZE", std::bind( CameraHelper::updateWindow, &*camera ), text );
 }
 
 void Scene::setSceneGraph( std::shared_ptr<SceneGraph> scene_graph )

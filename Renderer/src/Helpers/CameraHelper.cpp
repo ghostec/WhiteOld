@@ -12,13 +12,19 @@ namespace CameraHelper
       ( WMath::OpenGlPerspective( 45.0f, d[0] / d[1], 0.1f, 100.0f ) );
   }
 
-  void normalCamera( Camera* camera )
+  void normalCamera( Camera* camera, float aspect_ratio )
   {
     WMath::mat4 view;
     camera->setView( view );
-    WMath::vec2 d = active_window->getDimensions( );
+    WMath::vec2 d = active_window->getDimensions();
     camera->setProj
-      ( WMath::OpenGlPerspective( 45.0f, d[0] / d[1], 0.1f, 100.0f ) );
+      ( WMath::OpenGlPerspective( 45.0f, aspect_ratio, 0.1f, 100.0f ) );
+  }
+
+  void setAspectRatio( Camera* camera, float aspect_ratio )
+  {
+    camera->setProj
+      ( WMath::OpenGlPerspective( 45.0f, aspect_ratio, 0.1f, 100.0f ) );
   }
 
   void updateWindow( Camera* camera )

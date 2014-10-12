@@ -56,6 +56,6 @@ namespace GLFWhelper
   void windowResizeCallback( GLFWwindow *window, int w, int h )
   {
     active_window->setDimensions( WMath::vec2( w, h ) );
-    glViewport( 0, 0, w, h );
+    active_window->setDirty( true );
   }
 }

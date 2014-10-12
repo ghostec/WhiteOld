@@ -2,6 +2,8 @@
 #define __RENDERER_OPENGLRENDERER__
 
 #include <iostream>
+#include <queue>
+#include <vector>
 #include "Renderer/Helpers/RendererHelper.h"
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
@@ -10,20 +12,26 @@
 #include "Renderer/Scene.h"
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SceneEditor.h"
+#include "Renderer/Viewport.h"
 #include "Input/Input.h"
+
+typedef struct _PropagatedViewport
+{
+  WMath::vec2 p_anchor, p_dimensions;
+  std::shared_ptr<Viewport> viewport;
+} PropagatedViewport;
 
 class Renderer
 {
   private:
     Window* window;
-    std::vector< Scene* > scenes;
+    std::shared_ptr<Viewport> viewport;
     // methods
     void drawScene( Scene* scene );
   public:
     Renderer( Window* window );
     void render();
-    void addScene( Scene* scene );
-    void setScenes( std::vector<Scene*> scenes );
+    void addViewport( std::shared_ptr<Viewport> viewport );
 };
 
 #endif

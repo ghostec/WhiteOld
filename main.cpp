@@ -19,6 +19,7 @@
 #include "Renderer/MousePicking.h"
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SGNode.h"
+#include "Renderer/Viewport.h"
 #include "Input/Input.h"
 #include "Physics/PhysicsManager.h"
 #include "Physics/Helpers/XMLPhysics.h"
@@ -38,11 +39,15 @@ int main()
     std::make_shared<Scene>
     ( XMLHelper::importScene( "example", resource_manager ) );
   Camera* camera = &*scene->getCamera();
-  CameraHelper::normalCamera( camera );
+  CameraHelper::normalCamera( camera, 1 );
   WMath::translate( camera->getView(), WMath::vec3( -1, -4, -13 ) );
 
   Renderer renderer( &window );
-  renderer.addScene( &*scene );
+  ViewportData data;
+  data.column.size = 0.8;
+  std::shared_ptr<Viewport> viewport( new Viewport( WMath::vec2(0), data, VIEWPORT_MODE_COLUMN ) );
+  viewport->addScene( scene );
+  renderer.addViewport( viewport );
 
   std::shared_ptr<PhysicsManager> physics_manager( new PhysicsManager );
   XMLHelper::importPhysics( "physics_example", scene->getSceneGraph(), physics_manager );
