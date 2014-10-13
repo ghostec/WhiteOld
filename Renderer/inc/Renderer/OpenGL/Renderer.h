@@ -15,12 +15,6 @@
 #include "Renderer/Viewport.h"
 #include "Input/Input.h"
 
-typedef struct _PropagatedViewport
-{
-  WMath::vec2 p_anchor, p_dimensions;
-  std::shared_ptr<Viewport> viewport;
-} PropagatedViewport;
-
 class Renderer
 {
   private:

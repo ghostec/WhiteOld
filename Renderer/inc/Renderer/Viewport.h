@@ -97,4 +97,22 @@ class Viewport
     ViewportCachedData getViewportCachedData() { return this->cached_data; }
 };
 
+typedef struct _PropagatedViewport
+{
+  WMath::vec2 p_anchor, p_dimensions;
+  Viewport* viewport;
+} PropagatedViewport;
+
+class ViewportIterator
+{
+  private:
+    std::queue< PropagatedViewport > bfs_q;
+    std::vector< Viewport* > bfs_v;
+    Viewport* begin;
+  public:
+    ViewportIterator( Viewport* begin );
+    bool hasNext();
+    Viewport* next();
+};
+
 #endif
