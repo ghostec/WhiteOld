@@ -51,6 +51,7 @@ int main()
   data_1.anchor = WMath::vec2(0);
   data_1.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_RIGHT;
   data_1.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
+  data_1.background = WMath::vec3( 1.0 );
   std::shared_ptr<Viewport> viewport_1
     ( new Viewport( data_1 ) );
 
@@ -61,6 +62,7 @@ int main()
   data_2.anchor = WMath::vec2( 250, 0 );
   data_2.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_RIGHT;
   data_2.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
+  data_2.background = WMath::vec3( 0.92 );
   std::shared_ptr<Viewport> viewport_2
     ( new Viewport( data_2 ) );
   viewport_2->addScene( scene );

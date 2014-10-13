@@ -9,14 +9,12 @@ Renderer::Renderer( Window* window )
   data.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
   data.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_LEFT;
   data.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_RELATIVE;
+  data.background = WMath::vec3( 1.0 );
   this->viewport.reset( new Viewport(data) );
 }
 
 void Renderer::render()
 {
-  glClearColor( 0.9f, 0.9f, 0.9f, 1.0f );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
   WMath::vec2 window_dimensions = this->window->getDimensions();
 
   std::queue< PropagatedViewport > bfs_q;
@@ -101,9 +99,19 @@ void Renderer::render()
       viewport_cached_data.height = p_v.p_dimensions[1];
       viewport_cached_data.x = p_v.p_anchor[0];
       viewport_cached_data.y = p_v.p_anchor[1];
+      viewport_cached_data.background = viewport_data.background;
       p_v.viewport->setViewportCachedData( viewport_cached_data );
 
     }
+
+    glEnable( GL_SCISSOR_TEST );
+    glScissor( viewport_cached_data.x, viewport_cached_data.y,
+      viewport_cached_data.width, viewport_cached_data.height ); 
+    
+    glClearColor( viewport_cached_data.background[0],
+      viewport_cached_data.background[1],
+      viewport_cached_data.background[2], 1.0f );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     glViewport( viewport_cached_data.x, viewport_cached_data.y,
       viewport_cached_data.width, viewport_cached_data.height );

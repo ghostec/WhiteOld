@@ -65,12 +65,14 @@ typedef struct _ViewportData
   ViewportAnchorCorner anchor_corner;
   ViewportAnchorMode anchor_mode;
   WMath::vec2 anchor;
+  WMath::vec3 background;
 
 } ViewportData;
 
 typedef struct _ViewportCachedData
 {
   float x, y, width, height;
+  WMath::vec3 background;
 } ViewportCachedData;
 
 class Viewport
