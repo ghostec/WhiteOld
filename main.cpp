@@ -43,11 +43,31 @@ int main()
   WMath::translate( camera->getView(), WMath::vec3( -1, -4, -13 ) );
 
   Renderer renderer( &window );
-  ViewportData data;
-  data.column.size = 0.8;
-  std::shared_ptr<Viewport> viewport( new Viewport( WMath::vec2(0), data, VIEWPORT_MODE_COLUMN ) );
-  viewport->addScene( scene );
-  renderer.addViewport( viewport );
+
+  ViewportData data_1;
+  data_1.mode = VIEWPORT_MODE_COLUMN;
+  data_1.mode_data.column.size = 300;
+  data_1.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_ABSOLUTE;
+  data_1.anchor = WMath::vec2(0);
+  data_1.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_RIGHT;
+  data_1.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
+  std::shared_ptr<Viewport> viewport_1
+    ( new Viewport( data_1 ) );
+
+  ViewportData data_2;
+  data_2.mode = VIEWPORT_MODE_COLUMN;
+  data_2.mode_data.column.size = 1;
+  data_2.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_RELATIVE;
+  data_2.anchor = WMath::vec2( 250, 0 );
+  data_2.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_RIGHT;
+  data_2.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
+  std::shared_ptr<Viewport> viewport_2
+    ( new Viewport( data_2 ) );
+  viewport_2->addScene( scene );
+
+  
+  renderer.addViewport( viewport_1 );
+  renderer.addViewport( viewport_2 );
 
   std::shared_ptr<PhysicsManager> physics_manager( new PhysicsManager );
   XMLHelper::importPhysics( "physics_example", scene->getSceneGraph(), physics_manager );

@@ -10,31 +10,61 @@
 #include "Renderer/Helpers/CameraHelper.h"
 #include "WMath/WMath.h"
 
+typedef enum _ViewportAnchorCorner
+{
+  VIEWPORT_ANCHOR_CORNER_TOP_LEFT,
+  VIEWPORT_ANCHOR_CORNER_TOP_RIGHT,
+  VIEWPORT_ANCHOR_CORNER_BOTTOM_LEFT,
+  VIEWPORT_ANCHOR_CORNER_BOTTOM_RIGHT
+} ViewportAnchorCorner;
+
+typedef enum _ViewportDimensionsMode
+{
+  VIEWPORT_DIMENSIONS_MODE_RELATIVE,
+  VIEWPORT_DIMENSIONS_MODE_ABSOLUTE
+} ViewportDimensionsMode;
+
+typedef enum _ViewportAnchorMode
+{
+  VIEWPORT_ANCHOR_MODE_RELATIVE,
+  VIEWPORT_ANCHOR_MODE_ABSOLUTE
+} ViewportAnchorMode;
+
 typedef enum _ViewportMode
 {
   VIEWPORT_MODE_FULL, VIEWPORT_MODE_COLUMN, VIEWPORT_MODE_ROW, VIEWPORT_MODE_BOX
 } ViewportMode;
 
-typedef union _ViewportData
+typedef struct _ViewportData
 {
-  typedef struct _ViewportRow
+  typedef union _ViewportModeData
   {
-    float size;
-  } ViewportRow;
+    typedef struct _ViewportRow
+    {
+      float size;
+    } ViewportRow;
 
-  typedef struct _ViewportColumn
-  {
-    float size;
-  } ViewportColumn;
+    typedef struct _ViewportColumn
+    {
+      float size;
+    } ViewportColumn;
 
-  typedef struct _ViewportBox
-  {
-    float higher_dimension, aspect_ratio;
-  } ViewportBox;
+    typedef struct _ViewportBox
+    {
+      float higher_dimension, aspect_ratio;
+    } ViewportBox;
 
-  ViewportRow row;
-  ViewportColumn column;
-  ViewportBox box;
+    ViewportRow row;
+    ViewportColumn column;
+    ViewportBox box;
+  } ViewportModeData;
+
+  ViewportMode mode;
+  ViewportModeData mode_data;
+  ViewportDimensionsMode dimensions_mode;
+  ViewportAnchorCorner anchor_corner;
+  ViewportAnchorMode anchor_mode;
+  WMath::vec2 anchor;
 
 } ViewportData;
 
@@ -46,28 +76,22 @@ typedef struct _ViewportCachedData
 class Viewport
 {
   private:
-    WMath::vec2 anchor;
-    ViewportMode mode;
     ViewportData data;
     ViewportCachedData cached_data;
     std::vector< std::shared_ptr<Viewport> > children;
     std::vector< std::shared_ptr<Scene> > scenes;
     bool dirty;
   public:
-    Viewport();
-    Viewport( WMath::vec2 anchor, ViewportData data, ViewportMode mode );
+    Viewport( ViewportData data );
     void addChild( std::shared_ptr<Viewport> v );
     void addScene( std::shared_ptr<Scene> scene );
-    void setAnchor( WMath::vec2 a ) { anchor = a; }
     void setViewportData( ViewportData d ) { data = d; dirty = true; }
     void setViewportCachedData( ViewportCachedData cached_data );
     void setDirty( bool dirty ) { this->dirty = dirty; }
-    WMath::vec2 getAnchor() { return this->anchor; }
     ViewportData getViewportData() { return this->data; }
     std::vector< std::shared_ptr<Viewport> > getChildren() { return children; }
     std::vector< std::shared_ptr<Scene> > getScenes() { return scenes; }
     bool getDirty() { return this->dirty; }
-    ViewportMode getViewportMode() { return this->mode; }
     ViewportCachedData getViewportCachedData() { return this->cached_data; }
 };
 

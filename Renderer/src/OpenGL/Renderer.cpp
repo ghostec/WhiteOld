@@ -4,7 +4,12 @@ Renderer::Renderer( Window* window )
 {
   this->window = window;
   ViewportData data;
-  this->viewport.reset( new Viewport() );
+  data.mode = VIEWPORT_MODE_FULL;
+  data.anchor = WMath::vec2(0);
+  data.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
+  data.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_LEFT;
+  data.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_RELATIVE;
+  this->viewport.reset( new Viewport(data) );
 }
 
 void Renderer::render()
@@ -27,38 +32,69 @@ void Renderer::render()
   while( !bfs_q.empty() )
   {
     PropagatedViewport p_v = bfs_q.front(); bfs_q.pop();
-    ViewportMode viewport_mode = p_v.viewport->getViewportMode();
     ViewportCachedData viewport_cached_data = p_v.viewport->getViewportCachedData();
 
     if( p_v.viewport->getDirty() )
     {
-      ViewportData viewport_data = p_v.viewport->getViewportData( );
-      WMath::vec2 viewport_anchor = p_v.viewport->getAnchor();
+      ViewportData viewport_data = p_v.viewport->getViewportData(); 
 
-      p_v.p_anchor = p_v.p_anchor +
-        WMath::vec2( viewport_anchor[0] * p_v.p_dimensions[0],
-        viewport_anchor[1] * p_v.p_dimensions[1] );
-
-      if( viewport_mode == VIEWPORT_MODE_BOX )
+      if( viewport_data.anchor_mode == VIEWPORT_ANCHOR_MODE_ABSOLUTE )
       {
-        if( viewport_data.box.aspect_ratio > 1 )
+        if( viewport_data.anchor_corner == VIEWPORT_ANCHOR_CORNER_TOP_LEFT )
         {
-          p_v.p_dimensions[0] = p_v.p_dimensions[0] * viewport_data.box.higher_dimension;
-          p_v.p_dimensions[1] = p_v.p_dimensions[0] / viewport_data.box.aspect_ratio;
+          p_v.p_anchor = p_v.p_anchor +
+            WMath::vec2( viewport_data.anchor[0], viewport_data.anchor[1] );
+        }
+        else if( viewport_data.anchor_corner == VIEWPORT_ANCHOR_CORNER_TOP_RIGHT )
+        {
+          p_v.p_anchor = p_v.p_anchor +
+            WMath::vec2( 0, viewport_data.anchor[1] );
+        }
+      }
+      else
+      {
+        if( viewport_data.anchor_corner == VIEWPORT_ANCHOR_CORNER_TOP_LEFT )
+        {
+          p_v.p_anchor = p_v.p_anchor +
+            WMath::vec2( viewport_data.anchor[0] * p_v.p_dimensions[0],
+            viewport_data.anchor[1] * p_v.p_dimensions[1] );
+        }
+        else if( viewport_data.anchor_corner == VIEWPORT_ANCHOR_CORNER_TOP_RIGHT )
+        {
+          p_v.p_anchor = p_v.p_anchor +
+            WMath::vec2( viewport_data.anchor[0] * p_v.p_dimensions[0],
+            viewport_data.anchor[1] * p_v.p_dimensions[1] );
+        }
+      }
+
+      if( viewport_data.mode == VIEWPORT_MODE_BOX )
+      {
+        if( viewport_data.mode_data.box.aspect_ratio > 1 )
+        {
+          p_v.p_dimensions[0] = p_v.p_dimensions[0] * viewport_data.mode_data.box.higher_dimension;
+          p_v.p_dimensions[1] = p_v.p_dimensions[0] / viewport_data.mode_data.box.aspect_ratio;
         }
         else
         {
-          p_v.p_dimensions[1] = p_v.p_dimensions[1] * viewport_data.box.higher_dimension;
-          p_v.p_dimensions[0] = p_v.p_dimensions[1] * viewport_data.box.aspect_ratio;
+          p_v.p_dimensions[1] = p_v.p_dimensions[1] * viewport_data.mode_data.box.higher_dimension;
+          p_v.p_dimensions[0] = p_v.p_dimensions[1] * viewport_data.mode_data.box.aspect_ratio;
         }
       }
-      else if( viewport_mode == VIEWPORT_MODE_COLUMN )
+      else if( viewport_data.mode == VIEWPORT_MODE_COLUMN )
       {
-        p_v.p_dimensions[0] = p_v.p_dimensions[0] * viewport_data.column.size;
+        p_v.p_dimensions[0] = p_v.p_dimensions[0] * viewport_data.mode_data.column.size;
       }
-      else if( viewport_mode == VIEWPORT_MODE_ROW )
+      else if( viewport_data.mode == VIEWPORT_MODE_ROW )
       {
-        p_v.p_dimensions[1] = p_v.p_dimensions[1] * viewport_data.column.size;
+        p_v.p_dimensions[1] = p_v.p_dimensions[1] * viewport_data.mode_data.column.size;
+      }
+
+      if( viewport_data.anchor_corner == VIEWPORT_ANCHOR_CORNER_TOP_RIGHT )
+      {
+        if( viewport_data.anchor_mode == VIEWPORT_ANCHOR_MODE_ABSOLUTE )
+        {
+          p_v.p_dimensions[0] -= viewport_data.anchor[0];
+        }
       }
         
       viewport_cached_data.width = p_v.p_dimensions[0];

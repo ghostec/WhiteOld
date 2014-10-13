@@ -1,17 +1,8 @@
 #include "Renderer/Viewport.h"
 
-Viewport::Viewport()
+Viewport::Viewport( ViewportData data )
 {
-  this->anchor = WMath::vec2(0);
-  this->mode = VIEWPORT_MODE_FULL;
-  this->dirty = true;
-}
-
-Viewport::Viewport( WMath::vec2 anchor, ViewportData data, ViewportMode mode )
-{
-  this->anchor = anchor;
   this->data = data;
-  this->mode = mode;
   this->dirty = true;
 }
 
