@@ -126,6 +126,62 @@ Viewport* ViewportIterator::next()
 
       return this->next();
     }
+    else if( data.mode == VIEWPORT_MODE_BOX )
+    {
+      WMath::vec2 box_dimensions;
+
+      if( data.mode_data.box.dimensions_mode
+        == VIEWPORT_DIMENSIONS_MODE_ABSOLUTE )
+      {
+        if( data.mode_data.box.aspect_ratio > 1 )
+        {
+          box_dimensions[0] = data.mode_data.box.higher_dimension;
+          box_dimensions[1] = data.mode_data.box.higher_dimension
+            / data.mode_data.box.aspect_ratio;
+        }
+        else
+        {
+          box_dimensions[1] = data.mode_data.box.higher_dimension;
+          box_dimensions[0] = data.mode_data.box.higher_dimension
+            * data.mode_data.box.aspect_ratio;
+        }
+      }
+      if( data.mode_data.box.anchor_position == VIEWPORT_ANCHOR_TOP_LEFT )
+      {
+        
+        if( data.mode_data.box.anchor_mode == VIEWPORT_ANCHOR_MODE_ABSOLUTE )
+        {
+          p_v.p_anchor[0] += data.mode_data.box.anchor_x;
+          p_v.p_anchor[1] += p_v.p_dimensions[1] - data.mode_data.box.anchor_y - box_dimensions[1];
+        }
+        
+      }
+
+      viewport_cached_data.x = p_v.p_anchor[0];
+      viewport_cached_data.y = p_v.p_anchor[1];
+      viewport_cached_data.width = box_dimensions[0];
+      viewport_cached_data.height = box_dimensions[1];
+      viewport_cached_data.background = data.background;
+      p_v.viewport->setViewportCachedData( viewport_cached_data );
+
+      p_v.viewport->setDirty( false );
+
+      Viewport* left_c = &*p_v.viewport->getLeftChild( );
+      if( left_c )
+      {
+        p_v.viewport = left_c;
+        bfs_q.push( p_v );
+      }
+
+      Viewport* right_c = &*p_v.viewport->getRightChild( );
+      if( right_c )
+      {
+        p_v.viewport = right_c;
+        bfs_q.push( p_v );
+      }
+
+      return p_v.viewport;
+    }
     else if( data.mode == VIEWPORT_MODE_FULL )
     {
       viewport_cached_data.x = p_v.p_anchor[0];
@@ -136,6 +192,20 @@ Viewport* ViewportIterator::next()
       p_v.viewport->setViewportCachedData( viewport_cached_data );
 
       p_v.viewport->setDirty( false );
+
+      Viewport* left_c = &*p_v.viewport->getLeftChild( );
+      if( left_c )
+      {
+        p_v.viewport = left_c;
+        bfs_q.push( p_v );
+      }
+
+      Viewport* right_c = &*p_v.viewport->getRightChild( );
+      if( right_c )
+      {
+        p_v.viewport = right_c;
+        bfs_q.push( p_v );
+      }
 
       return p_v.viewport;
     }
