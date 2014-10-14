@@ -4,6 +4,8 @@ Viewport::Viewport( ViewportData data )
 {
   this->data = data;
   this->dirty = true;
+  this->left_c = nullptr;
+  this->right_c = nullptr;
 }
 
 void Viewport::setDirty( bool v )
@@ -98,6 +100,12 @@ Viewport* ViewportIterator::next()
           p_v_right.p_dimensions[0] = data.mode_data.vsplit.size;
           p_v_right.p_anchor[0] += p_v.p_dimensions[0] - data.mode_data.vsplit.size;
           p_v_left.p_dimensions[0] -= data.mode_data.vsplit.size;
+
+          std::cout << "VIEWPORT_LEFT" << std::endl;
+          std::cout << p_v_left.p_anchor[0] << " " << p_v_left.p_anchor[1] << " " << p_v_left.p_dimensions[0] << " " << p_v_left.p_dimensions[1] << std::endl;
+
+          std::cout << "VIEWPORT_RIGHT" << std::endl;
+          std::cout << p_v_right.p_anchor[0] << " " << p_v_right.p_anchor[1] << " " << p_v_right.p_dimensions[0] << " " << p_v_right.p_dimensions[1] << std::endl;
         }
         else
         {
@@ -128,6 +136,8 @@ Viewport* ViewportIterator::next()
     }
     else if( data.mode == VIEWPORT_MODE_BOX )
     {
+      PropagatedViewport p_v_left, p_v_right;
+
       WMath::vec2 box_dimensions;
 
       if( data.mode_data.box.dimensions_mode
@@ -157,33 +167,10 @@ Viewport* ViewportIterator::next()
         
       }
 
-      viewport_cached_data.x = p_v.p_anchor[0];
-      viewport_cached_data.y = p_v.p_anchor[1];
-      viewport_cached_data.width = box_dimensions[0];
-      viewport_cached_data.height = box_dimensions[1];
-      viewport_cached_data.background = data.background;
-      p_v.viewport->setViewportCachedData( viewport_cached_data );
+      p_v.p_dimensions = box_dimensions;
 
-      p_v.viewport->setDirty( false );
+      p_v_left = p_v_right = p_v;
 
-      Viewport* left_c = &*p_v.viewport->getLeftChild( );
-      if( left_c )
-      {
-        p_v.viewport = left_c;
-        bfs_q.push( p_v );
-      }
-
-      Viewport* right_c = &*p_v.viewport->getRightChild( );
-      if( right_c )
-      {
-        p_v.viewport = right_c;
-        bfs_q.push( p_v );
-      }
-
-      return p_v.viewport;
-    }
-    else if( data.mode == VIEWPORT_MODE_FULL )
-    {
       viewport_cached_data.x = p_v.p_anchor[0];
       viewport_cached_data.y = p_v.p_anchor[1];
       viewport_cached_data.width = p_v.p_dimensions[0];
@@ -193,18 +180,51 @@ Viewport* ViewportIterator::next()
 
       p_v.viewport->setDirty( false );
 
+      Viewport* left_c = &*p_v.viewport->getLeftChild();
+      if( left_c )
+      {
+        p_v_left.viewport = left_c;
+        bfs_q.push( p_v_left );
+      }
+
+      std::shared_ptr<Viewport> right_c = p_v.viewport->getRightChild();
+      if( right_c )
+      {
+        p_v_right.viewport = &*right_c;
+        bfs_q.push( p_v_right );
+      }
+
+      return p_v.viewport;
+    }
+    else if( data.mode == VIEWPORT_MODE_FULL )
+    {
+      PropagatedViewport p_v_left, p_v_right;
+      p_v_left = p_v_right = p_v;
+
+      viewport_cached_data.x = p_v.p_anchor[0];
+      viewport_cached_data.y = p_v.p_anchor[1];
+      viewport_cached_data.width = p_v.p_dimensions[0];
+      viewport_cached_data.height = p_v.p_dimensions[1];
+      viewport_cached_data.background = data.background;
+      p_v.viewport->setViewportCachedData( viewport_cached_data );
+
+      std::cout << "VIEWPORT_FULL" << std::endl;
+      std::cout << viewport_cached_data.x << " " << viewport_cached_data.y << " " << viewport_cached_data.width << " " << viewport_cached_data.height << std::endl;
+
+      p_v.viewport->setDirty( false );
+
       Viewport* left_c = &*p_v.viewport->getLeftChild( );
       if( left_c )
       {
-        p_v.viewport = left_c;
-        bfs_q.push( p_v );
+        p_v_left.viewport = left_c;
+        bfs_q.push( p_v_left );
       }
 
       Viewport* right_c = &*p_v.viewport->getRightChild( );
       if( right_c )
       {
-        p_v.viewport = right_c;
-        bfs_q.push( p_v );
+        p_v_right.viewport = right_c;
+        bfs_q.push( p_v_right );
       }
 
       return p_v.viewport;
