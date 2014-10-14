@@ -10,19 +10,11 @@
 #include "Renderer/Helpers/CameraHelper.h"
 #include "WMath/WMath.h"
 
-typedef enum _ViewportAnchorCorner
+typedef enum _ViewportSide
 {
-  VIEWPORT_ANCHOR_CORNER_TOP_LEFT,
-  VIEWPORT_ANCHOR_CORNER_TOP_RIGHT,
-  VIEWPORT_ANCHOR_CORNER_BOTTOM_LEFT,
-  VIEWPORT_ANCHOR_CORNER_BOTTOM_RIGHT
-} ViewportAnchorCorner;
-
-typedef enum _ViewportDimensionsMode
-{
-  VIEWPORT_DIMENSIONS_MODE_RELATIVE,
-  VIEWPORT_DIMENSIONS_MODE_ABSOLUTE
-} ViewportDimensionsMode;
+  VIEWPORT_SIDE_TOP, VIEWPORT_SIDE_BOTTOM,
+  VIEWPORT_SIDE_LEFT, VIEWPORT_SIDE_RIGHT
+} ViewportSide;
 
 typedef enum _ViewportAnchorMode
 {
@@ -30,41 +22,54 @@ typedef enum _ViewportAnchorMode
   VIEWPORT_ANCHOR_MODE_ABSOLUTE
 } ViewportAnchorMode;
 
+typedef enum _ViewportAnchorPosition
+{
+  VIEWPORT_ANCHOR_TOP_LEFT,
+  VIEWPORT_ANCHOR_TOP_RIGHT,
+  VIEWPORT_ANCHOR_BOTTOM_LEFT,
+  VIEWPORT_ANCHOR_BOTTOM_RIGHT,
+  VIEWPORT_ANCHOR_CENTER
+} ViewportAnchorPosition;
+
+typedef enum _ViewportDimensionsMode
+{
+  VIEWPORT_DIMENSIONS_MODE_RELATIVE,
+  VIEWPORT_DIMENSIONS_MODE_ABSOLUTE
+} ViewportDimensionsMode;
+
 typedef enum _ViewportMode
 {
-  VIEWPORT_MODE_FULL, VIEWPORT_MODE_COLUMN, VIEWPORT_MODE_ROW, VIEWPORT_MODE_BOX
+  VIEWPORT_MODE_FULL, VIEWPORT_MODE_BOX,
+  VIEWPORT_MODE_VSPLIT, VIEWPORT_MODE_HSPLIT
 } ViewportMode;
 
 typedef struct _ViewportData
 {
   typedef union _ViewportModeData
   {
-    typedef struct _ViewportRow
-    {
-      float size;
-    } ViewportRow;
-
-    typedef struct _ViewportColumn
-    {
-      float size;
-    } ViewportColumn;
-
     typedef struct _ViewportBox
     {
+      ViewportAnchorPosition anchor_position;
+      ViewportAnchorMode anchor_mode;
+      float anchor_x, anchor_y;
+      ViewportDimensionsMode dimensions_mode;
       float higher_dimension, aspect_ratio;
     } ViewportBox;
 
-    ViewportRow row;
-    ViewportColumn column;
+    typedef struct _ViewportSplit
+    {
+      ViewportSide side;
+      ViewportDimensionsMode dimension_mode;
+      float size;
+    } ViewportSplit;
+
+    ViewportSplit vsplit;
+    ViewportSplit hsplit;
     ViewportBox box;
   } ViewportModeData;
 
   ViewportMode mode;
   ViewportModeData mode_data;
-  ViewportDimensionsMode dimensions_mode;
-  ViewportAnchorCorner anchor_corner;
-  ViewportAnchorMode anchor_mode;
-  WMath::vec2 anchor;
   WMath::vec3 background;
 
 } ViewportData;
@@ -80,18 +85,20 @@ class Viewport
   private:
     ViewportData data;
     ViewportCachedData cached_data;
-    std::vector< std::shared_ptr<Viewport> > children;
+    std::shared_ptr<Viewport> left_c, right_c;
     std::vector< std::shared_ptr<Scene> > scenes;
     bool dirty;
   public:
     Viewport( ViewportData data );
-    void addChild( std::shared_ptr<Viewport> v );
+    void setLeftChild( std::shared_ptr<Viewport> v ) { this->left_c = v; }
+    void setRightChild( std::shared_ptr<Viewport> v ) { this->right_c = v; }
     void addScene( std::shared_ptr<Scene> scene );
     void setViewportData( ViewportData d ) { data = d; dirty = true; }
     void setViewportCachedData( ViewportCachedData cached_data );
-    void setDirty( bool dirty ) { this->dirty = dirty; }
+    void setDirty( bool dirty );
     ViewportData getViewportData() { return this->data; }
-    std::vector< std::shared_ptr<Viewport> > getChildren() { return children; }
+    std::shared_ptr<Viewport> getLeftChild() { return left_c; }
+    std::shared_ptr<Viewport> getRightChild() { return right_c; }
     std::vector< std::shared_ptr<Scene> > getScenes() { return scenes; }
     bool getDirty() { return this->dirty; }
     ViewportCachedData getViewportCachedData() { return this->cached_data; }
@@ -107,11 +114,10 @@ class ViewportIterator
 {
   private:
     std::queue< PropagatedViewport > bfs_q;
-    std::vector< Viewport* > bfs_v;
-    Viewport* begin;
+    Viewport* root;
   public:
-    ViewportIterator( Viewport* begin );
-    bool hasNext();
+    ViewportIterator( Viewport* root );
+    Viewport* begin();
     Viewport* next();
 };
 

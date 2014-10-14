@@ -25,7 +25,7 @@ class Renderer
   public:
     Renderer( Window* window );
     void render();
-    void addViewport( std::shared_ptr<Viewport> viewport );
+    void setViewport( std::shared_ptr<Viewport> viewport );
 };
 
 #endif

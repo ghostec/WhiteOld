@@ -44,32 +44,29 @@ int main()
 
   Renderer renderer( &window );
 
-  ViewportData data_1;
-  data_1.mode = VIEWPORT_MODE_COLUMN;
-  data_1.mode_data.column.size = 300;
-  data_1.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_ABSOLUTE;
-  data_1.anchor = WMath::vec2(0);
-  data_1.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_RIGHT;
-  data_1.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
-  data_1.background = WMath::vec3( 1.0 );
-  std::shared_ptr<Viewport> viewport_1
-    ( new Viewport( data_1 ) );
+  ViewportData viewport_window_data;
+  viewport_window_data.mode = VIEWPORT_MODE_VSPLIT;
+  viewport_window_data.mode_data.vsplit.side = VIEWPORT_SIDE_RIGHT;
+  viewport_window_data.mode_data.vsplit.dimension_mode = VIEWPORT_DIMENSIONS_MODE_ABSOLUTE;
+  viewport_window_data.mode_data.vsplit.size = 260;
+  std::shared_ptr<Viewport> viewport_window( new Viewport( viewport_window_data ) );
 
-  ViewportData data_2;
-  data_2.mode = VIEWPORT_MODE_COLUMN;
-  data_2.mode_data.column.size = 1;
-  data_2.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_RELATIVE;
-  data_2.anchor = WMath::vec2( 250, 0 );
-  data_2.anchor_corner = VIEWPORT_ANCHOR_CORNER_TOP_RIGHT;
-  data_2.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
-  data_2.background = WMath::vec3( 0.92 );
-  std::shared_ptr<Viewport> viewport_2
-    ( new Viewport( data_2 ) );
-  viewport_2->addScene( scene );
+  ViewportData viewport_window_left_data;
+  viewport_window_left_data.mode = VIEWPORT_MODE_FULL;
+  viewport_window_left_data.background = WMath::vec3( 0.9f );
+  std::shared_ptr<Viewport> viewport_window_left( new Viewport( viewport_window_left_data ) );
 
+  ViewportData viewport_window_right_data;
+  viewport_window_right_data.mode = VIEWPORT_MODE_FULL;
+  viewport_window_right_data.background = WMath::vec3( 1.0f );
+  std::shared_ptr<Viewport> viewport_window_right( new Viewport( viewport_window_right_data ) );
+
+  viewport_window_left->addScene( scene );
+
+  viewport_window->setLeftChild( viewport_window_left );
+  viewport_window->setRightChild( viewport_window_right );
   
-  renderer.addViewport( viewport_1 );
-  renderer.addViewport( viewport_2 );
+  renderer.setViewport( viewport_window );
 
   std::shared_ptr<PhysicsManager> physics_manager( new PhysicsManager );
   XMLHelper::importPhysics( "physics_example", scene->getSceneGraph(), physics_manager );
