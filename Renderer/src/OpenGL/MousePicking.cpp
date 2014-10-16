@@ -1,5 +1,7 @@
 #include "Renderer/OpenGL/MousePicking.h"
 
+MousePicking* active_mouse_picking;
+
 // encode an unique ID into a colour with components in range of 0.0 to 1.0
 WMath::vec3 encode_id( int id )
 {
@@ -17,14 +19,13 @@ int decode_id( int r, int g, int b ) {
 
 MousePicking::MousePicking()
 {
-  this->reset();
+  this->shader.reset( new Shader( "color_picking" ) );
 }
 
 void MousePicking::reset()
 {
-  this->window_dimensions = active_window->getDimensions();
-
-  this->shader.reset( new Shader( "color_picking" ) );
+  this->viewport_dimensions =
+    active_window->getDimensions();
 
   this->shader->use();
 
@@ -38,14 +39,14 @@ void MousePicking::reset()
   glGenRenderbuffers( 1, &this->render_buffer );
   glBindRenderbuffer( GL_RENDERBUFFER, this->render_buffer );
   glRenderbufferStorage
-    ( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, this->window_dimensions[0], this->window_dimensions[1] );
+    ( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, this->viewport_dimensions[0], this->viewport_dimensions[1] );
 
   // create texture to use for rendering second pass
   this->frame_buffer_tex = 0;
   glGenTextures( 1, &this->frame_buffer_tex );
   glBindTexture( GL_TEXTURE_2D, this->frame_buffer_tex );
   // make the texture the same size as the viewport
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, this->window_dimensions[0], this->window_dimensions[1], 0, GL_RGBA,
+  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, this->viewport_dimensions[0], this->viewport_dimensions[1], 0, GL_RGBA,
     GL_UNSIGNED_BYTE, NULL );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
@@ -62,28 +63,35 @@ void MousePicking::reset()
   GLenum draw_bufs[] = { GL_COLOR_ATTACHMENT0 };
   glDrawBuffers( 1, draw_bufs );
 
-  this->shader->unuse( );
+  this->shader->unuse();
 
   // bind default this->frame_buffer (number 0) so that we render normally next time
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::setScene( std::shared_ptr<Scene> scene )
-{
-  this->scene = scene;
+void MousePicking::drawViewport( Viewport* viewport )
+{  
+  glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
+  this->node_count = 1;
+
+  ViewportIterator it( &*this->viewport );
+
+  for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
+  {
+    ViewportCachedData viewport_cached_data = v->getViewportCachedData();
+
+    for( auto scene : v->getScenes() )
+    {
+      this->drawScene( &*scene, viewport_cached_data );
+    }
+  }
+
+  glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::drawScene( Scene* scene )
+void MousePicking::drawScene( Scene* scene, ViewportCachedData viewport_cached_data )
 {
-  glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
-
-  glViewport( 0, 0, this->window_dimensions[0], this->window_dimensions[1] );
-  glClearColor( 0.0, 0.0, 0.0, 1.0 );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
   ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
-
-  int node_index = 1;
 
   std::queue<PropagatedSGNode> bfs_q;
   std::vector< std::shared_ptr<SGNode> > bfs_v;
@@ -94,13 +102,18 @@ void MousePicking::drawScene( Scene* scene )
   bfs_q.push( p_sg_node );
   bfs_v.push_back( p_sg_node.sg_node );
 
+  glViewport( viewport_cached_data.x, viewport_cached_data.y,
+    viewport_cached_data.width, viewport_cached_data.height );
+  glClearColor( 0.0, 0.0, 0.0, 1.0 );
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
   while( !bfs_q.empty() )
   {
     PropagatedSGNode p_n = bfs_q.front(); bfs_q.pop();
     std::shared_ptr<SGNode> n = p_n.sg_node;
 
     p_n.translate = p_n.translate + n->getTranslate( );
-    p_n.scale = n->getScale( );
+    p_n.scale = n->getScale();
     p_n.rotate = p_n.rotate * n->getRotate( );
 
     std::shared_ptr<Model> model = n->getModel();
@@ -109,7 +122,7 @@ void MousePicking::drawScene( Scene* scene )
     {
       std::shared_ptr<Shader> original_shader = model->getShader( );
       model->setShader( this->shader );
-      WMath::vec3 picking_color = encode_id( node_index );
+      WMath::vec3 picking_color = encode_id( node_count );
       this->shader->setUniform( "unique_id", picking_color.vec );
       WMath::vec3 pivot = n->getPivot( );
       WMath::mat4 t = WMath::scaleM( p_n.scale )
@@ -120,20 +133,18 @@ void MousePicking::drawScene( Scene* scene )
       model->setShader( original_shader );
     }
 
-    for( auto c : n->getChildren( ) )
+    for( auto c : n->getChildren() )
     {
-      if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
+      if( std::find( bfs_v.begin(), bfs_v.end(), c ) == bfs_v.end() )
       {
         p_n.sg_node = c;
         bfs_q.push( p_n ); bfs_v.push_back( c );
       }
     }
 
-    node_index += 1;
+    node_count += 1;
     
   }
-
-  glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
 std::shared_ptr<SGNode> MousePicking::pick()
@@ -142,42 +153,50 @@ std::shared_ptr<SGNode> MousePicking::pick()
   int x = position[0];
   int y = position[1];
 
-  this->drawScene( &*this->scene );
+  this->reset();
+  this->drawViewport( &*this->viewport );
 
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
   unsigned char data[4] = { 0, 0, 0, 0 };
-  glReadPixels( x, this->window_dimensions[1] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
+  glReadPixels( x, this->viewport_dimensions[1] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data );
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 
   int node_index = decode_id( (int) data[0], (int) data[1], (int) data[2] );
 
+  int current_index = 1;
+
   if( node_index != 0 )
   {
-    int index = 1;
+    ViewportIterator it( &*this->viewport );
 
-    std::queue< std::shared_ptr<SGNode> > bfs_q;
-    std::vector< std::shared_ptr<SGNode> > bfs_v;
-
-    bfs_q.push( scene->getSceneGraph( )->getRootSGNode() );
-    bfs_v.push_back( bfs_q.front() );
-
-    while( !bfs_q.empty( ) )
+    for( Viewport* v = it.begin( ); v != nullptr; v = it.next( ) )
     {
-      std::shared_ptr<SGNode> sg_node = bfs_q.front(); bfs_q.pop();
-
-      if( index == node_index ) return sg_node;
-
-      for( auto c : sg_node->getChildren() )
+      for( auto scene : v->getScenes() )
       {
-        if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
+        std::queue< std::shared_ptr<SGNode> > bfs_q;
+        std::vector< std::shared_ptr<SGNode> > bfs_v;
+
+        bfs_q.push( scene->getSceneGraph( )->getRootSGNode( ) );
+        bfs_v.push_back( bfs_q.front( ) );
+
+        while( !bfs_q.empty( ) )
         {
-          bfs_q.push( c ); bfs_v.push_back( c );
+          std::shared_ptr<SGNode> sg_node = bfs_q.front(); bfs_q.pop();
+
+          if( current_index == node_index ) return sg_node;
+
+          for( auto c : sg_node->getChildren( ) )
+          {
+            if( std::find( bfs_v.begin( ), bfs_v.end( ), c ) == bfs_v.end( ) )
+            {
+              bfs_q.push( c ); bfs_v.push_back( c );
+            }
+          }
+
+          current_index += 1;
         }
       }
-        
-      index += 1;
     }
-
   }
 
   return nullptr;

@@ -39,7 +39,6 @@ class SceneEditor
     std::shared_ptr<PhysicsManager> physics_manager;
     std::shared_ptr<ResourceManager> resource_manager;
     std::shared_ptr<Scene> scene;
-    MousePicking mouse_picking;
     std::shared_ptr<SGNode> selected_sg_node;
     std::shared_ptr<SGNode> clipboard_sg_node;
     std::shared_ptr<Model> old_selected_model;

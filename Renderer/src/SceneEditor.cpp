@@ -8,7 +8,6 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   this->shader.reset( new Shader( "wireframe" ) );
   this->scene = scene;
   this->selected_sg_node = nullptr;
-  this->mouse_picking.setScene( scene );
   this->resource_manager = resource_manager;
   XMLHelper::importAssets( "assets_SceneEditor", resource_manager );
 
@@ -26,7 +25,7 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   this->locked_sg_nodes.insert( data.arrow_z );
 
   active_window->registerObserver( "RESIZE",
-    std::bind( &MousePicking::reset, &mouse_picking ), "MousePicking" );
+    std::bind( &MousePicking::reset, active_mouse_picking ), "MousePicking" );
 
   this->state = NO_SELECTION;
 }
@@ -167,8 +166,7 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
     sg_node_hovered = nullptr; texture_hovered = nullptr;
   }
 
-  std::shared_ptr<SGNode> sg_node = mouse_picking.pick();
-
+  std::shared_ptr<SGNode> sg_node = active_mouse_picking->pick();
   
   if( sg_node && ( sg_node->getName() == "arrow_x" 
     || sg_node->getName() == "arrow_y"

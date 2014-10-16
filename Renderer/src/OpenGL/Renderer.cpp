@@ -28,6 +28,7 @@ void Renderer::render()
     {
       this->drawScene( &*scene );
     }
+    glDisable( GL_SCISSOR_TEST );
   }
 
   glfwSwapBuffers( this->window->getWindow() );

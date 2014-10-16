@@ -102,11 +102,16 @@ int main()
   
   renderer.setViewport( viewport_window );
 
+  MousePicking mouse_picking;
+  active_mouse_picking = &mouse_picking;
+  active_mouse_picking->setViewport( viewport_window );
+
   std::shared_ptr<PhysicsManager> physics_manager( new PhysicsManager );
   XMLHelper::importPhysics( "physics_example", scene->getSceneGraph(), physics_manager );
 
   SceneEditor scene_editor( scene, resource_manager, physics_manager );
   scene_editor.initialize();
+
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
