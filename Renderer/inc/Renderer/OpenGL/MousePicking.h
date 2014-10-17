@@ -24,7 +24,7 @@ class MousePicking
     WMath::vec2 viewport_dimensions;
     int node_count;
     // Private Methods
-    void drawViewport( Viewport* viewport );
+    void drawViewport( Viewport* viewport, WMath::vec2 cursor_position );
     void drawScene( Scene* scene, ViewportCachedData viewport_cached_data );
   public:
     MousePicking();

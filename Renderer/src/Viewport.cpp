@@ -30,7 +30,8 @@ void Viewport::setViewportCachedData( ViewportCachedData cached_data )
 
   for( auto scene : this->scenes )
   {
-    CameraHelper::setAspectRatio( &*scene->getCamera(), cached_data.width / cached_data.height );
+    CameraHelper::setAspectRatio( &*scene->getCamera(),
+      cached_data.dimensions[0] / cached_data.dimensions[1] );
   }
 }
 
@@ -110,10 +111,8 @@ Viewport* ViewportIterator::next()
         }
       }
 
-      viewport_cached_data.x = p_v.p_anchor[0];
-      viewport_cached_data.y = p_v.p_anchor[1];
-      viewport_cached_data.width = p_v.p_dimensions[0];
-      viewport_cached_data.height = p_v.p_dimensions[1];
+      viewport_cached_data.anchor = p_v.p_anchor;
+      viewport_cached_data.dimensions = p_v.p_dimensions;
       viewport_cached_data.background = data.background;
       p_v.viewport->setViewportCachedData( viewport_cached_data );
 
@@ -172,10 +171,8 @@ Viewport* ViewportIterator::next()
 
       p_v_left = p_v_right = p_v;
 
-      viewport_cached_data.x = p_v.p_anchor[0];
-      viewport_cached_data.y = p_v.p_anchor[1];
-      viewport_cached_data.width = p_v.p_dimensions[0];
-      viewport_cached_data.height = p_v.p_dimensions[1];
+      viewport_cached_data.anchor = p_v.p_anchor;
+      viewport_cached_data.dimensions = p_v.p_dimensions;
       viewport_cached_data.background = data.background;
       p_v.viewport->setViewportCachedData( viewport_cached_data );
 
@@ -202,10 +199,8 @@ Viewport* ViewportIterator::next()
       PropagatedViewport p_v_left, p_v_right;
       p_v_left = p_v_right = p_v;
 
-      viewport_cached_data.x = p_v.p_anchor[0];
-      viewport_cached_data.y = p_v.p_anchor[1];
-      viewport_cached_data.width = p_v.p_dimensions[0];
-      viewport_cached_data.height = p_v.p_dimensions[1];
+      viewport_cached_data.anchor = p_v.p_anchor;
+      viewport_cached_data.dimensions = p_v.p_dimensions;
       viewport_cached_data.background = data.background;
       p_v.viewport->setViewportCachedData( viewport_cached_data );
 
@@ -234,10 +229,8 @@ Viewport* ViewportIterator::next()
     if( left_c )
     {
       PropagatedViewport p_v_left;
-      p_v_left.p_dimensions =
-        WMath::vec2( viewport_cached_data.width, viewport_cached_data.height );
-      p_v_left.p_anchor =
-        WMath::vec2( viewport_cached_data.x, viewport_cached_data.y );
+      p_v_left.p_dimensions = viewport_cached_data.dimensions;
+      p_v_left.p_anchor = viewport_cached_data.anchor;
       p_v_left.viewport = left_c;
       bfs_q.push( p_v_left );
     }
@@ -246,10 +239,8 @@ Viewport* ViewportIterator::next()
     if( right_c )
     {
       PropagatedViewport p_v_right;
-      p_v_right.p_dimensions =
-        WMath::vec2( viewport_cached_data.width, viewport_cached_data.height );
-      p_v_right.p_anchor =
-        WMath::vec2( viewport_cached_data.x, viewport_cached_data.y );
+      p_v_right.p_dimensions = viewport_cached_data.dimensions;
+      p_v_right.p_anchor = viewport_cached_data.anchor;
       p_v_right.viewport = right_c;
       bfs_q.push( p_v_right );
     }

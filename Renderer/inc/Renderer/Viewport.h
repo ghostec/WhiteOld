@@ -76,7 +76,7 @@ typedef struct _ViewportData
 
 typedef struct _ViewportCachedData
 {
-  float x, y, width, height;
+  WMath::vec2 anchor, dimensions;
   WMath::vec3 background;
 } ViewportCachedData;
 

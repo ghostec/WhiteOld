@@ -73,6 +73,10 @@ namespace WMath
   vec2 operator*( const vec2& v, const float& f );
   vec2 operator+( const vec2& v1, const vec2& v2 );
   vec2 operator-( const vec2& v1, const vec2& v2 );
+  bool operator<( const vec2& v1, const vec2& v2 );
+  bool operator<=( const vec2& v1, const vec2& v2 );
+  bool operator>( const vec2& v1, const vec2& v2 );
+  bool operator>=( const vec2& v1, const vec2& v2 );
 
   vec3 operator*( const float& f, const vec3& v );
   vec3 operator*( const vec3& v, const float& f );
@@ -100,5 +104,8 @@ namespace WMath
   quaternion normalize( quaternion v );
 
   float* value_ptr( mat4* m );
+
+  bool isPointInside
+  ( WMath::vec2 anchor, WMath::vec2 dimensions, WMath::vec2 point );
 }
 #endif

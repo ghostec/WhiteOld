@@ -13,16 +13,16 @@ void Renderer::render()
   {
     ViewportCachedData viewport_cached_data = v->getViewportCachedData();
     glEnable( GL_SCISSOR_TEST );
-    glScissor( viewport_cached_data.x, viewport_cached_data.y,
-      viewport_cached_data.width, viewport_cached_data.height ); 
+    glScissor( viewport_cached_data.anchor[0], viewport_cached_data.anchor[1],
+      viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );
     
     glClearColor( viewport_cached_data.background[0],
       viewport_cached_data.background[1],
       viewport_cached_data.background[2], 1.0f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    glViewport( viewport_cached_data.x, viewport_cached_data.y,
-      viewport_cached_data.width, viewport_cached_data.height );
+    glViewport( viewport_cached_data.anchor[0], viewport_cached_data.anchor[1],
+      viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );
 
     for( auto scene : v->getScenes() )
     {

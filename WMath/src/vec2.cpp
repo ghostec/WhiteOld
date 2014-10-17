@@ -44,6 +44,22 @@ namespace WMath
   {
     return vec2( v1[0] - v2[0], v1[1] - v2[1] );
   }
+  bool operator<( const vec2& v1, const vec2& v2 )
+  {
+    return ( v1[0] < v2[0] && v1[1] < v2[1] );
+  }
+  bool operator<=( const vec2& v1, const vec2& v2 )
+  {
+    return ( v1[0] <= v2[0] && v1[1] <= v2[1] );
+  }
+  bool operator>( const vec2& v1, const vec2& v2 )
+  {
+    return ( v1[0] > v2[0] && v1[1] > v2[1] );
+  }
+  bool operator>=( const vec2& v1, const vec2& v2 )
+  {
+    return ( v1[0] >= v2[0] && v1[1] >= v2[1] );
+  }
 
   float dot( vec2 v1, vec2 v2 )
   {

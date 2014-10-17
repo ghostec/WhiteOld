@@ -25,8 +25,7 @@ MousePicking::MousePicking()
 void MousePicking::reset()
 {
   this->viewport_dimensions =
-  { this->viewport->getViewportCachedData().width,
-  this->viewport->getViewportCachedData().height };
+    this->viewport->getViewportCachedData().dimensions;
 
   this->shader->use();
 
@@ -70,7 +69,7 @@ void MousePicking::reset()
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::drawViewport( Viewport* viewport )
+void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position )
 {  
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
   this->node_count = 1;
@@ -80,6 +79,8 @@ void MousePicking::drawViewport( Viewport* viewport )
   for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
   {
     ViewportCachedData viewport_cached_data = v->getViewportCachedData();
+    if( !WMath::isPointInside( viewport_cached_data.anchor,
+    viewport_cached_data.dimensions, cursor_position ) ) continue;
 
     for( auto scene : v->getScenes() )
     {
@@ -103,8 +104,8 @@ void MousePicking::drawScene( Scene* scene, ViewportCachedData viewport_cached_d
   bfs_q.push( p_sg_node );
   bfs_v.push_back( p_sg_node.sg_node );
 
-  glViewport( viewport_cached_data.x, viewport_cached_data.y,
-    viewport_cached_data.width, viewport_cached_data.height );
+  glViewport( viewport_cached_data.anchor[0], viewport_cached_data.anchor[0],
+    viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );
   glClearColor( 0.0, 0.0, 0.0, 1.0 );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -150,12 +151,12 @@ void MousePicking::drawScene( Scene* scene, ViewportCachedData viewport_cached_d
 
 std::shared_ptr<SGNode> MousePicking::pick()
 {
-  WMath::vec2 position = active_input->getMousePos();
-  int x = position[0];
-  int y = position[1];
+  WMath::vec2 cursor_position = active_input->getMousePos();
+  int x = cursor_position[0];
+  int y = cursor_position[1];
 
   this->reset();
-  this->drawViewport( &*this->viewport );
+  this->drawViewport( &*this->viewport, cursor_position );
 
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
   unsigned char data[4] = { 0, 0, 0, 0 };

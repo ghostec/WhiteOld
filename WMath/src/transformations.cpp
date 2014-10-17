@@ -2,6 +2,13 @@
 
 namespace WMath
 {
+  bool isPointInside
+    ( WMath::vec2 anchor, WMath::vec2 dimensions, WMath::vec2 point )
+  {
+    if( point < anchor ) return false;
+    if( point >= anchor && point <= (anchor + dimensions) ) return true;
+  }
+
   void setOrigin( mat4* t_matrix, vec3 v )
   {
     mat4 m;
