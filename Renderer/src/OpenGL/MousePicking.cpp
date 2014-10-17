@@ -25,7 +25,8 @@ MousePicking::MousePicking()
 void MousePicking::reset()
 {
   this->viewport_dimensions =
-    active_window->getDimensions();
+  { this->viewport->getViewportCachedData().width,
+  this->viewport->getViewportCachedData().height };
 
   this->shader->use();
 

@@ -100,12 +100,6 @@ Viewport* ViewportIterator::next()
           p_v_right.p_dimensions[0] = data.mode_data.vsplit.size;
           p_v_right.p_anchor[0] += p_v.p_dimensions[0] - data.mode_data.vsplit.size;
           p_v_left.p_dimensions[0] -= data.mode_data.vsplit.size;
-
-          std::cout << "VIEWPORT_LEFT" << std::endl;
-          std::cout << p_v_left.p_anchor[0] << " " << p_v_left.p_anchor[1] << " " << p_v_left.p_dimensions[0] << " " << p_v_left.p_dimensions[1] << std::endl;
-
-          std::cout << "VIEWPORT_RIGHT" << std::endl;
-          std::cout << p_v_right.p_anchor[0] << " " << p_v_right.p_anchor[1] << " " << p_v_right.p_dimensions[0] << " " << p_v_right.p_dimensions[1] << std::endl;
         }
         else
         {
@@ -115,6 +109,13 @@ Viewport* ViewportIterator::next()
           p_v_left.p_dimensions[0] -= p_v_right.p_dimensions[0];
         }
       }
+
+      viewport_cached_data.x = p_v.p_anchor[0];
+      viewport_cached_data.y = p_v.p_anchor[1];
+      viewport_cached_data.width = p_v.p_dimensions[0];
+      viewport_cached_data.height = p_v.p_dimensions[1];
+      viewport_cached_data.background = data.background;
+      p_v.viewport->setViewportCachedData( viewport_cached_data );
 
       Viewport* left_c = &*p_v.viewport->getLeftChild();
       if( left_c )
@@ -207,9 +208,6 @@ Viewport* ViewportIterator::next()
       viewport_cached_data.height = p_v.p_dimensions[1];
       viewport_cached_data.background = data.background;
       p_v.viewport->setViewportCachedData( viewport_cached_data );
-
-      std::cout << "VIEWPORT_FULL" << std::endl;
-      std::cout << viewport_cached_data.x << " " << viewport_cached_data.y << " " << viewport_cached_data.width << " " << viewport_cached_data.height << std::endl;
 
       p_v.viewport->setDirty( false );
 
