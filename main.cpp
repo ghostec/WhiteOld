@@ -61,45 +61,11 @@ int main()
   viewport_window_right_data.background = WMath::vec3( 1.0f );
   std::shared_ptr<Viewport> viewport_window_right( new Viewport( viewport_window_right_data ) );
 
-  ViewportData viewport_window_left_box_data;
-  viewport_window_left_box_data.mode = VIEWPORT_MODE_BOX;
-  viewport_window_left_box_data.mode_data.box.anchor_mode = VIEWPORT_ANCHOR_MODE_ABSOLUTE;
-  viewport_window_left_box_data.mode_data.box.anchor_position = VIEWPORT_ANCHOR_TOP_LEFT;
-  viewport_window_left_box_data.mode_data.box.anchor_x = 20;
-  viewport_window_left_box_data.mode_data.box.anchor_y = 20;
-  viewport_window_left_box_data.mode_data.box.dimensions_mode = VIEWPORT_DIMENSIONS_MODE_ABSOLUTE;
-  viewport_window_left_box_data.mode_data.box.aspect_ratio = 1;
-  viewport_window_left_box_data.mode_data.box.higher_dimension = 100;
-  viewport_window_left_box_data.background = WMath::vec3( 0.0f );
-  std::shared_ptr<Viewport> viewport_window_left_box( new Viewport( viewport_window_left_box_data ) );
-
-  ViewportData viewport_window_left_box_container_data;
-  viewport_window_left_box_container_data.mode = VIEWPORT_MODE_VSPLIT;
-  viewport_window_left_box_container_data.mode_data.vsplit.side = VIEWPORT_SIDE_RIGHT;
-  viewport_window_left_box_container_data.mode_data.vsplit.dimension_mode = VIEWPORT_DIMENSIONS_MODE_ABSOLUTE;
-  viewport_window_left_box_container_data.mode_data.vsplit.size = 60;
-  std::shared_ptr<Viewport> viewport_window_left_box_container( new Viewport( viewport_window_left_box_container_data ) );
-
-  ViewportData viewport_window_left_box_container_left_data;
-  viewport_window_left_box_container_left_data.mode = VIEWPORT_MODE_FULL;
-  viewport_window_left_box_container_left_data.background = WMath::vec3( 1.0f, 1.0f, 0.0f );
-  std::shared_ptr<Viewport> viewport_window_left_box_container_left( new Viewport( viewport_window_left_box_container_left_data ) );
-
-  ViewportData viewport_window_left_box_container_right_data;
-  viewport_window_left_box_container_right_data.mode = VIEWPORT_MODE_FULL;
-  viewport_window_left_box_container_right_data.background = WMath::vec3( 0.0f, 0.0f, 1.0f );
-  std::shared_ptr<Viewport> viewport_window_left_box_container_right( new Viewport( viewport_window_left_box_container_right_data ) );
-
-  viewport_window_left->setLeftChild( viewport_window_left_box );
-  viewport_window_left_box->setLeftChild( viewport_window_left_box_container );
-  viewport_window_left_box_container->setLeftChild( viewport_window_left_box_container_left );
-  viewport_window_left_box_container->setRightChild( viewport_window_left_box_container_right );
-
   viewport_window_left->addScene( scene );
 
   viewport_window->setLeftChild( viewport_window_left );
   viewport_window->setRightChild( viewport_window_right );
-  
+
   renderer.setViewport( viewport_window );
 
   MousePicking mouse_picking;
