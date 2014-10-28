@@ -83,10 +83,8 @@ SET(
   GUIScene.cpp
   Effect.cpp
   EffectsManager.cpp
-  ResourceManager.cpp
   SceneGraph.cpp
   SGNode.cpp
-  Containable.cpp
   Viewport.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}

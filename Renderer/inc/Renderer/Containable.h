@@ -89,36 +89,45 @@ class Containable
     std::shared_ptr<T> left_c, right_c;
     bool dirty;
   public:
-    Containable( ContainableData data )
-    {
-      this->data = data;
-      this->dirty = true;
-      this->left_c = nullptr;
-      this->right_c = nullptr;
-    }
+    Containable( ContainableData data );
     void setLeftChild( std::shared_ptr<T> v ) { this->left_c = v; }
     void setRightChild( std::shared_ptr<T> v ) { this->right_c = v; }
     void setContainableData( ContainableData d ) { data = d; dirty = true; }
-    void setContainableCachedData( ContainableCachedData cached_data )
-    {
-      this->cached_data = cached_data;
-    }
-    void setDirty( bool v )
-    {
-      if( !v ) this->dirty = v;
-      else
-      {
-        this->dirty = v;
-        if( this->left_c ) this->left_c->setDirty( true );
-        if( this->right_c ) this->right_c->setDirty( true );
-      }
-    }
+    void setContainableCachedData( ContainableCachedData cached_data );
+    void setDirty( bool v );
     ContainableData getContainableData() { return this->data; }
     std::shared_ptr<T> getLeftChild() { return left_c; }
     std::shared_ptr<T> getRightChild() { return right_c; }
     bool getDirty() { return this->dirty; }
     ContainableCachedData getContainableCachedData() { return this->cached_data; }
 };
+
+template< typename T >
+Containable<T>::Containable( ContainableData data )
+{
+  this->data = data;
+  this->dirty = true;
+  this->left_c = nullptr;
+  this->right_c = nullptr;
+}
+
+template< typename T >
+void Containable<T>::setContainableCachedData( ContainableCachedData cached_data )
+{
+  this->cached_data = cached_data;
+}
+
+template< typename T >
+void Containable<T>::setDirty( bool v )
+{
+  if( !v ) this->dirty = v;
+  else
+  {
+    this->dirty = v;
+    if( this->left_c ) this->left_c->setDirty( true );
+    if( this->right_c ) this->right_c->setDirty( true );
+  }
+}
 
 template< typename T >
 struct PropagatedContainable
@@ -135,27 +144,34 @@ class ContainableIterator
     T* root;
   public:
     ContainableIterator( T* root ) { this->root = root; }
-    T* begin()
-    {
-      PropagatedContainable<T> p_root;
-      if( active_window->getDirty() )
-      {
-        WMath::vec2 window_dimensions = active_window->getDimensions();
-        p_root = { WMath::vec2(0), WMath::vec2( window_dimensions ), this->root };
-        active_window->setDirty( false );
-        this->root->setDirty( true );
-      }
-      else
-      {
-        p_root = { WMath::vec2(0), WMath::vec2(0), this->root };
-      }
+    T* begin();
+    T* next();
+};
 
-      bfs_q.push( p_root );
-      return this->next();
-    }
-    T* next()
-    {
-      if( this->bfs_q.empty() ) return nullptr;
+template< typename T >
+T* ContainableIterator<T>::begin()
+{
+  PropagatedContainable<T> p_root;
+  if( active_window->getDirty() )
+  {
+    WMath::vec2 window_dimensions = active_window->getDimensions();
+    p_root = { WMath::vec2(0), WMath::vec2( window_dimensions ), this->root };
+    active_window->setDirty( false );
+    this->root->setDirty( true );
+  }
+  else
+  {
+    p_root = { WMath::vec2(0), WMath::vec2(0), this->root };
+  }
+
+  bfs_q.push( p_root );
+  return this->next();
+}
+
+  template< typename T >
+T* ContainableIterator<T>::next()
+{
+  if( this->bfs_q.empty() ) return nullptr;
 
   PropagatedContainable<T> p_c = bfs_q.front(); bfs_q.pop();
   ContainableCachedData containable_cached_data =
@@ -173,7 +189,7 @@ class ContainableIterator
       if( data.mode_data.vsplit.side == CONTAINABLE_SIDE_LEFT )
       {
         if( data.mode_data.vsplit.dimension_mode ==
-          CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
+            CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
         {
           p_c_left.p_dimensions[0] = data.mode_data.vsplit.size;
           p_c_right.p_anchor[0] += data.mode_data.vsplit.size;
@@ -190,7 +206,7 @@ class ContainableIterator
       else
       {
         if( data.mode_data.vsplit.dimension_mode ==
-          CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
+            CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
         {
           p_c_right.p_dimensions[0] = data.mode_data.vsplit.size;
           p_c_right.p_anchor[0] += p_c.p_dimensions[0] - data.mode_data.vsplit.size;
@@ -210,7 +226,7 @@ class ContainableIterator
       WMath::vec2 box_dimensions;
 
       if( data.mode_data.box.dimensions_mode
-        == CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
+          == CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
       {
         if( data.mode_data.box.aspect_ratio > 1 )
         {
@@ -230,7 +246,8 @@ class ContainableIterator
         if( data.mode_data.box.anchor_mode == CONTAINABLE_ANCHOR_MODE_ABSOLUTE )
         {
           p_c.p_anchor[0] += data.mode_data.box.anchor_x;
-          p_c.p_anchor[1] += p_c.p_dimensions[1] - data.mode_data.box.anchor_y - box_dimensions[1];
+          p_c.p_anchor[1] += p_c.p_dimensions[1] -
+            data.mode_data.box.anchor_y - box_dimensions[1];
         }
       }
 
@@ -294,7 +311,6 @@ class ContainableIterator
 
     return p_c.containable;
   }
-    }
-};
+}
 
 #endif
