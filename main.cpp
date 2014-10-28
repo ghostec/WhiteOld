@@ -8,9 +8,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
 #include "Renderer/Scene.h"
-#include "Renderer/GUIManager.h"
 #include "Renderer/GUIElement.h"
-#include "Renderer/GUIScene.h"
 #include "Renderer/ResourceManager.h"
 #include "Renderer/Helpers/XMLAssets.h"
 #include "Renderer/Helpers/XMLScene.h"
@@ -78,6 +76,11 @@ int main()
   SceneEditor scene_editor( scene, resource_manager, physics_manager );
   scene_editor.initialize();
 
+  ContainableData gui_element_data;
+  std::shared_ptr<GUIElement> gui_element
+    ( new GUIElement( gui_element_data ) );
+
+  scene->getSceneGraph()->getRootSGNode()->addChild( gui_element->getSGNode() );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 

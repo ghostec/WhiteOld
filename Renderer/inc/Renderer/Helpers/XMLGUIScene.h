@@ -14,9 +14,6 @@
 
 namespace XMLHelper
 {
-  void importGUIElement( tinyxml2::XMLElement* el, GUIManager* gui_manager,
-    std::string gui_scene_name );
-  void importGUIScene( std::string file_name, GUIManager* gui_manager );
 }
 
 #endif
