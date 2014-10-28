@@ -25,7 +25,7 @@ MousePicking::MousePicking()
 void MousePicking::reset()
 {
   this->viewport_dimensions =
-    this->viewport->getViewportCachedData().dimensions;
+    this->viewport->getContainableCachedData().dimensions;
 
   this->shader->use();
 
@@ -74,11 +74,11 @@ void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
   this->node_count = 1;
 
-  ViewportIterator it( &*this->viewport );
+  ContainableIterator<Viewport> it( &*this->viewport );
 
   for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
   {
-    ViewportCachedData viewport_cached_data = v->getViewportCachedData();
+    ContainableCachedData viewport_cached_data = v->getContainableCachedData();
     if( !WMath::isPointInside( viewport_cached_data.anchor,
     viewport_cached_data.dimensions, cursor_position ) ) continue;
 
@@ -91,7 +91,7 @@ void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void MousePicking::drawScene( Scene* scene, ViewportCachedData viewport_cached_data )
+void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cached_data )
 {
   ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
 
@@ -169,7 +169,7 @@ std::shared_ptr<SGNode> MousePicking::pick()
 
   if( node_index != 0 )
   {
-    ViewportIterator it( &*this->viewport );
+    ContainableIterator<Viewport> it( &*this->viewport );
 
     for( Viewport* v = it.begin( ); v != nullptr; v = it.next( ) )
     {

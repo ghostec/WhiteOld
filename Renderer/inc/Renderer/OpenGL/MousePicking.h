@@ -10,6 +10,7 @@
 #include "Renderer/Helpers/RendererHelper.h"
 #include "Renderer/Helpers/ShaderHelper.h"
 #include "Renderer/SGNode.h"
+#include "Renderer/Containable.h"
 #include "Renderer/Viewport.h"
 #include "Input/Input.h"
 #include "WMath/WMath.h"
@@ -25,7 +26,7 @@ class MousePicking
     int node_count;
     // Private Methods
     void drawViewport( Viewport* viewport, WMath::vec2 cursor_position );
-    void drawScene( Scene* scene, ViewportCachedData viewport_cached_data );
+    void drawScene( Scene* scene, ContainableCachedData viewport_cached_data );
   public:
     MousePicking();
     void reset();

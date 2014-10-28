@@ -86,6 +86,7 @@ SET(
   ResourceManager.cpp
   SceneGraph.cpp
   SGNode.cpp
+  Containable.cpp
   Viewport.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
@@ -116,6 +117,7 @@ SET(
   Texture.h
   SceneGraph.h
   SGNode.h
+  Containable.h
   Viewport.h
   ${Helpers_Hs}
   ${OpenGL_Hs}

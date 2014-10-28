@@ -19,7 +19,7 @@
 #include "Renderer/MousePicking.h"
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SGNode.h"
-#include "Renderer/Viewport.h"
+#include "Renderer/Containable.h"
 #include "Input/Input.h"
 #include "Physics/PhysicsManager.h"
 #include "Physics/Helpers/XMLPhysics.h"
@@ -44,20 +44,20 @@ int main()
 
   Renderer renderer( &window );
 
-  ViewportData viewport_window_data;
-  viewport_window_data.mode = VIEWPORT_MODE_VSPLIT;
-  viewport_window_data.mode_data.vsplit.side = VIEWPORT_SIDE_RIGHT;
-  viewport_window_data.mode_data.vsplit.dimension_mode = VIEWPORT_DIMENSIONS_MODE_ABSOLUTE;
+  ContainableData viewport_window_data;
+  viewport_window_data.mode = CONTAINABLE_MODE_VSPLIT;
+  viewport_window_data.mode_data.vsplit.side = CONTAINABLE_SIDE_RIGHT;
+  viewport_window_data.mode_data.vsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
   viewport_window_data.mode_data.vsplit.size = 260;
   std::shared_ptr<Viewport> viewport_window( new Viewport( viewport_window_data ) );
 
-  ViewportData viewport_window_left_data;
-  viewport_window_left_data.mode = VIEWPORT_MODE_FULL;
+  ContainableData viewport_window_left_data;
+  viewport_window_left_data.mode = CONTAINABLE_MODE_FULL;
   viewport_window_left_data.background = WMath::vec3( 0.9f );
   std::shared_ptr<Viewport> viewport_window_left( new Viewport( viewport_window_left_data ) );
 
-  ViewportData viewport_window_right_data;
-  viewport_window_right_data.mode = VIEWPORT_MODE_FULL;
+  ContainableData viewport_window_right_data;
+  viewport_window_right_data.mode = CONTAINABLE_MODE_FULL;
   viewport_window_right_data.background = WMath::vec3( 1.0f );
   std::shared_ptr<Viewport> viewport_window_right( new Viewport( viewport_window_right_data ) );
 

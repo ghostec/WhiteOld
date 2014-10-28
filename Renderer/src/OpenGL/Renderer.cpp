@@ -7,11 +7,11 @@ Renderer::Renderer( Window* window )
 
 void Renderer::render()
 {
-  ViewportIterator it( &*this->viewport );
+  ContainableIterator<Viewport> it( &*this->viewport );
 
   for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
   {
-    ViewportCachedData viewport_cached_data = v->getViewportCachedData();
+    ContainableCachedData viewport_cached_data = v->getContainableCachedData();
     glEnable( GL_SCISSOR_TEST );
     glScissor( viewport_cached_data.anchor[0], viewport_cached_data.anchor[1],
       viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );

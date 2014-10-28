@@ -12,6 +12,7 @@
 #include "Renderer/Scene.h"
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SceneEditor.h"
+#include "Renderer/Containable.h"
 #include "Renderer/Viewport.h"
 #include "Input/Input.h"
 
