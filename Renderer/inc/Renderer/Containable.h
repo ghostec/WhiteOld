@@ -53,7 +53,7 @@ typedef struct _ContainableData
       ContainableAnchorMode anchor_mode;
       float anchor_x, anchor_y;
       ContainableDimensionsMode dimensions_mode;
-      float higher_dimension, aspect_ratio;
+      float smaller_dimension, aspect_ratio;
     } ContainableBox;
 
     typedef struct _ContainableSplit
@@ -263,9 +263,9 @@ T* ContainableIterator< T, P >::next()
     }
     else if( data.mode == CONTAINABLE_MODE_BOX )
     {
-      WMath::vec2 box_dimensions( data.mode_data.box.higher_dimension );
+      WMath::vec2 box_dimensions( data.mode_data.box.smaller_dimension );
 
-      if( data.mode_data.box.aspect_ratio > 1 )
+      if( data.mode_data.box.aspect_ratio <= 1 )
         box_dimensions[1] /= data.mode_data.box.aspect_ratio;
       else
         box_dimensions[0] *= data.mode_data.box.aspect_ratio;
