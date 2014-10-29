@@ -100,6 +100,7 @@ class Containable
     std::shared_ptr<T> getRightChild() { return right_c; }
     bool getDirty() { return this->dirty; }
     ContainableCachedData getContainableCachedData() { return this->cached_data; }
+    WMath::vec2 getDimensions();
 };
 
 template< typename T >
@@ -130,46 +131,60 @@ void Containable<T>::setDirty( bool v )
 }
 
 template< typename T >
+WMath::vec2 Containable<T>::getDimensions()
+{
+  return this->cached_data.dimensions;
+}
+
+template< typename T >
 struct PropagatedContainable
 {
   WMath::vec2 p_anchor, p_dimensions;
   T* containable;
 };
 
-template< typename T >
+template< typename T, typename P >
 class ContainableIterator
 {
   private:
     std::queue< PropagatedContainable<T> > bfs_q;
     T* root;
+    P* parent;
   public:
-    ContainableIterator( T* root ) { this->root = root; }
+    ContainableIterator( T* root, P* parent );
     T* begin();
     T* next();
 };
 
-template< typename T >
-T* ContainableIterator<T>::begin()
+template< typename T, typename P >
+ContainableIterator< T, P >::ContainableIterator( T* root, P* parent )
+{
+  this->root = root;
+  this->parent = parent;
+}
+
+template< typename T, typename P >
+T* ContainableIterator< T, P >::begin()
 {
   PropagatedContainable<T> p_root;
-  if( active_window->getDirty() )
+  if( parent->getDirty() )
   {
-    WMath::vec2 window_dimensions = active_window->getDimensions();
-    p_root = { WMath::vec2(0), WMath::vec2( window_dimensions ), this->root };
-    active_window->setDirty( false );
+    WMath::vec2 parent_dimensions = parent->getDimensions();
+    p_root = { WMath::vec2(0), parent_dimensions, this->root };
+    parent->setDirty( false );
     this->root->setDirty( true );
   }
   else
   {
-    p_root = { WMath::vec2(0), WMath::vec2(0), this->root };
+    p_root = { WMath::vec2(0), parent->getDimensions(), this->root };
   }
 
   bfs_q.push( p_root );
   return this->next();
 }
 
-  template< typename T >
-T* ContainableIterator<T>::next()
+template< typename T, typename P >
+T* ContainableIterator< T, P >::next()
 {
   if( this->bfs_q.empty() ) return nullptr;
 
@@ -252,6 +267,8 @@ T* ContainableIterator<T>::next()
       }
 
       p_c.p_dimensions = box_dimensions;
+
+      std::cout << p_c.p_dimensions[0] << std::endl;
 
       p_c_left = p_c_right = p_c;
 

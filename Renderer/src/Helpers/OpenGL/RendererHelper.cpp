@@ -33,7 +33,7 @@ namespace RendererHelper
     std::shared_ptr<Model> model = sg_node->getModel();
     WMath::mat4 t = WMath::scaleM( sg_node->getScale() )
       * WMath::rotateM( sg_node->getRotate() )
-      * WMath::translateM( sg_node->getTranslate() );
+      * WMath::translateM( sg_node->getPosition() );
     model->setTransform( &t );
     drawModel( model );
   }
@@ -55,7 +55,7 @@ namespace RendererHelper
       std::shared_ptr<SGNode> n = p_n.sg_node;
       std::shared_ptr<Model> model = n->getModel();
 
-      p_n.translate = p_n.translate + n->getTranslate();
+      p_n.position = p_n.position + n->getPosition();
       p_n.scale = n->getScale();
       p_n.rotate = p_n.rotate * n->getRotate();
 
@@ -65,7 +65,7 @@ namespace RendererHelper
       {
         WMath::mat4 t = WMath::scaleM( p_n.scale )
           * WMath::translateM( pivot ) * WMath::rotateM( p_n.rotate ) * WMath::translateM( -pivot )
-          * WMath::translateM( p_n.translate );
+          * WMath::translateM( p_n.position );
         model->setTransform( &t );
         drawModel( model );
       }

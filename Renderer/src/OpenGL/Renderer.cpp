@@ -7,7 +7,7 @@ Renderer::Renderer( Window* window )
 
 void Renderer::render()
 {
-  ContainableIterator<Viewport> it( &*this->viewport );
+  ContainableIterator<Viewport, Window> it( &*this->viewport, active_window );
 
   for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
   {

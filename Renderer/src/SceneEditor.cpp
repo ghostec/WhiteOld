@@ -57,16 +57,16 @@ void SceneEditor::showMoveArrows()
 
   float dx = 0.5f * ( model_dimensions[0] +
     this->data.arrow_x->getModel()->getDimensions()[0] );
-  this->data.arrow_x->setTranslate( WMath::vec3( dx, 0, 0 ) );
+  this->data.arrow_x->setPosition( WMath::vec3( dx, 0, 0 ) );
   this->data.arrow_x->setRotate( WMath::quaternion(0,0,1,180) );
 
   float dy = 0.5f * ( model_dimensions[1] +
     this->data.arrow_y->getModel()->getDimensions()[1] );
-  this->data.arrow_y->setTranslate( WMath::vec3( 0, dy, 0 ) );
+  this->data.arrow_y->setPosition( WMath::vec3( 0, dy, 0 ) );
 
   float dz = 0.5f * ( model_dimensions[2] +
     this->data.arrow_z->getModel()->getDimensions()[0] );
-  this->data.arrow_z->setTranslate( WMath::vec3( 0, 0, dz ) );
+  this->data.arrow_z->setPosition( WMath::vec3( 0, 0, dz ) );
 
   //this->data.arrow_x->setPivot( - WMath::vec3( dx, dy, dz ) );
 }
@@ -94,7 +94,7 @@ void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
     else if( dir == SEA_Y ) dT[1] = value;
     else if( dir == SEA_Z ) dT[2] = -value;
 
-    this->selected_sg_node->setTranslate( this->selected_sg_node->getTranslate() + dT );
+    this->selected_sg_node->setPosition( this->selected_sg_node->getPosition() + dT );
     last_cursor_pos = cursor_pos;
   }
 }
@@ -216,7 +216,7 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
   else if( active_input->hasInput( std::set<int>{ GLFW_KEY_LEFT_CONTROL, GLFW_KEY_V  }, PRESS ) )
   {
     std::shared_ptr<SGNode> new_sg_node( new SGNode( "copy" + this->clipboard_sg_node->getName(), this->clipboard_sg_node->getModel() ) );
-    new_sg_node->setTranslate( this->clipboard_sg_node->getTranslate() );
+    new_sg_node->setPosition( this->clipboard_sg_node->getPosition() );
     this->scene->getSceneGraph()->addSGNode( new_sg_node );
 
     std::shared_ptr<Body> body( new Body( new_sg_node ) );

@@ -74,7 +74,7 @@ void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position
   glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
   this->node_count = 1;
 
-  ContainableIterator<Viewport> it( &*this->viewport );
+  ContainableIterator<Viewport, Window> it( &*this->viewport, active_window );
 
   for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
   {
@@ -114,7 +114,7 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
     PropagatedSGNode p_n = bfs_q.front(); bfs_q.pop();
     std::shared_ptr<SGNode> n = p_n.sg_node;
 
-    p_n.translate = p_n.translate + n->getTranslate( );
+    p_n.position = p_n.position + n->getPosition( );
     p_n.scale = n->getScale();
     p_n.rotate = p_n.rotate * n->getRotate( );
 
@@ -129,7 +129,7 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
       WMath::vec3 pivot = n->getPivot( );
       WMath::mat4 t = WMath::scaleM( p_n.scale )
         * WMath::translateM( pivot ) * WMath::rotateM( p_n.rotate ) * WMath::translateM( -pivot )
-        * WMath::translateM( p_n.translate );
+        * WMath::translateM( p_n.position );
       model->setTransform( &t );
       RendererHelper::drawModel( model, this->frame_buffer );
       model->setShader( original_shader );
@@ -169,7 +169,7 @@ std::shared_ptr<SGNode> MousePicking::pick()
 
   if( node_index != 0 )
   {
-    ContainableIterator<Viewport> it( &*this->viewport );
+    ContainableIterator<Viewport, Window> it( &*this->viewport, active_window );
 
     for( Viewport* v = it.begin( ); v != nullptr; v = it.next( ) )
     {

@@ -48,7 +48,7 @@ namespace XMLHelper
     {
       WMath::vec3 position( ell->FloatAttribute( "x" ),
         ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      sg_node->setTranslate( position );
+      sg_node->setPosition( position );
     }
 
     ell = el->FirstChildElement( "scale" );
@@ -126,7 +126,7 @@ namespace XMLHelper
         tinyxml2::XMLText* name_text = doc.NewText( n->getName().c_str() );
         tinyxml2::XMLText* model_text = doc.NewText( n->getModel()->getName().c_str() );
         
-        WMath::vec3 p = n->getTranslate();
+        WMath::vec3 p = n->getPosition();
         el_position->SetAttribute( "x", std::to_string( p[0] ).c_str() );
         el_position->SetAttribute( "y", std::to_string( p[1] ).c_str() );
         el_position->SetAttribute( "z", std::to_string( p[2] ).c_str() );

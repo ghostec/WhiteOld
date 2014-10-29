@@ -15,8 +15,8 @@
 
 typedef struct _PropagatedSGNode
 {
-  _PropagatedSGNode() : translate(0), scale(1), rotate() {}
-  WMath::vec3 translate, scale;
+  _PropagatedSGNode() : position(0), scale(1), rotate() {}
+  WMath::vec3 position, scale;
   WMath::quaternion rotate;
   std::shared_ptr<SGNode> sg_node;
 } PropagatedSGNode;
