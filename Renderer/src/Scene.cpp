@@ -28,6 +28,7 @@ void Scene::update()
 
       if( std::find( shaders.begin(), shaders.end(), shader ) == shaders.end() )
       {
+        if( this->lights.size() > 0 )
         ShaderHelper::setLight( &*shader, &this->lights[0] );
         ShaderHelper::setCamera( &*shader, &*this->camera );
         shaders.push_back( shader );

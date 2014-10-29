@@ -256,19 +256,37 @@ T* ContainableIterator< T, P >::next()
             * data.mode_data.box.aspect_ratio;
         }
       }
+      else
+      {
+        float smaller_dimension;
+        if( p_c.p_dimensions[0] < p_c.p_dimensions[1] )
+          smaller_dimension = p_c.p_dimensions[0];
+        else
+          smaller_dimension = p_c.p_dimensions[1];
+
+        if( data.mode_data.box.aspect_ratio > 1 )
+        {
+          box_dimensions[0] =
+            data.mode_data.box.higher_dimension * smaller_dimension;
+          box_dimensions[1] = box_dimensions[0] / data.mode_data.box.aspect_ratio;
+        }
+        else
+        {
+          box_dimensions[1] =
+            data.mode_data.box.higher_dimension * smaller_dimension;
+          box_dimensions[0] = box_dimensions[1] * data.mode_data.box.aspect_ratio;
+        }
+      }
       if( data.mode_data.box.anchor_position == CONTAINABLE_ANCHOR_TOP_LEFT )
       {
         if( data.mode_data.box.anchor_mode == CONTAINABLE_ANCHOR_MODE_ABSOLUTE )
         {
           p_c.p_anchor[0] += data.mode_data.box.anchor_x;
-          p_c.p_anchor[1] += p_c.p_dimensions[1] -
-            data.mode_data.box.anchor_y - box_dimensions[1];
+          p_c.p_anchor[1] += data.mode_data.box.anchor_y;
         }
       }
 
       p_c.p_dimensions = box_dimensions;
-
-      std::cout << p_c.p_dimensions[0] << std::endl;
 
       p_c_left = p_c_right = p_c;
 

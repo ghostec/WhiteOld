@@ -79,17 +79,21 @@ int main()
 
   ContainableData gui_element_data;
   gui_element_data.mode = CONTAINABLE_MODE_BOX;
+  gui_element_data.mode_data.box.anchor_position = CONTAINABLE_ANCHOR_TOP_LEFT;
+  gui_element_data.mode_data.box.anchor_mode = CONTAINABLE_ANCHOR_MODE_ABSOLUTE;
+  gui_element_data.mode_data.box.anchor_x = 20;
+  gui_element_data.mode_data.box.anchor_y = 20;
   gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-  gui_element_data.mode_data.box.higher_dimension = 100;
-  gui_element_data.mode_data.box.aspect_ratio = 1;
+  gui_element_data.mode_data.box.higher_dimension = 220;
+  gui_element_data.mode_data.box.aspect_ratio = 3;
   std::shared_ptr<GUIElement> gui_element
     ( new GUIElement( gui_element_data ) );
 
-  std::shared_ptr<GUIScene> gui_scene( new GUIScene() );
-  gui_scene->setViewport( viewport_window_left );
+  std::shared_ptr<GUIScene> gui_scene( new GUIScene( "GUIScene" ) );
+  gui_scene->setViewport( viewport_window_right );
   gui_scene->setRootGUIElement( gui_element );
 
-  scene->getSceneGraph()->getRootSGNode()->addChild( gui_element->getSGNode() );
+  viewport_window_right->addScene( gui_scene->getScene() );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 

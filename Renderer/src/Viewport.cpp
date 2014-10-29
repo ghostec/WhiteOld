@@ -11,7 +11,6 @@ void Viewport::addScene( std::shared_ptr<Scene> scene )
 
 void Viewport::setContainableCachedData( ContainableCachedData cached_data )
 {
-  // this->cached_data = cached_data;
   Containable<Viewport>::setContainableCachedData( cached_data );
 
   for( auto scene : this->scenes )
