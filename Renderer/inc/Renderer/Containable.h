@@ -203,60 +203,75 @@ T* ContainableIterator< T, P >::next()
     {
       if( data.mode_data.vsplit.side == CONTAINABLE_SIDE_LEFT )
       {
+        p_c_left.p_dimensions[0] = data.mode_data.vsplit.size;
+        p_c_right.p_anchor[0] += data.mode_data.vsplit.size;
+        p_c_right.p_dimensions[0] -= data.mode_data.vsplit.size;
+
         if( data.mode_data.vsplit.dimension_mode ==
-            CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
+            CONTAINABLE_DIMENSIONS_MODE_RELATIVE )
         {
-          p_c_left.p_dimensions[0] = data.mode_data.vsplit.size;
-          p_c_right.p_anchor[0] += data.mode_data.vsplit.size;
-          p_c_right.p_dimensions[0] -= data.mode_data.vsplit.size;
-        }
-        else
-        {
-          p_c_left.p_dimensions[0] =
-            data.mode_data.vsplit.size * p_c_left.p_dimensions[0];
+          p_c_left.p_dimensions[0] *= p_c_left.p_dimensions[0];
           p_c_right.p_anchor[0] += p_c_left.p_dimensions[0];
           p_c_right.p_dimensions[0] -= p_c_left.p_dimensions[0];
         }
       }
       else
       {
+        p_c_right.p_dimensions[0] = data.mode_data.vsplit.size;
+        p_c_right.p_anchor[0] += p_c.p_dimensions[0] - data.mode_data.vsplit.size;
+        p_c_left.p_dimensions[0] -= data.mode_data.vsplit.size;
+
         if( data.mode_data.vsplit.dimension_mode ==
-            CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
+            CONTAINABLE_DIMENSIONS_MODE_RELATIVE )
         {
-          p_c_right.p_dimensions[0] = data.mode_data.vsplit.size;
-          p_c_right.p_anchor[0] += p_c.p_dimensions[0] - data.mode_data.vsplit.size;
-          p_c_left.p_dimensions[0] -= data.mode_data.vsplit.size;
-        }
-        else
-        {
-          p_c_right.p_dimensions[0] =
-            data.mode_data.vsplit.size * p_c_right.p_dimensions[0];
+          p_c_right.p_dimensions[0] *= p_c_right.p_dimensions[0];
           p_c_right.p_anchor[0] += p_c.p_dimensions[0] - p_c_right.p_dimensions[0];
           p_c_left.p_dimensions[0] -= p_c_right.p_dimensions[0];
         }
       }
     }
-    else if( data.mode == CONTAINABLE_MODE_BOX )
+    if( data.mode == CONTAINABLE_MODE_HSPLIT )
     {
-      WMath::vec2 box_dimensions;
-
-      if( data.mode_data.box.dimensions_mode
-          == CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE )
+      if( data.mode_data.hsplit.side == CONTAINABLE_SIDE_TOP )
       {
-        if( data.mode_data.box.aspect_ratio > 1 )
+        p_c_left.p_dimensions[1] = data.mode_data.hsplit.size;
+        p_c_right.p_anchor[1] += data.mode_data.hsplit.size;
+        p_c_right.p_dimensions[1] -= data.mode_data.hsplit.size;
+
+        if( data.mode_data.vsplit.dimension_mode ==
+            CONTAINABLE_DIMENSIONS_MODE_RELATIVE )
         {
-          box_dimensions[0] = data.mode_data.box.higher_dimension;
-          box_dimensions[1] = data.mode_data.box.higher_dimension
-            / data.mode_data.box.aspect_ratio;
-        }
-        else
-        {
-          box_dimensions[1] = data.mode_data.box.higher_dimension;
-          box_dimensions[0] = data.mode_data.box.higher_dimension
-            * data.mode_data.box.aspect_ratio;
+          p_c_left.p_dimensions[1] *= p_c_left.p_dimensions[1];
+          p_c_right.p_anchor[1] += p_c_left.p_dimensions[1];
+          p_c_right.p_dimensions[1] -= p_c_left.p_dimensions[1];
         }
       }
       else
+      {
+        p_c_right.p_dimensions[1] = data.mode_data.hsplit.size;
+        p_c_right.p_anchor[1] += p_c.p_dimensions[1] - data.mode_data.hsplit.size;
+        p_c_left.p_dimensions[1] -= data.mode_data.hsplit.size;
+
+        if( data.mode_data.vsplit.dimension_mode ==
+            CONTAINABLE_DIMENSIONS_MODE_RELATIVE )
+        {
+          p_c_right.p_dimensions[1] *= p_c_right.p_dimensions[1];
+          p_c_right.p_anchor[1] += p_c.p_dimensions[1] - p_c_right.p_dimensions[0];
+          p_c_left.p_dimensions[1] -= p_c_right.p_dimensions[1];
+        }
+      }
+    }
+    else if( data.mode == CONTAINABLE_MODE_BOX )
+    {
+      WMath::vec2 box_dimensions( data.mode_data.box.higher_dimension );
+
+      if( data.mode_data.box.aspect_ratio > 1 )
+        box_dimensions[1] /= data.mode_data.box.aspect_ratio;
+      else
+        box_dimensions[0] *= data.mode_data.box.aspect_ratio;
+
+      if( data.mode_data.box.dimensions_mode
+          == CONTAINABLE_DIMENSIONS_MODE_RELATIVE )
       {
         float smaller_dimension;
         if( p_c.p_dimensions[0] < p_c.p_dimensions[1] )
@@ -264,19 +279,10 @@ T* ContainableIterator< T, P >::next()
         else
           smaller_dimension = p_c.p_dimensions[1];
 
-        if( data.mode_data.box.aspect_ratio > 1 )
-        {
-          box_dimensions[0] =
-            data.mode_data.box.higher_dimension * smaller_dimension;
-          box_dimensions[1] = box_dimensions[0] / data.mode_data.box.aspect_ratio;
-        }
-        else
-        {
-          box_dimensions[1] =
-            data.mode_data.box.higher_dimension * smaller_dimension;
-          box_dimensions[0] = box_dimensions[1] * data.mode_data.box.aspect_ratio;
-        }
+        box_dimensions[0] *= smaller_dimension;
+        box_dimensions[1] *= smaller_dimension;
       }
+
       if( data.mode_data.box.anchor_position == CONTAINABLE_ANCHOR_TOP_LEFT )
       {
         if( data.mode_data.box.anchor_mode == CONTAINABLE_ANCHOR_MODE_ABSOLUTE )

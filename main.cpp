@@ -44,11 +44,23 @@ int main()
   Renderer renderer( &window );
 
   ContainableData viewport_window_data;
-  viewport_window_data.mode = CONTAINABLE_MODE_VSPLIT;
-  viewport_window_data.mode_data.vsplit.side = CONTAINABLE_SIDE_RIGHT;
-  viewport_window_data.mode_data.vsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-  viewport_window_data.mode_data.vsplit.size = 260;
+  viewport_window_data.mode = CONTAINABLE_MODE_HSPLIT;
+  viewport_window_data.mode_data.hsplit.side = CONTAINABLE_SIDE_TOP;
+  viewport_window_data.mode_data.hsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
+  viewport_window_data.mode_data.hsplit.size = 100;
   std::shared_ptr<Viewport> viewport_window( new Viewport( viewport_window_data ) );
+
+  ContainableData viewport_window_top_data;
+  viewport_window_top_data.mode = CONTAINABLE_MODE_FULL;
+  viewport_window_top_data.background = WMath::vec3( 0.0f );
+  std::shared_ptr<Viewport> viewport_window_top( new Viewport( viewport_window_top_data ) );
+
+  ContainableData viewport_window_bottom_data;
+  viewport_window_bottom_data.mode = CONTAINABLE_MODE_VSPLIT;
+  viewport_window_bottom_data.mode_data.vsplit.side = CONTAINABLE_SIDE_RIGHT;
+  viewport_window_bottom_data.mode_data.vsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
+  viewport_window_bottom_data.mode_data.vsplit.size = 260;
+  std::shared_ptr<Viewport> viewport_window_bottom( new Viewport( viewport_window_bottom_data ) );
 
   ContainableData viewport_window_left_data;
   viewport_window_left_data.mode = CONTAINABLE_MODE_FULL;
@@ -60,10 +72,12 @@ int main()
   viewport_window_right_data.background = WMath::vec3( 1.0f );
   std::shared_ptr<Viewport> viewport_window_right( new Viewport( viewport_window_right_data ) );
 
-  viewport_window_left->addScene( scene );
+  viewport_window->setLeftChild( viewport_window_top );
+  viewport_window->setRightChild( viewport_window_bottom );
+  viewport_window_bottom->setLeftChild( viewport_window_left );
+  viewport_window_bottom->setRightChild( viewport_window_right );
 
-  viewport_window->setLeftChild( viewport_window_left );
-  viewport_window->setRightChild( viewport_window_right );
+  viewport_window_left->addScene( scene );
 
   renderer.setViewport( viewport_window );
 
