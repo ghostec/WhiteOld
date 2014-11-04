@@ -28,14 +28,36 @@ namespace RendererHelper
     model->unuse();
   }
 
-  void drawSGNode( std::shared_ptr<SGNode> sg_node )
+  void drawPropagatedSGNode( PropagatedSGNode p_n )
   {
-    std::shared_ptr<Model> model = sg_node->getModel();
-    WMath::mat4 t = WMath::scaleM( sg_node->getScale() )
-      * WMath::rotateM( sg_node->getRotate() )
-      * WMath::translateM( sg_node->getPosition() );
+    std::shared_ptr<Model> model = p_n.sg_node->getModel();
+    WMath::mat4 t = WMath::scaleM( p_n.scale )
+      * WMath::rotateM( p_n.rotate )
+      * WMath::translateM( p_n.position );
     model->setTransform( &t );
-    drawModel( model );
+
+    model->use();
+    std::shared_ptr<Mesh> mesh = model->getMesh();
+    std::shared_ptr<Shader> shader = model->getShader();
+
+    glBindVertexArray( mesh->getVAO() );
+    shader->use();
+
+    if( model->getModelType( ) == MODEL_2D )
+    {
+      glDisable( GL_DEPTH_TEST );
+    }
+    else
+    {
+      glEnable( GL_DEPTH_TEST );
+    }
+
+    glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
+
+    shader->unuse();
+    glBindVertexArray( 0 );
+
+    model->unuse();
   }
 
   void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph )
@@ -55,20 +77,13 @@ namespace RendererHelper
       std::shared_ptr<SGNode> n = p_n.sg_node;
       std::shared_ptr<Model> model = n->getModel();
 
-      p_n.position = p_n.position + n->getPosition();
-      p_n.scale = n->getScale();
-      p_n.rotate = p_n.rotate * n->getRotate();
+      SGNodeWorldTransform w = n->getWorldTransform();
 
-      WMath::vec3 pivot = n->getPivot();
+      p_n.position = p_n.position + w.position;
+      p_n.scale = w.scale;
+      p_n.rotate = p_n.rotate * w.rotate;
 
-      if( model )
-      {
-        WMath::mat4 t = WMath::scaleM( p_n.scale )
-          * WMath::translateM( pivot ) * WMath::rotateM( p_n.rotate ) * WMath::translateM( -pivot )
-          * WMath::translateM( p_n.position );
-        model->setTransform( &t );
-        drawModel( model );
-      }
+      if( model ) drawPropagatedSGNode( p_n );
 
       for( auto c : n->getChildren( ) )
       {

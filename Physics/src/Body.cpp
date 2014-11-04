@@ -29,8 +29,9 @@ Body::Body( std::shared_ptr<SGNode> sg_node, bool is_static )
 
   if( !is_static )
   {
+    SGNodeWorldTransform w = sg_node->getWorldTransform();
     this->shape = new btBoxShape( btVector3( 1, 1, 1 ) );
-    WMath::vec3 p = sg_node->getPosition();
+    WMath::vec3 p = w.position;
     btVector3 position = btVector3( p[0], p[1], p[2] );
 
     btDefaultMotionState* motionState = new btDefaultMotionState( btTransform( btQuaternion( 0, 0, 0, 1 ), position ) );
@@ -63,8 +64,9 @@ void Body::update()
 {
   // TODO: propagate parent->child transforms
   btTransform tr; this->body->getMotionState()->getWorldTransform( tr );
-  WMath::vec3 p = this->sg_node->getPosition();
-  WMath::quaternion q = this->sg_node->getRotate();
+  SGNodeWorldTransform w = sg_node->getWorldTransform();
+  WMath::vec3 p = w.position;
+  WMath::quaternion q = w.rotate;
   btVector3 position = btVector3( p[0], p[1], p[2] );
   tr.setOrigin( position );
   tr.setRotation( btQuaternion( q[0], q[1], q[2], q[3] ) );

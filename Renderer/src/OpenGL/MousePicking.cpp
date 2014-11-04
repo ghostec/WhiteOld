@@ -114,9 +114,11 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
     PropagatedSGNode p_n = bfs_q.front(); bfs_q.pop();
     std::shared_ptr<SGNode> n = p_n.sg_node;
 
-    p_n.position = p_n.position + n->getPosition( );
-    p_n.scale = n->getScale();
-    p_n.rotate = p_n.rotate * n->getRotate( );
+    SGNodeWorldTransform w = n->getWorldTransform();
+
+    p_n.position = p_n.position + w.position;
+    p_n.scale = w.scale;
+    p_n.rotate = p_n.rotate * w.rotate;
 
     std::shared_ptr<Model> model = n->getModel();
 
@@ -126,9 +128,8 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
       model->setShader( this->shader );
       WMath::vec3 picking_color = encode_id( node_count );
       this->shader->setUniform( "unique_id", picking_color.vec );
-      WMath::vec3 pivot = n->getPivot( );
       WMath::mat4 t = WMath::scaleM( p_n.scale )
-        * WMath::translateM( pivot ) * WMath::rotateM( p_n.rotate ) * WMath::translateM( -pivot )
+        * WMath::rotateM( p_n.rotate )
         * WMath::translateM( p_n.position );
       model->setTransform( &t );
       RendererHelper::drawModel( model, this->frame_buffer );

@@ -39,11 +39,12 @@ void GUIScene::update()
     WMath::vec2 position;
     position[0] = g_data.anchor[0] + g_data.dimensions[0] / 2.0f;
     position[1] = g_data.anchor[1] + g_data.dimensions[1] / 2.0f;
-
+    /*
     sg_node->setPosition
       ( WMath::vec3( (2.0f * position[0]) / p_dimensions[0] - 1.0f,
                      (-2.0f * position[1]) / p_dimensions[1] + 1.0f,
                      0.0f ) );
     sg_node->setScale( WMath::vec3( scale[0], scale[1], 1.0 ) );
+    */
   }
 }

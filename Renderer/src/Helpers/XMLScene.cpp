@@ -42,13 +42,15 @@ namespace XMLHelper
     const char* model_name = el->FirstChildElement( "model" )->GetText();
     std::shared_ptr<Model> model = resource_manager->getModel( model_name );
 
+    SGNodeWorldTransform world_transform;
+
     std::shared_ptr<SGNode> sg_node( new SGNode( name, model ) );
     tinyxml2::XMLElement* ell = el->FirstChildElement( "position" );
     if( ell )
     {
       WMath::vec3 position( ell->FloatAttribute( "x" ),
         ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      sg_node->setPosition( position );
+      world_transform.position = position;
     }
 
     ell = el->FirstChildElement( "scale" );
@@ -56,13 +58,10 @@ namespace XMLHelper
     {
       WMath::vec3 scale( ell->FloatAttribute( "x" ),
         ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      sg_node->setScale( scale );
+      world_transform.scale = scale;
     }
-    else
-    {
-      WMath::vec3 scale( 1.0 );
-      sg_node->setScale( scale );
-    }
+
+    sg_node->setWorldTransform( world_transform );
 
     scene_graph->addSGNode( sg_node );
   }
@@ -125,8 +124,10 @@ namespace XMLHelper
 
         tinyxml2::XMLText* name_text = doc.NewText( n->getName().c_str() );
         tinyxml2::XMLText* model_text = doc.NewText( n->getModel()->getName().c_str() );
-        
-        WMath::vec3 p = n->getPosition();
+
+        SGNodeWorldTransform world_transform = n->getWorldTransform();
+
+        WMath::vec3 p = world_transform.position;
         el_position->SetAttribute( "x", std::to_string( p[0] ).c_str() );
         el_position->SetAttribute( "y", std::to_string( p[1] ).c_str() );
         el_position->SetAttribute( "z", std::to_string( p[2] ).c_str() );

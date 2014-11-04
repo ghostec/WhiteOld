@@ -43,17 +43,20 @@ void PhysicsManager::update()
   this->world->stepSimulation( 1 / 60.f, 10 );
   for( std::shared_ptr<Body> body : this->bodies )
   {
+    SGNodeWorldTransform w;
     WMath::vec3 t; WMath::quaternion q;
 
     t[0] = body->getBody()->getWorldTransform().getOrigin()[0];
     t[1] = body->getBody()->getWorldTransform().getOrigin()[1];
     t[2] = body->getBody()->getWorldTransform().getOrigin()[2];
-    body->getSGNode()->setPosition( t );
+    w.position = t;
 
     q[0] = body->getBody()->getWorldTransform().getRotation()[0];
     q[1] = body->getBody()->getWorldTransform().getRotation()[1];
     q[2] = body->getBody()->getWorldTransform().getRotation()[2];
     q[3] = body->getBody()->getWorldTransform().getRotation()[3];
-    body->getSGNode()->setRotate( q );
+    w.rotate = q;
+
+    body->getSGNode()->setWorldTransform( w );
   }
 }

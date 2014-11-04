@@ -9,6 +9,14 @@
 #include "Model.h"
 #include "WMath/WMath.h"
 
+struct SGNodeWorldTransform
+{
+  SGNodeWorldTransform() : scale( WMath::vec3(1) ) {};
+  WMath::vec3 position, scale;
+  WMath::quaternion rotate;
+  WMath::mat4 transform;
+};
+
 typedef enum _PropagationType
 {
   NORMAL
@@ -17,31 +25,26 @@ typedef enum _PropagationType
 class SGNode
 {
   private:
-    WMath::vec3 position, scale;
-    WMath::quaternion rotate;
-    std::shared_ptr<Model> model;
-    WMath::vec3 pivot;
-    std::vector< std::shared_ptr<SGNode> > children;
     std::string name;
+    std::shared_ptr<Model> model;
+    std::vector< std::shared_ptr<SGNode> > children;
+    SGNodeWorldTransform world_transform;
+    bool world_transform_dirty;
   public:
     SGNode( std::string name, std::shared_ptr<Model> model );
     void addChild( std::shared_ptr<SGNode> child );
     void removeChild( std::string name );
     //getters
     WMath::vec3 getDimensions();
-    WMath::vec3 getPosition() { return this->position; }
-    WMath::vec3 getScale() { return this->scale; }
-    WMath::quaternion getRotate() { return this->rotate; }
-    WMath::vec3 getPivot() { return this->pivot; }
     std::string getName() { return this->name; }
+    bool isWorldTransformDirty() { return this->world_transform_dirty; }
+    SGNodeWorldTransform getWorldTransform() { return this->world_transform; }
     std::shared_ptr<Model> getModel() { return this->model; }
     std::vector< std::shared_ptr<SGNode> > getChildren()
       { return this->children; }
     //setters
-    void setPosition( WMath::vec3 t ) { this->position = t; }
-    void setScale( WMath::vec3 s ) { this->scale = s; }
-    void setRotate( WMath::quaternion r ) { this->rotate = r; }
-    void setPivot( WMath::vec3 p ) { this->pivot = p; }
+    void setWorldTransformDirty( bool v );
+    void setWorldTransform( SGNodeWorldTransform world_transform );
     void setModel( std::shared_ptr<Model> model );
 };
 

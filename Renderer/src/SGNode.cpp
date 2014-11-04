@@ -4,8 +4,6 @@ SGNode::SGNode( std::string name, std::shared_ptr<Model> model )
 {
   this->name = name;
   this->model = model;
-  this->scale = WMath::vec3(1);
-  this->pivot = WMath::vec3(0);
 }
 
 void SGNode::addChild( std::shared_ptr<SGNode> child )
@@ -26,6 +24,22 @@ void SGNode::setModel( std::shared_ptr<Model> model )
 
 WMath::vec3 SGNode::getDimensions()
 {
-  return WMath::vec3( WMath::scaleM( this->scale )
+  return WMath::vec3( WMath::scaleM( this->world_transform.scale )
       * WMath::vec4( this->model->getMesh()->getDimensions(), 1.0 ) );
+}
+
+void SGNode::setWorldTransformDirty( bool v )
+{
+  if( !v ) this->world_transform_dirty = v;
+  else
+  {
+    this->world_transform_dirty = v;
+    for( auto c : this->children ) setWorldTransformDirty( v );
+  }
+}
+
+void SGNode::setWorldTransform( SGNodeWorldTransform world_transform )
+{
+  setWorldTransformDirty( true );
+  this->world_transform = world_transform;
 }
