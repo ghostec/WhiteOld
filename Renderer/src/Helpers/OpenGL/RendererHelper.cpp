@@ -31,12 +31,23 @@ namespace RendererHelper
   void drawPropagatedSGNode( PropagatedSGNode p_n )
   {
     std::shared_ptr<Model> model = p_n.sg_node->getModel();
-    WMath::mat4 t = WMath::scaleM( p_n.scale )
-      * WMath::rotateM( p_n.rotate )
-      * WMath::translateM( p_n.position );
-    model->setTransform( &t );
+
+    WMath::mat4 world_transform;
+    if( p_n.sg_node->isWorldTransformDirty() )
+    {
+      world_transform = WMath::scaleM( p_n.scale )
+        * WMath::rotateM( p_n.rotate )
+        * WMath::translateM( p_n.position );
+      SGNodeWorldTransform w = p_n.sg_node->getWorldTransform();
+      w.transform = world_transform;
+      p_n.sg_node->setWorldTransform( world_transform );
+    }
+    else world_transform = p_n.sg_node->getWorldTransformM();
+
+    model->setTransform( &world_transform );
 
     model->use();
+
     std::shared_ptr<Mesh> mesh = model->getMesh();
     std::shared_ptr<Shader> shader = model->getShader();
 

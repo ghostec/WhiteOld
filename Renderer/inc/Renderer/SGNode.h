@@ -39,12 +39,14 @@ class SGNode
     std::string getName() { return this->name; }
     bool isWorldTransformDirty() { return this->world_transform_dirty; }
     SGNodeWorldTransform getWorldTransform() { return this->world_transform; }
+    WMath::mat4 getWorldTransformM() { return this->world_transform.transform; }
     std::shared_ptr<Model> getModel() { return this->model; }
     std::vector< std::shared_ptr<SGNode> > getChildren()
       { return this->children; }
     //setters
     void setWorldTransformDirty( bool v );
     void setWorldTransform( SGNodeWorldTransform world_transform );
+    void setWorldTransform( WMath::mat4 world_transform );
     void setModel( std::shared_ptr<Model> model );
 };
 

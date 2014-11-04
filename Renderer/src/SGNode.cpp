@@ -43,3 +43,9 @@ void SGNode::setWorldTransform( SGNodeWorldTransform world_transform )
   setWorldTransformDirty( true );
   this->world_transform = world_transform;
 }
+
+void SGNode::setWorldTransform( WMath::mat4 world_transform )
+{
+  setWorldTransformDirty( false );
+  this->world_transform.transform = world_transform;
+}

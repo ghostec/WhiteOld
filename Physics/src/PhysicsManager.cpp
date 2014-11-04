@@ -28,7 +28,7 @@ void PhysicsManager::addBody( std::shared_ptr<Body> body )
 
 void PhysicsManager::toggle()
 {
-  if( state == ON ) state = OFF; 
+  if( state == ON ) state = OFF;
   else
   {
     state = ON;
