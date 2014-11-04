@@ -30,21 +30,3 @@ void Model::unuse()
 {
   if( this->texture ) this->texture->unuse();
 }
-
-WMath::vec3 Model::getDimensions()
-{
-  return WMath::vec3
-    ( this->scale * WMath::vec4( this->mesh->getDimensions(), 1.0 ) );
-}
-
-WMath::mat4* Model::getTransformM()
-{
-  this->transform = this->scale * this->rotate * this->translate;
-  return &this->transform;
-}
-
-void Model::resetTransform()
-{
-  WMath::mat4 m; 
-  transform = scale = rotate = translate = m;
-}

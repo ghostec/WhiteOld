@@ -28,6 +28,7 @@ class SGNode
     void addChild( std::shared_ptr<SGNode> child );
     void removeChild( std::string name );
     //getters
+    WMath::vec3 getDimensions();
     WMath::vec3 getPosition() { return this->position; }
     WMath::vec3 getScale() { return this->scale; }
     WMath::quaternion getRotate() { return this->rotate; }

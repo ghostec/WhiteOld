@@ -53,19 +53,19 @@ void SceneEditor::showMoveArrows()
   n->addChild( this->data.arrow_z );
 
   std::shared_ptr<Model> model = n->getModel();
-  WMath::vec3 model_dimensions = model->getDimensions();
+  WMath::vec3 model_dimensions = n->getDimensions();
 
   float dx = 0.5f * ( model_dimensions[0] +
-    this->data.arrow_x->getModel()->getDimensions()[0] );
+    this->data.arrow_x->getDimensions()[0] );
   this->data.arrow_x->setPosition( WMath::vec3( dx, 0, 0 ) );
   this->data.arrow_x->setRotate( WMath::quaternion(0,0,1,180) );
 
   float dy = 0.5f * ( model_dimensions[1] +
-    this->data.arrow_y->getModel()->getDimensions()[1] );
+    this->data.arrow_y->getDimensions()[1] );
   this->data.arrow_y->setPosition( WMath::vec3( 0, dy, 0 ) );
 
   float dz = 0.5f * ( model_dimensions[2] +
-    this->data.arrow_z->getModel()->getDimensions()[0] );
+    this->data.arrow_z->getDimensions()[0] );
   this->data.arrow_z->setPosition( WMath::vec3( 0, 0, dz ) );
 
   //this->data.arrow_x->setPivot( - WMath::vec3( dx, dy, dz ) );
