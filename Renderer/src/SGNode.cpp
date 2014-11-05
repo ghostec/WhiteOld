@@ -24,7 +24,7 @@ void SGNode::setModel( std::shared_ptr<Model> model )
 
 WMath::vec3 SGNode::getDimensions()
 {
-  return WMath::vec3( WMath::scaleM( this->world_transform.scale )
+  return WMath::vec3( WMath::scaleM( this->world_transform.data.scale )
       * WMath::vec4( this->model->getMesh()->getDimensions(), 1.0 ) );
 }
 

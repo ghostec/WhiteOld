@@ -49,13 +49,13 @@ void PhysicsManager::update()
     t[0] = body->getBody()->getWorldTransform().getOrigin()[0];
     t[1] = body->getBody()->getWorldTransform().getOrigin()[1];
     t[2] = body->getBody()->getWorldTransform().getOrigin()[2];
-    w.position = t;
+    w.data.position = t;
 
     q[0] = body->getBody()->getWorldTransform().getRotation()[0];
     q[1] = body->getBody()->getWorldTransform().getRotation()[1];
     q[2] = body->getBody()->getWorldTransform().getRotation()[2];
     q[3] = body->getBody()->getWorldTransform().getRotation()[3];
-    w.rotate = q;
+    w.data.rotate = q;
 
     body->getSGNode()->setWorldTransform( w );
   }

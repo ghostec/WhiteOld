@@ -93,6 +93,7 @@ void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position
 
 void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cached_data )
 {
+  /*
   ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
 
   std::queue<PropagatedSGNode> bfs_q;
@@ -141,6 +142,7 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
     node_count += 1;
     
   }
+  */
 }
 
 std::shared_ptr<SGNode> MousePicking::pick()

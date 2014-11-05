@@ -50,7 +50,7 @@ namespace XMLHelper
     {
       WMath::vec3 position( ell->FloatAttribute( "x" ),
         ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      world_transform.position = position;
+      world_transform.data.position = position;
     }
 
     ell = el->FirstChildElement( "scale" );
@@ -58,7 +58,7 @@ namespace XMLHelper
     {
       WMath::vec3 scale( ell->FloatAttribute( "x" ),
         ell->FloatAttribute( "y" ), ell->FloatAttribute( "z" ) );
-      world_transform.scale = scale;
+      world_transform.data.scale = scale;
     }
 
     sg_node->setWorldTransform( world_transform );
@@ -127,7 +127,7 @@ namespace XMLHelper
 
         SGNodeWorldTransform world_transform = n->getWorldTransform();
 
-        WMath::vec3 p = world_transform.position;
+        WMath::vec3 p = world_transform.data.position;
         el_position->SetAttribute( "x", std::to_string( p[0] ).c_str() );
         el_position->SetAttribute( "y", std::to_string( p[1] ).c_str() );
         el_position->SetAttribute( "z", std::to_string( p[2] ).c_str() );
