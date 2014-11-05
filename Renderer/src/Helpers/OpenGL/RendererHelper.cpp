@@ -2,33 +2,8 @@
 
 namespace RendererHelper
 {
-  void drawModel( std::shared_ptr<Model> model, GLuint frame_buffer )
-  {
-    model->use();
-    std::shared_ptr<Mesh> mesh = model->getMesh();
-    std::shared_ptr<Shader> shader = model->getShader();
-
-    glBindVertexArray( mesh->getVAO() );
-    shader->use();
-
-    if( model->getModelType( ) == MODEL_2D )
-    {
-      glDisable( GL_DEPTH_TEST );
-    }
-    else
-    {
-      glEnable( GL_DEPTH_TEST );
-    }
-
-    glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
-
-    shader->unuse();
-    glBindVertexArray( 0 );
-
-    model->unuse();
-  }
-
-  void drawPropagatedSGNode( PropagatedSGNode p_n )
+  void drawPropagatedSGNode( PropagatedSGNode p_n,
+     std::shared_ptr<Shader> custom_shader )
   {
     std::shared_ptr<Model> model = p_n.sg_node->getModel();
 
@@ -38,30 +13,25 @@ namespace RendererHelper
       world_transform = WMath::scaleM( p_n.scale )
         * WMath::rotateM( p_n.rotate )
         * WMath::translateM( p_n.position );
-      SGNodeWorldTransform w = p_n.sg_node->getWorldTransform();
-      w.transform = world_transform;
       p_n.sg_node->setWorldTransform( world_transform );
     }
     else world_transform = p_n.sg_node->getWorldTransformM();
 
-    model->setTransform( &world_transform );
-
     model->use();
 
     std::shared_ptr<Mesh> mesh = model->getMesh();
-    std::shared_ptr<Shader> shader = model->getShader();
+
+    std::shared_ptr<Shader> shader;
+    if( custom_shader != nullptr ) shader = custom_shader;
+    else shader = model->getShader();
+
+    shader->setUniform( "Model", &world_transform, GL_TRUE );
 
     glBindVertexArray( mesh->getVAO() );
     shader->use();
 
-    if( model->getModelType( ) == MODEL_2D )
-    {
-      glDisable( GL_DEPTH_TEST );
-    }
-    else
-    {
-      glEnable( GL_DEPTH_TEST );
-    }
+    if( model->getModelType() == MODEL_2D ) glDisable( GL_DEPTH_TEST );
+    else glEnable( GL_DEPTH_TEST );
 
     glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
 

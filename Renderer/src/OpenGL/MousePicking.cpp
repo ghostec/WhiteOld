@@ -124,16 +124,9 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
 
     if( model )
     {
-      std::shared_ptr<Shader> original_shader = model->getShader( );
-      model->setShader( this->shader );
       WMath::vec3 picking_color = encode_id( node_count );
       this->shader->setUniform( "unique_id", picking_color.vec );
-      WMath::mat4 t = WMath::scaleM( p_n.scale )
-        * WMath::rotateM( p_n.rotate )
-        * WMath::translateM( p_n.position );
-      model->setTransform( &t );
-      RendererHelper::drawModel( model, this->frame_buffer );
-      model->setShader( original_shader );
+      RendererHelper::drawPropagatedSGNode( p_n, this->shader );
     }
 
     for( auto c : n->getChildren() )

@@ -24,7 +24,8 @@ typedef struct _PropagatedSGNode
 namespace RendererHelper
 {
   void drawModel( std::shared_ptr<Model> model, GLuint frame_buffer = 0 );
-  void drawPropagatedSGNode( PropagatedSGNode p_n );
+  void drawPropagatedSGNode( PropagatedSGNode p_n,
+     std::shared_ptr<Shader> custom_shader = nullptr );
   void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph );
 }
 
