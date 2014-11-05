@@ -15,8 +15,7 @@
 
 namespace RendererHelper
 {
-  void drawModel( std::shared_ptr<Model> model, GLuint frame_buffer = 0 );
-  void drawSGNode( std::shared_ptr< SGNode > n,
+  void drawSGNode( SGNode* n,
      std::shared_ptr<Shader> custom_shader = nullptr );
   void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph );
 }

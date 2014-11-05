@@ -49,3 +49,46 @@ void SGNode::setWorldTransform( WMath::mat4 world_transform )
   setWorldTransformDirty( false );
   this->world_transform.transform = world_transform;
 }
+
+SGNodeIterator::SGNodeIterator( SGNode* root )
+{
+  bfs_q.push( root );
+  bfs_v.push_back( root );
+}
+
+SGNode* SGNodeIterator::begin() { return this->next(); }
+
+SGNode* SGNodeIterator::next()
+{
+  if( bfs_q.empty() ) return nullptr;
+  SGNode* n = bfs_q.front(); bfs_q.pop();
+
+  if( n->isWorldTransformDirty() )
+  {
+    SGNodeWorldTransform w = n->getWorldTransform();
+    SGNodePropagation pr = n->getPropagation();
+
+    pr.t_node.position = pr.t_node.position + w.data.position;
+    pr.t_node.scale = w.data.scale;
+    pr.t_node.rotate = pr.t_node.rotate * w.data.rotate;
+
+    WMath::mat4 t = WMath::scaleM( pr.t_node.scale )
+      * WMath::rotateM( pr.t_node.rotate )
+      * WMath::translateM( pr.t_node.position );
+    n->setWorldTransform( t );
+
+    for( auto c : n->getChildren() ) c->setPropagation( pr );
+
+    n->setWorldTransformDirty( false );
+  }
+
+  for( auto c : n->getChildren( ) )
+  {
+    if( std::find( bfs_v.begin(), bfs_v.end(), &*c ) == bfs_v.end() )
+    {
+      bfs_q.push( &*c ); bfs_v.push_back( &*c );
+    }
+  }
+
+  return n;
+}
