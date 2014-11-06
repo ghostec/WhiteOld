@@ -35,3 +35,13 @@ Mesh::Mesh( std::string file_path )
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
+
+void Mesh::use()
+{
+  glBindVertexArray( this->vao );
+}
+
+void Mesh::unuse()
+{
+  glBindVertexArray( 0 );
+}

@@ -2,25 +2,27 @@
 
 namespace RendererHelper
 {
-  void drawSGNode( SGNode* n,
-     std::shared_ptr<Shader> custom_shader )
+  void drawSGNode( SGNode* n, Shader* custom_shader )
   {
-    std::shared_ptr<Model> model = n->getModel();
+    Model* model = &*n->getModel();
     if( !model ) return;
+
+    Mesh* mesh = &*model->getMesh();
+
+    Shader* shader;
+    if( custom_shader != nullptr )
+    {
+      ShaderHelper::setMesh( custom_shader, &*mesh );
+      shader = custom_shader;
+    }
+    else shader = &*model->getShader();
 
     WMath::mat4 world_transform = n->getWorldTransformM();
 
     model->use();
 
-    std::shared_ptr<Mesh> mesh = model->getMesh();
-
-    std::shared_ptr<Shader> shader;
-    if( custom_shader != nullptr ) shader = custom_shader;
-    else shader = model->getShader();
-
     shader->setUniform( "Model", &world_transform, GL_TRUE );
 
-    glBindVertexArray( mesh->getVAO() );
     shader->use();
 
     if( model->getModelType() == MODEL_2D ) glDisable( GL_DEPTH_TEST );
@@ -29,7 +31,6 @@ namespace RendererHelper
     glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
 
     shader->unuse();
-    glBindVertexArray( 0 );
 
     model->unuse();
   }

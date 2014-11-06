@@ -10,12 +10,12 @@ Model::Model( std::string name, std::shared_ptr<Mesh> mesh, ModelType model_type
 void Model::setShader( std::shared_ptr<Shader> shader )
 {
   this->shader = shader;
-  ShaderHelper::setVertexData( &*shader, &*this->mesh );
+  ShaderHelper::setMesh( &*shader, &*this->mesh );
 }
 
 void Model::use()
 {
-  //this->shader->setUniform( "Model", this->getTransformM( ), GL_TRUE );
+  this->mesh->use();
   if( this->texture ) this->texture->use( this->shader );
   ShaderHelper::setModelData( &*this->shader, &*this->model_data );
 }
@@ -23,4 +23,5 @@ void Model::use()
 void Model::unuse()
 {
   if( this->texture ) this->texture->unuse();
+  this->mesh->unuse();
 }

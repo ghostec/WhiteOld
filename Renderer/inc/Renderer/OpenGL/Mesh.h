@@ -22,7 +22,8 @@ class Mesh
     WMath::vec3 dimensions;
   public:
     Mesh( std::string file_path );
-    void configureShader( std::shared_ptr<Shader> shader );
+    void use();
+    void unuse();
     // getters
     GLuint getVAO() { return this->vao; }
     GLuint getVBO() { return this->vbo; }

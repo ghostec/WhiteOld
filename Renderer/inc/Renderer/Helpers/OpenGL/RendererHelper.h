@@ -11,12 +11,12 @@
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SGNode.h"
 #include "Renderer/Window.h"
+#include "Renderer/Helpers/OpenGL/ShaderHelper.h"
 #include "WMath/WMath.h"
 
 namespace RendererHelper
 {
-  void drawSGNode( SGNode* n,
-     std::shared_ptr<Shader> custom_shader = nullptr );
+  void drawSGNode( SGNode* n, Shader* custom_shader = nullptr );
   void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph );
 }
 

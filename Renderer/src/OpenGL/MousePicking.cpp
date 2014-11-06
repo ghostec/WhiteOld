@@ -70,79 +70,60 @@ void MousePicking::reset()
 }
 
 void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position )
-{  
-  glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
-  this->node_count = 1;
+{
+  glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+  this->node_count = 1000;
 
   ContainableIterator<Viewport, Window> it( &*this->viewport, active_window );
 
   for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
   {
     ContainableCachedData viewport_cached_data = v->getContainableCachedData();
-    if( !WMath::isPointInside( viewport_cached_data.anchor,
-    viewport_cached_data.dimensions, cursor_position ) ) continue;
+
+    glEnable( GL_SCISSOR_TEST );
+    glScissor( viewport_cached_data.anchor[0],
+      active_window->getDimensions()[1] - viewport_cached_data.dimensions[1]
+      - viewport_cached_data.anchor[1],
+      viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );
+
+    glViewport( viewport_cached_data.anchor[0],
+        active_window->getDimensions()[1] - viewport_cached_data.dimensions[1]
+        - viewport_cached_data.anchor[1],
+        viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );
+    glClearColor( viewport_cached_data.background[0],
+        viewport_cached_data.background[1],
+        viewport_cached_data.background[2], 1.0 );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     for( auto scene : v->getScenes() )
     {
       this->drawScene( &*scene, viewport_cached_data );
     }
+
+    glDisable( GL_SCISSOR_TEST );
   }
+
+  glfwSwapBuffers( active_window->getWindow() );
+  glfwPollEvents();
 
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
 void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cached_data )
 {
-  /*
   ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
 
-  std::queue<PropagatedSGNode> bfs_q;
-  std::vector< std::shared_ptr<SGNode> > bfs_v;
+  SGNodeIterator it( &*scene->getSceneGraph()->getRootSGNode() );
 
-  PropagatedSGNode p_sg_node;
-  p_sg_node.sg_node = scene->getSceneGraph()->getRootSGNode();
+  // Problem is on shader initialization
+  // Model::use()
 
-  bfs_q.push( p_sg_node );
-  bfs_v.push_back( p_sg_node.sg_node );
-
-  glViewport( viewport_cached_data.anchor[0], viewport_cached_data.anchor[0],
-    viewport_cached_data.dimensions[0], viewport_cached_data.dimensions[1] );
-  glClearColor( 0.0, 0.0, 0.0, 1.0 );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-  while( !bfs_q.empty() )
+  for( SGNode* n = it.begin(); n; n = it.next(), node_count++ )
   {
-    PropagatedSGNode p_n = bfs_q.front(); bfs_q.pop();
-    std::shared_ptr<SGNode> n = p_n.sg_node;
-
-    SGNodeWorldTransform w = n->getWorldTransform();
-
-    p_n.position = p_n.position + w.position;
-    p_n.scale = w.scale;
-    p_n.rotate = p_n.rotate * w.rotate;
-
-    std::shared_ptr<Model> model = n->getModel();
-
-    if( model )
-    {
-      WMath::vec3 picking_color = encode_id( node_count );
-      this->shader->setUniform( "unique_id", picking_color.vec );
-      RendererHelper::drawPropagatedSGNode( p_n, this->shader );
-    }
-
-    for( auto c : n->getChildren() )
-    {
-      if( std::find( bfs_v.begin(), bfs_v.end(), c ) == bfs_v.end() )
-      {
-        p_n.sg_node = c;
-        bfs_q.push( p_n ); bfs_v.push_back( c );
-      }
-    }
-
-    node_count += 1;
-    
+    WMath::vec3 picking_color = encode_id( node_count );
+    this->shader->setUniform( "unique_id", picking_color.vec );
+    RendererHelper::drawSGNode( n, &*this->shader );
   }
-  */
 }
 
 std::shared_ptr<SGNode> MousePicking::pick()
