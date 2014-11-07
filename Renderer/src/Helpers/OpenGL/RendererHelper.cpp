@@ -20,22 +20,20 @@ namespace RendererHelper
     WMath::mat4 world_transform = n->getWorldTransformM();
 
     model->use();
-
     shader->setUniform( "Model", &world_transform, GL_TRUE );
-
     shader->use();
-
-    if( model->getModelType() == MODEL_2D ) glDisable( GL_DEPTH_TEST );
-    else glEnable( GL_DEPTH_TEST );
-
     glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
-
     shader->unuse();
-
     model->unuse();
+
+    if( custom_shader != nullptr )
+    {
+      // fixing Shader's layout on Mesh's VAO
+      ShaderHelper::setMesh( &*model->getShader(), &*mesh );
+    }
   }
 
-  void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph )
+  void drawSceneGraph( SceneGraph* scene_graph )
   {
     SGNodeIterator it( &*scene_graph->getRootSGNode() );
     for( SGNode* n = it.begin(); n; n = it.next() ) drawSGNode( n );

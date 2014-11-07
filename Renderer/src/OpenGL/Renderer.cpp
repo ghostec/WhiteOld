@@ -43,7 +43,7 @@ void Renderer::render()
 void Renderer::drawScene( Scene* scene )
 {
   scene->update();
-  std::shared_ptr<SceneGraph> scene_graph = scene->getSceneGraph();
+  SceneGraph* scene_graph = &*scene->getSceneGraph();
   RendererHelper::drawSceneGraph( scene_graph );
 }
 

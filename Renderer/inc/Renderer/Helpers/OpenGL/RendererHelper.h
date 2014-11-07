@@ -17,7 +17,7 @@
 namespace RendererHelper
 {
   void drawSGNode( SGNode* n, Shader* custom_shader = nullptr );
-  void drawSceneGraph( std::shared_ptr<SceneGraph> scene_graph );
+  void drawSceneGraph( SceneGraph* scene_graph );
 }
 
 #endif

@@ -121,7 +121,7 @@ int main()
 
     physics_manager->update();
     scene_editor.update();
-    //renderer.render();
+    renderer.render();
     gui_scene->update();
     while( std::chrono::duration_cast< std::chrono::milliseconds >
       ( std::chrono::high_resolution_clock::now() - t0 ).count()

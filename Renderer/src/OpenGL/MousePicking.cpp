@@ -71,8 +71,8 @@ void MousePicking::reset()
 
 void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position )
 {
-  glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-  this->node_count = 1000;
+  glBindFramebuffer( GL_FRAMEBUFFER, this->frame_buffer );
+  this->node_count = 1;
 
   ContainableIterator<Viewport, Window> it( &*this->viewport, active_window );
 
@@ -103,9 +103,6 @@ void MousePicking::drawViewport( Viewport* viewport, WMath::vec2 cursor_position
     glDisable( GL_SCISSOR_TEST );
   }
 
-  glfwSwapBuffers( active_window->getWindow() );
-  glfwPollEvents();
-
   glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
@@ -114,9 +111,6 @@ void MousePicking::drawScene( Scene* scene, ContainableCachedData viewport_cache
   ShaderHelper::setCamera( &*this->shader, &*scene->getCamera() );
 
   SGNodeIterator it( &*scene->getSceneGraph()->getRootSGNode() );
-
-  // Problem is on shader initialization
-  // Model::use()
 
   for( SGNode* n = it.begin(); n; n = it.next(), node_count++ )
   {

@@ -21,7 +21,7 @@ void Scene::update()
     std::shared_ptr<SGNode> n = bfs_q.front(); bfs_q.pop();
     std::shared_ptr<Model> model = n->getModel();
 
-    if( model && 
+    if( model &&
       ( std::find( models.begin(), models.end(), model ) == models.end() ) )
     {
       std::shared_ptr<Shader> shader = model->getShader();
