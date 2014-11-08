@@ -99,7 +99,7 @@ int main()
   gui_element_data.mode_data.box.anchor_y = 0;
   gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
   gui_element_data.mode_data.box.smaller_dimension = 100;
-  gui_element_data.mode_data.box.aspect_ratio = 3;
+  gui_element_data.mode_data.box.aspect_ratio = 1;
   std::shared_ptr<GUIElement> gui_element
     ( new GUIElement( gui_element_data ) );
 
