@@ -15,6 +15,11 @@ include_directories(${GLFW_INCLUDE_DIRS})
 link_directories(${GLFW_LIBRARY_DIRS})
 add_definitions(${GLFW_DEFINITIONS})
 
+find_package(FreeType REQUIRED)
+include_directories(${FREETYPE_INCLUDE_DIRS})
+link_directories(${FREETYPE_LIBRARY_DIRS})
+add_definitions(${FREETYPE_DEFINITIONS})
+
 include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/inc)
 
 SET(
@@ -81,6 +86,8 @@ SET(
   GUIManager.cpp
   GUIElement.cpp
   GUIScene.cpp
+  GUITextManager.cpp
+  GUIText.cpp
   Effect.cpp
   EffectsManager.cpp
   SceneGraph.cpp
@@ -109,6 +116,8 @@ SET(
   GUIManager.h
   GUIElement.h
   GUIScene.h
+  GUITextManager.h
+  GUIText.h
   Effect.h
   EffectsManager.h
   ResourceManager.h
@@ -146,7 +155,9 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   SET( SOIL_LIB soil.lib )
 endif()
 
-target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLFW_LIBRARY} ${White_SOURCE_DIR}/Renderer/src/SOIL/${SOIL_LIB} WMath)
+target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY}
+  ${GLFW_LIBRARY} ${FREETYPE_LIBRARY}
+  ${White_SOURCE_DIR}/Renderer/src/SOIL/${SOIL_LIB} WMath)
 
 source_group("Source Files\\Helpers" FILES ${Helpers_SRCs})
 source_group("Header Files\\Helpers" FILES ${Helpers_Hs_PATHs})

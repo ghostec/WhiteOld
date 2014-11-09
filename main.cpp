@@ -10,6 +10,7 @@
 #include "Renderer/Scene.h"
 #include "Renderer/GUIElement.h"
 #include "Renderer/GUIScene.h"
+#include "Renderer/GUITextManager.h"
 #include "Renderer/ResourceManager.h"
 #include "Renderer/Helpers/XMLAssets.h"
 #include "Renderer/Helpers/XMLScene.h"
@@ -95,8 +96,8 @@ int main()
   gui_element_data.mode = CONTAINABLE_MODE_BOX;
   gui_element_data.mode_data.box.anchor_position = CONTAINABLE_ANCHOR_TOP_LEFT;
   gui_element_data.mode_data.box.anchor_mode = CONTAINABLE_ANCHOR_MODE_ABSOLUTE;
-  gui_element_data.mode_data.box.anchor_x = 0;
-  gui_element_data.mode_data.box.anchor_y = 0;
+  gui_element_data.mode_data.box.anchor_x = 20;
+  gui_element_data.mode_data.box.anchor_y = 20;
   gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
   gui_element_data.mode_data.box.smaller_dimension = 100;
   gui_element_data.mode_data.box.aspect_ratio = 1;
@@ -104,10 +105,12 @@ int main()
     ( new GUIElement( gui_element_data ) );
 
   std::shared_ptr<GUIScene> gui_scene( new GUIScene( "GUIScene" ) );
-  gui_scene->setViewport( viewport_window_top );
+  gui_scene->setViewport( viewport_window_right );
   gui_scene->setRootGUIElement( gui_element );
 
-  viewport_window_top->addScene( gui_scene->getScene() );
+  viewport_window_right->addScene( gui_scene->getScene() );
+
+  std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 
