@@ -105,12 +105,20 @@ int main()
     ( new GUIElement( gui_element_data ) );
 
   std::shared_ptr<GUIScene> gui_scene( new GUIScene( "GUIScene" ) );
-  gui_scene->setViewport( viewport_window_right );
-  gui_scene->setRootGUIElement( gui_element );
+  gui_scene->setViewport( viewport_window_top );
+  //gui_scene->setRootGUIElement( gui_element );
 
-  viewport_window_right->addScene( gui_scene->getScene() );
+  viewport_window_top->addScene( gui_scene->getScene() );
 
   std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
+  gui_text_manager->loadFont( "Monaco" );
+
+  std::shared_ptr<GUIText> gui_text
+    ( new GUIText( "name", gui_text_manager->getFont( "Monaco" ) ) );
+
+  gui_text->setText( "abc" );
+
+  gui_scene->setRootGUIElement( gui_text->getGUIElement() );
 
   auto t0 = std::chrono::high_resolution_clock::now();
 

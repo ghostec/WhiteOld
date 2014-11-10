@@ -25,6 +25,11 @@ class GUIElement : public Containable<GUIElement>
   public:
     GUIElement( ContainableData data );
     std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
+    // setters
+    void setShader( std::shared_ptr<Shader> shader );
+    void setTexture( std::shared_ptr<Texture> texture );
+    // getters
+    std::shared_ptr<Mesh> getMesh() { return this->mesh; }
 };
 
 #endif

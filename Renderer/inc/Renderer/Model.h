@@ -26,7 +26,8 @@ class Model
     std::shared_ptr<Texture> texture;
     ModelType model_type;
   public:
-    Model( std::string name, std::shared_ptr<Mesh> mesh, ModelType model_type = MODEL_3D );
+    Model( std::string name, std::shared_ptr<Mesh> mesh,
+        ModelType model_type = MODEL_3D );
     void use(); void unuse();
     void setTransform( WMath::mat4* t );
     // setters

@@ -27,13 +27,24 @@ namespace ShaderHelper
     glBindVertexArray( mesh->getVAO() );
     glBindBuffer( GL_ARRAY_BUFFER, mesh->getVBO() );
 
-    shader->setVertexAttribute( "vPosition", 3, 3 * sizeof( WMath::vec3 ),
-        0 );
-    shader->setVertexAttribute( "vUV", 3, 3 * sizeof( WMath::vec3 ),
-        sizeof( WMath::vec3 ) );
-    shader->setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
-        2 * sizeof( WMath::vec3 ) );
+    MeshType mesh_type = mesh->getType();
 
+    if( mesh_type == MESH_V3NT )
+    {
+      shader->setVertexAttribute( "vPosition", 3, 3 * sizeof( WMath::vec3 ),
+          0 );
+      shader->setVertexAttribute( "vUV", 3, 3 * sizeof( WMath::vec3 ),
+          sizeof( WMath::vec3 ) );
+      shader->setVertexAttribute( "vNormal", 3, 3 * sizeof( WMath::vec3 ),
+          2 * sizeof( WMath::vec3 ) );
+    }
+    else if( mesh_type == MESH_V2T )
+    {
+      shader->setVertexAttribute( "vPosition", 2, sizeof( WMath::vec4 ),
+          0 );
+      shader->setVertexAttribute( "vUV", 2, sizeof( WMath::vec4 ),
+          sizeof( WMath::vec2 ) );
+    }
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
     glBindVertexArray( 0 );
   }

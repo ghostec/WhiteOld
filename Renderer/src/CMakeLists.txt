@@ -24,12 +24,14 @@ include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/
 
 SET(
   OpenGL_SRCs
-  OpenGL/Mesh.cpp 
+  OpenGL/Mesh.cpp
   OpenGL/Shader.cpp
   OpenGL/Renderer.cpp
   OpenGL/MousePicking.cpp
   OpenGL/Texture.cpp
   OpenGL/Window.cpp
+  OpenGL/GUIText.cpp
+  OpenGL/GUITextManager.cpp
 )
 
 SET(
@@ -40,6 +42,8 @@ SET(
   OpenGL/MousePicking.h
   OpenGL/Texture.h
   OpenGL/Window.h
+  OpenGL/GUIText.h
+  OpenGL/GUITextManager.h
 )
 
 SET(
@@ -82,12 +86,11 @@ SET(
   Scene.cpp
   Light.cpp
   Model.cpp
+  Vertex.cpp
   SceneEditor.cpp
   GUIManager.cpp
   GUIElement.cpp
   GUIScene.cpp
-  GUITextManager.cpp
-  GUIText.cpp
   Effect.cpp
   EffectsManager.cpp
   SceneGraph.cpp
@@ -111,6 +114,7 @@ SET(
   Window.h
   ModelData.h
   Model.h
+  Vertex.h
   MousePicking.h
   SceneEditor.h
   GUIManager.h

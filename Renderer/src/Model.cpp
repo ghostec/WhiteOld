@@ -15,6 +15,7 @@ void Model::setShader( std::shared_ptr<Shader> shader )
 
 void Model::use()
 {
+  ShaderHelper::setMesh( &*shader, &*this->mesh );
   this->mesh->use();
   if( this->texture ) this->texture->use( this->shader );
   ShaderHelper::setModelData( &*this->shader, &*this->model_data );

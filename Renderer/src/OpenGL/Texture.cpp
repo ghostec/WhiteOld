@@ -1,5 +1,22 @@
 #include "Renderer/OpenGL/Texture.h"
 
+Texture::Texture( WMath::vec2 dimensions )
+{
+  glActiveTexture(GL_TEXTURE0);
+  glGenTextures(1, &this->texture);
+  glBindTexture(GL_TEXTURE_2D, this->texture);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, dimensions[0], dimensions[1],
+      0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
 Texture::Texture( std::string name )
 {
   glGenTextures( 1, &this->texture );
