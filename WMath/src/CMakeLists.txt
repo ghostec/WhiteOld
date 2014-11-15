@@ -12,7 +12,7 @@ SET(
   interpolation.cpp
 )
 
-SET( WMath_Hs_DIR ../inc/WMath )
+SET( WMath_Hs_DIR ../include/WMath )
 
 SET(
   WMath_Hs

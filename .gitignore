@@ -3,6 +3,8 @@
 
 assets
 bullet3-master/build
+Renderer/glfw/build
+Renderer/freetype/build
 
 # User-specific files
 *.suo

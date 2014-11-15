@@ -5,22 +5,16 @@ include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
 add_definitions(${OpenGl_DEFINITIONS})
 
-find_package(GLEW REQUIRED)
-include_directories(${GLEW_INCLUDE_DIRS})
-link_directories(${GLEW_LIBRARY_DIRS})
-add_definitions(${GLEW_DEFINITIONS})
+find_library(GLEW_LIBRARY NAMES glew32 PATHS ../glew/lib/Release/Win32)
+find_library(FREETYPE_LIBRARY NAMES freetype PATHS ../freetype/build/Release)
+find_library(GLFW_LIBRARY NAMES glfw3 PATHS ../glfw/build/src/Release)
 
-find_package(GLFW REQUIRED)
-include_directories(${GLFW_INCLUDE_DIRS})
-link_directories(${GLFW_LIBRARY_DIRS})
-add_definitions(${GLFW_DEFINITIONS})
+set(TINYXML2_INCLUDE_DIR ${WHITE_SOURCE_DIR}/tinyxml2)
+set(GLEW_INCLUDE_DIRS ../glew/include)
+set(GLFW_INCLUDE_DIRS ../glfw/include)
+set(FREETYPE_INCLUDE_DIRS ../freetype/include)
 
-find_package(FreeType REQUIRED)
-include_directories(${FREETYPE_INCLUDE_DIRS})
-link_directories(${FREETYPE_LIBRARY_DIRS})
-add_definitions(${FREETYPE_DEFINITIONS})
-
-include_directories(${White_SOURCE_DIR}/WMath/inc/ ${White_SOURCE_DIR}/Renderer/inc)
+set(WHITE_RENDERER_INCLUDE_DIRS ${White_SOURCE_DIR}/WMath/inc/ ../inc)
 
 SET(
   OpenGL_SRCs
@@ -101,7 +95,7 @@ SET(
   ${Helpers_OpenGL_SRCs}
 )
 
-SET( Renderer_Hs_DIR  ../inc/Renderer )
+SET( Renderer_Hs_DIR  ../include/Renderer )
 
 SET(
   Renderer_Hs
@@ -151,7 +145,7 @@ FOREACH(Renderer_H ${Renderer_Hs})
   LIST(APPEND Renderer_Hs_PATHs "${Renderer_Hs_DIR}/${Renderer_H}")
 ENDFOREACH() 
 
-add_library( Renderer ${Renderer_SRCs} ${Renderer_Hs_PATHs} )
+add_library(Renderer ${Renderer_SRCs} ${Renderer_Hs_PATHs} )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   SET( SOIL_LIB libSOIL.dylib )
@@ -159,7 +153,8 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   SET( SOIL_LIB soil.lib )
 endif()
 
-target_link_libraries(Renderer ${OPENGL_LIBRARIES} ${GLEW_LIBRARY}
+target_link_libraries(Renderer WMath Input ${OPENGL_LIBRARIES}
+  ${TINYXML2_LIBRARY} ${GLEW_LIBRARY}
   ${GLFW_LIBRARY} ${FREETYPE_LIBRARY}
   ${White_SOURCE_DIR}/Renderer/src/SOIL/${SOIL_LIB} WMath)
 

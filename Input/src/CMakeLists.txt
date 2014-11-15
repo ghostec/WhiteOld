@@ -1,5 +1,3 @@
-include_directories(${White_SOURCE_DIR}/Input/inc)
-
 SET(
   Input_SRCs
   GLFW/Input.cpp
@@ -11,7 +9,7 @@ SET(
   GLFW/Input.h
 )
 
-SET( Input_Hs_DIR ../inc/Input )
+SET( Input_Hs_DIR ../include/Input )
 
 FOREACH(Input_H ${Input_Hs})
   LIST(APPEND Input_Hs_PATHs "${Input_Hs_DIR}/${Input_H}")
