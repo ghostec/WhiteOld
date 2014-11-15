@@ -100,7 +100,7 @@ int main()
 	gui_element_data.mode_data.box.anchor_y = 20;
 	gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
 	gui_element_data.mode_data.box.smaller_dimension = 100;
-	gui_element_data.mode_data.box.aspect_ratio = 1;
+	gui_element_data.mode_data.box.aspect_ratio = 2;
 	std::shared_ptr<GUIElement> gui_element
 		(new GUIElement(gui_element_data));
 
@@ -109,6 +109,8 @@ int main()
 	gui_scene->setRootGUIElement( gui_element );
 
 	viewport_window_top->addScene(gui_scene->getScene());
+
+  gui_element->getTexture()->load( "unpack.png" );
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 
