@@ -26,7 +26,7 @@
 
 int main()
 {
-	Window window(WMath::vec2(800, 600));
+	Window window(WMath::vec2(1200, 900));
 	active_window = &window;
 
 	Input input(window.getWindow());
@@ -99,8 +99,8 @@ int main()
 	gui_element_data.mode_data.box.anchor_x = 20;
 	gui_element_data.mode_data.box.anchor_y = 20;
 	gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-	gui_element_data.mode_data.box.smaller_dimension = 100;
-	gui_element_data.mode_data.box.aspect_ratio = 2;
+	gui_element_data.mode_data.box.smaller_dimension = 45;
+	gui_element_data.mode_data.box.aspect_ratio = 45.55555555555556;
 	std::shared_ptr<GUIElement> gui_element
 		(new GUIElement(gui_element_data));
 
@@ -110,7 +110,11 @@ int main()
 
 	viewport_window_top->addScene(gui_scene->getScene());
 
-  gui_element->getTexture()->load( "unpack.png" );
+  std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
+  gui_text_manager->loadFont( "liberation" );
+
+  gui_element->setTexture( gui_text_manager->getFont( "liberation" )->texture_atlas );
+  //gui_element->getTexture()->load( "unpack.png" );
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 

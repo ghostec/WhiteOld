@@ -10,7 +10,7 @@
 struct GUITextFont
 {
   float atlas_width, atlas_height;
-
+  std::string name;
   std::shared_ptr<Texture> texture_atlas;
 
   struct character_info {
