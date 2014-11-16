@@ -6,8 +6,14 @@ GUITextManager::GUITextManager()
     std::cout << "Could not init freetype library" << std::endl;
 }
 
-void GUITextManager::loadFont( std::string name )
+std::shared_ptr<GUITextFont> GUITextManager::getGUITextFont( std::string name )
 {
+  for( auto f : this->fonts )
+    if( f->name == name )
+      return f;
+
+  std::shared_ptr<GUITextFont> font( new GUITextFont() );
+
   FT_Face face;
 
   std::string path = "../assets/fonts/" + name + ".ttf";
@@ -34,9 +40,12 @@ void GUITextManager::loadFont( std::string name )
   std::shared_ptr<Texture> texture_atlas
     ( new Texture( WMath::vec2( ( float ) w, ( float ) h ) ) );
 
-  std::cout << w << " " << h << std::endl;
-
   int x = 0;
+
+  font->name = name;
+  font->texture_atlas = texture_atlas;
+  font->atlas_width = w;
+  font->atlas_height = h;
 
   for( int i = 32; i < 128; i++ )
   {
@@ -45,19 +54,48 @@ void GUITextManager::loadFont( std::string name )
 
     glTexSubImage2D( GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer );
 
+    font->c[ i ].ax = g->advance.x >> 6;
+    font->c[ i ].ay = g->advance.y >> 6;
+
+    font->c[ i ].bw = g->bitmap.width;
+    font->c[ i ].bh = g->bitmap.rows;
+
+    font->c[ i ].bl = g->bitmap_left;
+    font->c[ i ].bt = g->bitmap_top;
+
+    font->c[ i ].tx = ( float ) x / w;
+
     x += g->bitmap.width;
   }
-
-  std::shared_ptr<GUITextFont> font( new GUITextFont() );
-  font->name = name;
-  font->texture_atlas = texture_atlas;
 
   this->fonts.push_back( font );
 }
 
-std::shared_ptr<GUITextFont> GUITextManager::getFont( std::string name )
+void GUITextManager::update()
 {
-  for( auto f : this->fonts )
-    if( f->name == name )
-      return f;
+  for( auto& o : this->gui_texts ) o->update();
+}
+
+std::shared_ptr<GUIText> GUITextManager::makeGUIText( std::string name,
+  std::string font_name, float font_size, std::string text,
+  std::shared_ptr<GUIElement> parent, std::shared_ptr<Viewport> viewport )
+{
+  std::shared_ptr<GUITextFont> font = this->getGUITextFont( font_name );
+  std::shared_ptr<GUIText> gui_text( new GUIText( name, font, viewport, parent, text ) );
+  this->addGUIText( gui_text );
+  return gui_text;
+}
+
+void GUITextManager::addGUIText( std::shared_ptr<GUIText> gui_text )
+{
+  this->gui_texts.push_back( gui_text );
+}
+
+void GUITextManager::removeGUIText( std::shared_ptr<GUIText> gui_text )
+{
+  this->gui_texts.erase
+    ( std::remove_if( this->gui_texts.begin(), this->gui_texts.end(),
+    [ & ] ( std::shared_ptr<GUIText>& o )
+  { if( o == gui_text ) return true; } ),
+    this->gui_texts.end() );
 }

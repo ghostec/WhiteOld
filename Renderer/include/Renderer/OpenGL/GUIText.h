@@ -4,12 +4,13 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "Renderer/Viewport.h"
 #include "Renderer/Window.h"
 #include "Renderer/GUIElement.h"
 
 struct GUITextFont
 {
-  float atlas_width, atlas_height;
+  float atlas_width, atlas_height, font_size;
   std::string name;
   std::shared_ptr<Texture> texture_atlas;
 
@@ -31,12 +32,19 @@ class GUIText
 {
   private:
     std::string name, text;
+    std::shared_ptr<Viewport> viewport;
+    WMath::vec2 cached_viewport_dimensions;
     std::shared_ptr<GUIElement> parent, gui_element;
     std::shared_ptr<GUITextFont> font;
+    // methods
+    void updateGUIElement();
   public:
     GUIText( std::string name, std::shared_ptr<GUITextFont> font,
-       std::string text = "" );
+      std::shared_ptr<Viewport> viewport, std::shared_ptr<GUIElement> parent,
+      std::string text = "" );
     void update();
+    void hide();
+    void show();
     // setters
     void setText( std::string text );
     void setFont( std::shared_ptr<GUITextFont> font );

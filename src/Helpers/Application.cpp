@@ -2,7 +2,6 @@
 
 namespace ApplicationHelper
 {
-
   int ReadFile( const std::string file_path, std::string* content )
   {
     std::ifstream File( file_path.c_str() );
@@ -28,5 +27,18 @@ namespace ApplicationHelper
 
     return 0;
   }
+
+  void JobDispatcher::execute()
+  {
+    for( auto j : this->jobs ) j();
+    this->jobs.clear();
+  }
+
+  void JobDispatcher::addJob( std::function<void()> job )
+  {
+    this->jobs.push_back( job );
+  }
+
+  JobDispatcher* g_job_dispatcher;
 
 }

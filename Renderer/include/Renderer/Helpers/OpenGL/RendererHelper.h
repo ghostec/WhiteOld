@@ -6,6 +6,7 @@
 #include <queue>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Renderer/Viewport.h"
 #include "Renderer/Model.h"
 #include "Renderer/Scene.h"
 #include "Renderer/SceneGraph.h"
@@ -16,6 +17,7 @@
 
 namespace RendererHelper
 {
+  void updateViewport( Viewport* viewport );
   void drawSGNode( SGNode* n, Shader* custom_shader = nullptr );
   void drawSceneGraph( SceneGraph* scene_graph );
 }

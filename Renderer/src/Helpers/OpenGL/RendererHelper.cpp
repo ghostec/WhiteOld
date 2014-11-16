@@ -2,6 +2,21 @@
 
 namespace RendererHelper
 {
+  void updateViewport( Viewport* viewport )
+  {
+    // TODO: if viewport dirty or window dirty
+    ContainableIterator<Viewport, Window> it( viewport, active_window );
+
+    for( Viewport* v = it.begin(); v != nullptr; v = it.next() )
+    {
+      for( auto s : v->getScenes() )
+      {
+        SGNodeIterator it( &*s->getSceneGraph()->getRootSGNode() );
+        for( SGNode* n = it.begin(); n; n = it.next() );
+      }
+    }
+  }
+
   void drawSGNode( SGNode* n, Shader* custom_shader )
   {
     Model* model = &*n->getModel();

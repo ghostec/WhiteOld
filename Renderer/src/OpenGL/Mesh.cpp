@@ -47,12 +47,12 @@ void Mesh::resetVBO()
   else if( this->type == MESH_V2T )
   {
     std::vector< WMath::vec4 > data;
+
     for( int i = 0; i < this->vertices.size(); i++ )
     {
       WMath::vec4 v
         ( this->vertices[i][0], this->vertices[i][1],
           this->uvs[i][0], this->uvs[i][1] );
-      std::cout << v[0] << " " << v[1] << " " << v[2] << " " << v[3] << " " << std::endl;
       data.push_back( v );
     }
 

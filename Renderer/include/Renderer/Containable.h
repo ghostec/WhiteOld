@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include "Helpers/Application.h"
 #include "Renderer/Scene.h"
 #include "Renderer/Helpers/CameraHelper.h"
 #include "WMath/WMath.h"
@@ -90,11 +91,13 @@ class Containable
     bool dirty;
   public:
     Containable( ContainableData data );
+    // setters
     void setLeftChild( std::shared_ptr<T> v ) { this->left_c = v; }
     void setRightChild( std::shared_ptr<T> v ) { this->right_c = v; }
     void setContainableData( ContainableData d ) { data = d; dirty = true; }
     void setContainableCachedData( ContainableCachedData cached_data );
     void setDirty( bool v );
+    // getters
     ContainableData getContainableData() { return this->data; }
     std::shared_ptr<T> getLeftChild() { return left_c; }
     std::shared_ptr<T> getRightChild() { return right_c; }

@@ -99,8 +99,8 @@ int main()
 	gui_element_data.mode_data.box.anchor_x = 20;
 	gui_element_data.mode_data.box.anchor_y = 20;
 	gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-	gui_element_data.mode_data.box.smaller_dimension = 45;
-	gui_element_data.mode_data.box.aspect_ratio = 45.55555555555556;
+	gui_element_data.mode_data.box.smaller_dimension = 100;
+	gui_element_data.mode_data.box.aspect_ratio = 1;
 	std::shared_ptr<GUIElement> gui_element
 		(new GUIElement(gui_element_data));
 
@@ -110,11 +110,10 @@ int main()
 
 	viewport_window_top->addScene(gui_scene->getScene());
 
-  std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
-  gui_text_manager->loadFont( "liberation" );
+  //std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
+  //std::shared_ptr<GUIText> gui_text = gui_text_manager->makeGUIText( "name", "liberation", 48.0f, "text is true", nullptr, viewport_window_top );
 
-  gui_element->setTexture( gui_text_manager->getFont( "liberation" )->texture_atlas );
-  //gui_element->getTexture()->load( "unpack.png" );
+  //gui_scene->setRootGUIElement( gui_text->getGUIElement() );
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 
@@ -126,10 +125,13 @@ int main()
 		if (active_input->hasInput(std::set<int>{ GLFW_KEY_S }, PRESS))
 			XMLHelper::exportScene("test", &*scene);
 
-		physics_manager->update();
+    RendererHelper::updateViewport( &*viewport_window );
+    physics_manager->update();
+    gui_scene->update();
+    //gui_text_manager->update();
 		scene_editor.update();
 		renderer.render();
-		gui_scene->update();
+
 		while (std::chrono::duration_cast< std::chrono::milliseconds >
 			(std::chrono::high_resolution_clock::now() - t0).count()
 			< 16.6666666667);
