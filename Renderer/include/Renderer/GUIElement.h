@@ -17,20 +17,19 @@ typedef enum GUIType
 class GUIElement : public Containable<GUIElement>
 {
   private:
-    std::shared_ptr<Mesh> mesh;
     std::shared_ptr<Model> model;
-    std::shared_ptr<Texture> texture;
-    std::shared_ptr<Shader> shader;
     std::shared_ptr<SGNode> sg_node;
   public:
     GUIElement( ContainableData data );
-    std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
     // setters
     void setShader( std::shared_ptr<Shader> shader );
     void setTexture( std::shared_ptr<Texture> texture );
+    using Containable<GUIElement>::setLeftChild;
+    void setLeftChild( std::shared_ptr<GUIElement> child );
     // getters
-    std::shared_ptr<Mesh> getMesh() { return this->mesh; }
-    std::shared_ptr<Texture> getTexture() { return this->texture; }
+    std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
+    std::shared_ptr<Mesh> getMesh() { return this->model->getMesh(); }
+    std::shared_ptr<Texture> getTexture() { return this->model->getTexture(); }
 };
 
 #endif

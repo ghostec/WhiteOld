@@ -46,6 +46,7 @@ void GUIScene::update()
     SGNodeWorldTransform w;
     w.data.position = position;
     w.data.scale = scale;
+
     sg_node->setWorldTransform( w );
   }
 }

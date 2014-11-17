@@ -32,4 +32,6 @@ namespace ApplicationHelper
   extern JobDispatcher* g_job_dispatcher;
 }
 
+void testss( std::string t );
+
 #endif

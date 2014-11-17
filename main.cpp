@@ -96,24 +96,41 @@ int main()
 	gui_element_data.mode = CONTAINABLE_MODE_BOX;
 	gui_element_data.mode_data.box.anchor_position = CONTAINABLE_ANCHOR_TOP_LEFT;
 	gui_element_data.mode_data.box.anchor_mode = CONTAINABLE_ANCHOR_MODE_ABSOLUTE;
-	gui_element_data.mode_data.box.anchor_x = 20;
-	gui_element_data.mode_data.box.anchor_y = 20;
+	gui_element_data.mode_data.box.anchor_x = 0;
+	gui_element_data.mode_data.box.anchor_y = 0;
 	gui_element_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
 	gui_element_data.mode_data.box.smaller_dimension = 100;
 	gui_element_data.mode_data.box.aspect_ratio = 1;
 	std::shared_ptr<GUIElement> gui_element
 		(new GUIElement(gui_element_data));
 
+  ContainableData gui_element_2_data;
+  gui_element_2_data.mode = CONTAINABLE_MODE_BOX;
+  gui_element_2_data.mode_data.box.anchor_position = CONTAINABLE_ANCHOR_TOP_LEFT;
+  gui_element_2_data.mode_data.box.anchor_mode = CONTAINABLE_ANCHOR_MODE_ABSOLUTE;
+  gui_element_2_data.mode_data.box.anchor_x = 0;
+  gui_element_2_data.mode_data.box.anchor_y = 0;
+  gui_element_2_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
+  gui_element_2_data.mode_data.box.smaller_dimension = 40;
+  gui_element_2_data.mode_data.box.aspect_ratio = 1;
+  std::shared_ptr<GUIElement> gui_element_2
+    ( new GUIElement( gui_element_2_data ) );
+
+  //gui_element->setLeftChild( gui_element_2 );
+
 	std::shared_ptr<GUIScene> gui_scene(new GUIScene("GUIScene"));
 	gui_scene->setViewport(viewport_window_top);
 	gui_scene->setRootGUIElement( gui_element );
 
-	viewport_window_top->addScene(gui_scene->getScene());
+	viewport_window_top->addScene( gui_scene->getScene() );
 
   //std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
   //std::shared_ptr<GUIText> gui_text = gui_text_manager->makeGUIText( "name", "liberation", 48.0f, "text is true", nullptr, viewport_window_top );
 
   //gui_scene->setRootGUIElement( gui_text->getGUIElement() );
+
+  ApplicationHelper::JobDispatcher job_dispatcher;
+  ApplicationHelper::g_job_dispatcher = &job_dispatcher;
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 
@@ -131,6 +148,7 @@ int main()
     //gui_text_manager->update();
 		scene_editor.update();
 		renderer.render();
+    ApplicationHelper::g_job_dispatcher->execute();
 
 		while (std::chrono::duration_cast< std::chrono::milliseconds >
 			(std::chrono::high_resolution_clock::now() - t0).count()

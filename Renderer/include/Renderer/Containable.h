@@ -174,7 +174,8 @@ T* ContainableIterator< T, P >::begin()
   {
     WMath::vec2 parent_dimensions = parent->getDimensions();
     p_root = { WMath::vec2(0), parent_dimensions, this->root };
-    parent->setDirty( false );
+    ApplicationHelper::g_job_dispatcher->addJob
+      ( std::bind( &P::setDirty, parent, false ) );
     this->root->setDirty( true );
   }
   else
@@ -311,7 +312,8 @@ T* ContainableIterator< T, P >::next()
     containable_cached_data.background = data.background;
     p_c.containable->setContainableCachedData( containable_cached_data );
 
-    p_c.containable->setDirty( false );
+    ApplicationHelper::g_job_dispatcher->addJob
+      ( std::bind( &T::setDirty, p_c.containable, false ) );
 
     T* left_c = &*p_c.containable->getLeftChild( );
     if( left_c )
