@@ -34,7 +34,10 @@ void SGNode::setWorldTransformDirty( bool v )
   else
   {
     this->world_transform_dirty = v;
-    for( auto c : this->children ) setWorldTransformDirty( v );
+    for( auto c : this->children )
+    {
+      c->setWorldTransformDirty( v );
+    }
   }
 }
 
@@ -68,9 +71,11 @@ SGNode* SGNodeIterator::next()
     SGNodeWorldTransform w = n->getWorldTransform();
     SGNodePropagation pr = n->getPropagation();
 
+    // TODO: fix propagation
+
     pr.t_node.position = pr.t_node.position + w.data.position;
     pr.t_node.scale = w.data.scale;
-    pr.t_node.rotate = pr.t_node.rotate * w.data.rotate;
+    pr.t_node.rotate = w.data.rotate;
 
     WMath::mat4 t = WMath::scaleM( pr.t_node.scale )
       * WMath::rotateM( pr.t_node.rotate )
@@ -79,7 +84,8 @@ SGNode* SGNodeIterator::next()
 
     for( auto c : n->getChildren() ) c->setPropagation( pr );
 
-    n->setWorldTransformDirty( false );
+    ApplicationHelper::g_job_dispatcher->addJob
+      ( std::bind( &SGNode::setWorldTransformDirty, n, false ) );
   }
 
   for( auto c : n->getChildren( ) )

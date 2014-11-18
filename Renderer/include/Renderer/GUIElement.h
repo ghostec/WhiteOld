@@ -1,6 +1,7 @@
 #ifndef __WHITE_RENDERER_GUIELEMENT__
 #define __WHITE_RENDERER_GUIELEMENT__
 
+#include <string>
 #include <memory>
 #include "Renderer/Containable.h"
 #include "Renderer/Mesh.h"
@@ -20,11 +21,11 @@ class GUIElement : public Containable<GUIElement>
     std::shared_ptr<Model> model;
     std::shared_ptr<SGNode> sg_node;
   public:
-    GUIElement( ContainableData data );
+    GUIElement( std::string name, ContainableData data );
     // setters
     void setShader( std::shared_ptr<Shader> shader );
     void setTexture( std::shared_ptr<Texture> texture );
-    using Containable<GUIElement>::setLeftChild;
+    //using Containable<GUIElement>::setLeftChild;
     void setLeftChild( std::shared_ptr<GUIElement> child );
     // getters
     std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }

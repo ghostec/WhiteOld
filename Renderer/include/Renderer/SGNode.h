@@ -7,6 +7,7 @@
 #include <queue>
 #include <memory>
 #include <string>
+#include "Helpers/Application.h"
 #include "Model.h"
 #include "WMath/WMath.h"
 

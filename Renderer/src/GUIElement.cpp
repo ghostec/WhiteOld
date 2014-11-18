@@ -1,6 +1,6 @@
 #include "Renderer/GUIElement.h"
 
-GUIElement::GUIElement( ContainableData data ) : Containable( data )
+GUIElement::GUIElement( std::string name, ContainableData data ) : Containable( data )
 {
   std::shared_ptr<Mesh> mesh( new Mesh( "gui.obj" ) );
   std::shared_ptr<Texture> texture( new Texture( "diamond.png" ) );
@@ -10,11 +10,12 @@ GUIElement::GUIElement( ContainableData data ) : Containable( data )
   this->model->setTexture( texture );
   this->model->setShader( shader );
 
-  this->sg_node.reset( new SGNode( "gui_sg_node", this->model ) );
+  this->sg_node.reset( new SGNode( name, this->model ) );
 }
 
 void GUIElement::setLeftChild( std::shared_ptr<GUIElement> child )
 {
+  Containable<GUIElement>::setLeftChild( child );
   this->sg_node->addChild( child->getSGNode() );
 }
 

@@ -69,6 +69,8 @@ std::shared_ptr<GUITextFont> GUITextManager::getGUITextFont( std::string name )
   }
 
   this->fonts.push_back( font );
+
+  return font;
 }
 
 void GUITextManager::update()

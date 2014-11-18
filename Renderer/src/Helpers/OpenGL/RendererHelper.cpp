@@ -34,6 +34,15 @@ namespace RendererHelper
 
     WMath::mat4 world_transform = n->getWorldTransformM();
 
+    if( model->getModelType() == MODEL_2D )
+    {
+      glDisable( GL_DEPTH_TEST );
+    }
+    else
+    {
+      glEnable( GL_DEPTH_TEST );
+    }
+
     model->use();
     shader->setUniform( "Model", &world_transform, GL_TRUE );
     shader->use();

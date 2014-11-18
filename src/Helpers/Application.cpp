@@ -42,8 +42,3 @@ namespace ApplicationHelper
   JobDispatcher* g_job_dispatcher;
 
 }
-
-void testss( std::string t )
-{
-  std::cout << t << std::endl;
-}

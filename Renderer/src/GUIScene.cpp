@@ -29,24 +29,38 @@ void GUIScene::update()
 
   for( GUIElement* g = it.begin(); g != nullptr; g = it.next() )
   {
-    SGNode* sg_node = &*g->getSGNode();
-    ContainableCachedData g_data = g->getContainableCachedData();
+    if( g->getDirty() )
+    {
+      SGNode* sg_node = &*g->getSGNode();
+      ContainableCachedData g_data = g->getContainableCachedData();
 
-    WMath::vec3 scale
-      ( g_data.dimensions[0] / p_dimensions[0],
-        g_data.dimensions[1] / p_dimensions[1], 1.0f );
+      WMath::vec3 scale
+        ( g_data.dimensions[ 0 ] / p_dimensions[ 0 ],
+        g_data.dimensions[ 1 ] / p_dimensions[ 1 ], 1.0f );
 
-    WMath::vec3 position;
-    position[0] = g_data.anchor[0] + g_data.dimensions[0] / 2.0f;
-    position[1] = g_data.anchor[1] + g_data.dimensions[1] / 2.0f;
+      WMath::vec3 position;
+      position[ 0 ] = g_data.anchor[ 0 ] + g_data.dimensions[ 0 ] / 2.0f;
+      position[ 1 ] = g_data.anchor[ 1 ] + g_data.dimensions[ 1 ] / 2.0f;
 
-    position[0] = ( 2.0f * position[0] ) / p_dimensions[0] - 1.0f;
-    position[1] = ( -2.0f * position[1] ) / p_dimensions[1] + 1.0f;
+      position[ 0 ] = ( 2.0f * position[ 0 ] ) / p_dimensions[ 0 ] - 1.0f;
+      position[ 1 ] = ( -2.0f * position[ 1 ] ) / p_dimensions[ 1 ] + 1.0f;
 
-    SGNodeWorldTransform w;
-    w.data.position = position;
-    w.data.scale = scale;
+      SGNodeWorldTransform w;
+      w.data.position = position;
+      w.data.scale = scale;
 
-    sg_node->setWorldTransform( w );
+      if( sg_node->getName() == "name" )
+      {
+        std::cout << g_data.anchor[ 0 ] << std::endl;
+        std::cout << g_data.anchor[ 1 ] << std::endl;
+      }
+
+      WMath::mat4 t = WMath::scaleM( w.data.scale )
+        * WMath::rotateM( w.data.rotate )
+        * WMath::translateM( w.data.position );
+
+      //sg_node->setWorldTransform( w );
+      sg_node->setWorldTransform( t );
+    }
   }
 }
