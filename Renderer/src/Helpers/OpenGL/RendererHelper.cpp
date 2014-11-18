@@ -32,6 +32,8 @@ namespace RendererHelper
     }
     else shader = &*model->getShader();
 
+    ShaderHelper::setModelData( shader, &*model->getModelData() );
+
     WMath::mat4 world_transform = n->getWorldTransformM();
 
     if( model->getModelType() == MODEL_2D )

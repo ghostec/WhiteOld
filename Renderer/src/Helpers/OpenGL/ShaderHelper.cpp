@@ -51,6 +51,7 @@ namespace ShaderHelper
 
   void setModelData( Shader* shader, ModelData* model_data )
   {
-
+    for( auto& o : model_data->get< WMath::vec4 >() )
+      shader->setUniform( o.first, o.second );
   }
 }

@@ -19,7 +19,8 @@ class Shader
     void setVertexAttribute(  std::string name, int count, int stride,
                               int offset );
     void setUniform( std::string name, const float value );
-    void setUniform( std::string name, const float value[3] );
+    void setUniform( std::string name, const float value[ 3 ] );
+    void setUniform( std::string name, WMath::vec4 value );
     void setUniform( std::string name, WMath::mat4* value, bool transpose );
     // getters
     const std::string getName() { return this->name; };

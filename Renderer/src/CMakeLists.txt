@@ -80,6 +80,7 @@ SET(
   Scene.cpp
   Light.cpp
   Model.cpp
+  ModelData.cpp
   Vertex.cpp
   SceneEditor.cpp
   GUIManager.cpp

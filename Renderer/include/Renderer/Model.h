@@ -29,7 +29,6 @@ class Model
     Model( std::string name, std::shared_ptr<Mesh> mesh,
         ModelType model_type = MODEL_3D );
     void use(); void unuse();
-    void setTransform( WMath::mat4* t );
     // setters
     void setShader( std::shared_ptr<Shader> shader );
     void setTexture( std::shared_ptr<Texture> texture )
@@ -41,6 +40,7 @@ class Model
     std::shared_ptr<Mesh> getMesh() { return this->mesh; };
     std::shared_ptr<Shader> getShader() { return this->shader; };
     std::shared_ptr<Texture> getTexture() { return this->texture; };
+    std::shared_ptr<ModelData> getModelData() { return this->model_data; }
     ModelType getModelType() { return this->model_type; }
     WMath::vec3 getDimensions();
 };

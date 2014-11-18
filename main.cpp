@@ -119,6 +119,8 @@ int main()
   ApplicationHelper::JobDispatcher job_dispatcher;
   ApplicationHelper::g_job_dispatcher = &job_dispatcher;
 
+  gui_text->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
+
 	auto t0 = std::chrono::high_resolution_clock::now();
 
 	while (window.isOpen() &&

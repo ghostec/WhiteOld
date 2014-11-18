@@ -47,6 +47,14 @@ void Shader::setUniform( std::string name, const float value[3] )
   glUseProgram( 0 );
 }
 
+void Shader::setUniform( std::string name, WMath::vec4 value )
+{
+  glUseProgram( this->shader );
+  GLint uniform = glGetUniformLocation( this->shader, name.c_str() );
+  glUniform4f( uniform, value[ 0 ], value[ 1 ], value[ 2 ], value[ 3 ] );
+  glUseProgram( 0 );
+}
+
 void Shader::setUniform( std::string name, WMath::mat4* value,
     bool transpose )
 {
