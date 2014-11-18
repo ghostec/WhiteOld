@@ -49,12 +49,6 @@ void GUIScene::update()
       w.data.position = position;
       w.data.scale = scale;
 
-      if( sg_node->getName() == "name" )
-      {
-        std::cout << g_data.anchor[ 0 ] << std::endl;
-        std::cout << g_data.anchor[ 1 ] << std::endl;
-      }
-
       WMath::mat4 t = WMath::scaleM( w.data.scale )
         * WMath::rotateM( w.data.rotate )
         * WMath::translateM( w.data.position );

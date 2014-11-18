@@ -70,14 +70,10 @@ void GUIText::updateGUIElement()
       text_width += this->font->c[ *p ].bw;
     }
 
-    std::cout << text_height << " " << text_width << std::endl;
-
     float x = 0, y = 0, sx, sy;
 
     sx = 2.0f / text_width;
     sy = 2.0f / text_height;
-
-    //sx = sy = 1.0f;
 
     for( const char *p = text.c_str(); *p; p++ )
     {

@@ -19,7 +19,7 @@ class GUITextManager
     std::vector< std::shared_ptr<GUIText> > gui_texts;
   public:
     GUITextManager();   
-    std::shared_ptr<GUITextFont> getGUITextFont( std::string name );
+    std::shared_ptr<GUITextFont> getGUITextFont( std::string name, float size );
     void update();
     std::shared_ptr<GUIText> makeGUIText( std::string name,
       std::string font_name, float font_size, std::string text,

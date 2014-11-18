@@ -6,7 +6,7 @@ GUITextManager::GUITextManager()
     std::cout << "Could not init freetype library" << std::endl;
 }
 
-std::shared_ptr<GUITextFont> GUITextManager::getGUITextFont( std::string name )
+std::shared_ptr<GUITextFont> GUITextManager::getGUITextFont( std::string name, float size )
 {
   for( auto f : this->fonts )
     if( f->name == name )
@@ -21,7 +21,7 @@ std::shared_ptr<GUITextFont> GUITextManager::getGUITextFont( std::string name )
   if( FT_New_Face( ft, path.c_str(), 0, &face ) )
     std::cout << "Could not open font" << std::endl;
 
-  FT_Set_Pixel_Sizes( face, 0, 48 );
+  FT_Set_Pixel_Sizes( face, 0, size );
 
   FT_GlyphSlot g = face->glyph;
 
@@ -82,7 +82,7 @@ std::shared_ptr<GUIText> GUITextManager::makeGUIText( std::string name,
   std::string font_name, float font_size, std::string text,
   std::shared_ptr<GUIElement> parent, std::shared_ptr<Viewport> viewport )
 {
-  std::shared_ptr<GUITextFont> font = this->getGUITextFont( font_name );
+  std::shared_ptr<GUITextFont> font = this->getGUITextFont( font_name, font_size );
   std::shared_ptr<GUIText> gui_text( new GUIText( name, font, viewport, parent, text ) );
   this->addGUIText( gui_text );
   return gui_text;

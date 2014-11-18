@@ -25,8 +25,8 @@ class GUIElement : public Containable<GUIElement>
     // setters
     void setShader( std::shared_ptr<Shader> shader );
     void setTexture( std::shared_ptr<Texture> texture );
-    //using Containable<GUIElement>::setLeftChild;
     void setLeftChild( std::shared_ptr<GUIElement> child );
+    void setRightChild( std::shared_ptr<GUIElement> child );
     // getters
     std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
     std::shared_ptr<Mesh> getMesh() { return this->model->getMesh(); }
