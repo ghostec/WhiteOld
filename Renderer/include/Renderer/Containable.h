@@ -312,9 +312,6 @@ T* ContainableIterator< T, P >::next()
     containable_cached_data.background = data.background;
     p_c.containable->setContainableCachedData( containable_cached_data );
 
-    ApplicationHelper::g_job_dispatcher->addJob
-      ( std::bind( &T::setDirty, p_c.containable, false ) );
-
     T* left_c = &*p_c.containable->getLeftChild( );
     if( left_c )
     {
@@ -328,6 +325,9 @@ T* ContainableIterator< T, P >::next()
       p_c_right.containable = right_c;
       bfs_q.push( p_c_right );
     }
+
+    ApplicationHelper::g_job_dispatcher->addJob
+      ( std::bind( &T::setDirty, p_c.containable, false ) );
 
     if( return_el == nullptr ) return_el = this->next();
 
