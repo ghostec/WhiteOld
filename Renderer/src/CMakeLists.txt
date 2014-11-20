@@ -8,6 +8,7 @@ add_definitions(${OpenGl_DEFINITIONS})
 find_library(GLEW_LIBRARY NAMES glew32 PATHS ../glew/lib/Release/Win32)
 find_library(FREETYPE_LIBRARY NAMES freetype PATHS ../freetype/build/Release)
 find_library(GLFW_LIBRARY NAMES glfw3 PATHS ../glfw/build/src/Release)
+find_library(SOIL_LIBRARY NAMES soil PATHS ../soil/lib)
 
 set(TINYXML2_INCLUDE_DIR ${WHITE_SOURCE_DIR}/tinyxml2)
 set(GLEW_INCLUDE_DIRS ../glew/include)
@@ -91,6 +92,7 @@ SET(
   SceneGraph.cpp
   SGNode.cpp
   Viewport.cpp
+  Heightmap.cpp
   ${Helpers_SRCs}
   ${OpenGL_SRCs}
   ${Helpers_OpenGL_SRCs}
@@ -125,6 +127,7 @@ SET(
   SGNode.h
   Containable.h
   Viewport.h
+  Heightmap.h
   ${Helpers_Hs}
   ${OpenGL_Hs}
   ${Helpers_OpenGL_Hs}
@@ -157,7 +160,7 @@ endif()
 target_link_libraries(Renderer WMath Input ${OPENGL_LIBRARIES}
   ${TINYXML2_LIBRARY} ${GLEW_LIBRARY}
   ${GLFW_LIBRARY} ${FREETYPE_LIBRARY}
-  ${White_SOURCE_DIR}/Renderer/src/SOIL/${SOIL_LIB} WMath)
+  ${SOIL_LIBRARY} WMath)
 
 source_group("Source Files\\Helpers" FILES ${Helpers_SRCs})
 source_group("Header Files\\Helpers" FILES ${Helpers_Hs_PATHs})

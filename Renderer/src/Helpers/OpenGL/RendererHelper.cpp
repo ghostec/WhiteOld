@@ -48,7 +48,21 @@ namespace RendererHelper
     model->use();
     shader->setUniform( "Model", &world_transform, GL_TRUE );
     shader->use();
-    glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
+
+    if( mesh->getIndexingType() == MESH_NOT_INDEXED )
+      glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
+    else if( mesh->getIndexingType() == MESH_INDEXED )
+    {
+      
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, mesh->getEBO() );
+      glEnable( GL_PRIMITIVE_RESTART );
+      glPrimitiveRestartIndex( 512*512 );
+      glDrawElements( GL_TRIANGLE_STRIP, 523775, GL_UNSIGNED_INT, 0 );
+      glDisable( GL_PRIMITIVE_RESTART );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+      
+    }
+
     shader->unuse();
     model->unuse();
 

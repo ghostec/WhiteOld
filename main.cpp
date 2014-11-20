@@ -20,6 +20,7 @@
 #include "Renderer/SceneGraph.h"
 #include "Renderer/SGNode.h"
 #include "Renderer/Containable.h"
+#include "Renderer/Heightmap.h"
 #include "Input/Input.h"
 #include "Physics/PhysicsManager.h"
 #include "Physics/Helpers/XMLPhysics.h"
@@ -148,6 +149,25 @@ int main()
 	gui_scene->setRootGUIElement( ge_position );
 
 	viewport_window_right->addScene( gui_scene->getScene() );
+
+  std::shared_ptr<Heightmap> heightmap( new Heightmap( "../assets/images/heightmap.jpg" ) );
+  std::shared_ptr<Model> hm_model( new Model( "heightmap", heightmap->getMesh() ) );
+  std::shared_ptr<Shader> hm_shader( new Shader( "standard" ) );
+  std::shared_ptr<Texture> hm_texture( new Texture( "wooden-crate.jpg" ) );
+  hm_model->setShader( hm_shader );
+  hm_model->setTexture( hm_texture );
+  std::shared_ptr<SGNode> hm_node( new SGNode( "heightmap", hm_model ) );
+  scene->getSceneGraph()->getRootSGNode()->addChild( hm_node );
+  SGNodeWorldTransform hm_transform;
+  hm_transform.data.position = WMath::vec3( 0.0f, 1.0f, 0.0f );
+  hm_transform.data.scale = WMath::vec3( 10.0f, 2.0f, 10.0f );
+  hm_node->setWorldTransform( hm_transform );
+
+  std::shared_ptr<Mesh> mmm( new Mesh( "cube.obj" ) );
+  std::shared_ptr<Model> moo( new Model( "cube", mmm ) );
+  std::shared_ptr<SGNode> sss( new SGNode( "cube", moo ) );
+  moo->setShader( hm_shader );
+  //scene->getSceneGraph()->getRootSGNode()->addChild( sss );
 
   //gui_scene->setRootGUIElement( gui_text->getGUIElement() );
 

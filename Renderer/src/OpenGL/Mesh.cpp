@@ -6,6 +6,8 @@ Mesh::Mesh( MeshType type, MeshIndexingType indexing_type )
   this->indexing_type = indexing_type;
   glGenVertexArrays(1, &this->vao);
   glGenBuffers(1, &this->vbo);
+  if( indexing_type == MESH_INDEXED )
+    glGenBuffers( 1, &this->ebo );
 }
 
 Mesh::Mesh( std::string file_path )
@@ -61,6 +63,14 @@ void Mesh::resetVBO()
     glBufferData( GL_ARRAY_BUFFER,
         this->vertices.size() * ( sizeof( WMath::vec4 ) ),
         &data[0], GL_DYNAMIC_DRAW );
+  }
+
+  if( this->indexing_type == MESH_INDEXED )
+  {
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, this->ebo );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof( int ),
+      &this->indices[0], GL_STATIC_DRAW );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);

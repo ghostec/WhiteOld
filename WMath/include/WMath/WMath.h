@@ -81,6 +81,7 @@ namespace WMath
   vec3 operator*( const float& f, const vec3& v );
   vec3 operator*( const vec3& v, const float& f );
   vec3 operator+( const vec3& v1, const vec3& v2 );
+  vec3 operator+=( vec3& v1, const vec3& v2 );
   vec3 operator-( const vec3& v1, const vec3& v2 );
   vec3 operator-( const vec3& v );
 

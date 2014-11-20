@@ -50,6 +50,6 @@ source_group("Header Files\\Helpers" FILES ${Helpers_Hs})
 target_link_libraries( White Input WMath Renderer Physics ${TINYXML2_LIBRARY} )
 
 include_directories( include tinyxml2 Renderer/include Physics/include Input/include WMath/include bullet3-master/src
-Renderer/glew/include Renderer/glfw/include Renderer/freetype/include)
+Renderer/glew/include Renderer/glfw/include Renderer/soil/include Renderer/freetype/include)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

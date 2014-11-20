@@ -26,6 +26,7 @@ namespace ShaderHelper
   {
     glBindVertexArray( mesh->getVAO() );
     glBindBuffer( GL_ARRAY_BUFFER, mesh->getVBO() );
+    if( mesh->getIndexingType() == MESH_INDEXED ) glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, mesh->getEBO() );
 
     MeshType mesh_type = mesh->getType();
 
@@ -45,6 +46,8 @@ namespace ShaderHelper
       shader->setVertexAttribute( "vUV", 2, sizeof( WMath::vec4 ),
           sizeof( WMath::vec2 ) );
     }
+
+    if( mesh->getIndexingType() == MESH_INDEXED ) glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
     glBindVertexArray( 0 );
   }

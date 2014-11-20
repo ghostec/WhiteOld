@@ -46,6 +46,7 @@ class Mesh
     { this->indexing_type = indexing_type; }
     void setVertices( std::vector< WMath::vec3 > v ) { this->vertices = v; }
     void setUVs( std::vector< WMath::vec3 > uvs ) { this->uvs = uvs; }
+    void setNormals( std::vector< WMath::vec3 > normals ) { this->normals = normals; }
     void setIndices( std::vector< int > indices ) { this->indices = indices; }
     // getters
     GLuint getVAO() { return this->vao; }
@@ -53,6 +54,7 @@ class Mesh
     GLuint getEBO() { return this->ebo; }
     std::vector< WMath::vec3 >& getVertices() { return this->vertices; }
     std::vector< WMath::vec3 >& getUVs() { return this->uvs; }
+    std::vector< WMath::vec3 >& getNormals() { return this->normals; }
     std::vector< int >& getIndices() { return this->indices; }
     int getVerticesCount() { return this->vertices.size(); }
     WMath::vec3 getDimensions() { return this->dimensions; }
