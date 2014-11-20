@@ -2,6 +2,21 @@
 
 namespace ModelAssetHelper
 {
+  void indexedToNotIndexed( std::vector<WMath::vec3>& vertices,
+      std::vector<WMath::vec3>& uvs,
+      std::vector<WMath::vec3>& normals,
+      std::vector< std::array<GLushort, 3> > &elements )
+  {
+    std::vector<WMath::vec3> n_vertices, n_uvs, n_normals;
+    for( auto& e : elements )
+    {
+      n_vertices.push_back( vertices[ e[ 0 ] ] );
+      n_uvs.push_back( uvs[ e[ 1 ] ] );
+      n_normals.push_back( normals[ e[ 2 ] ] );
+    }
+    vertices = n_vertices; uvs = n_uvs; normals = n_normals;
+  }
+
   void parseFaceOBJ(  std::istringstream& s,
                       std::vector< std::array<GLushort, 3> >& elements )
   {
@@ -84,7 +99,7 @@ namespace ModelAssetHelper
       else if( line[0] == '#' ) { /* ignoring this line */ }
       else { /* ignoring this line */ }
     }
-
+    indexedToNotIndexed( vertices, uvs, normals, elements );
   }
 
   WMath::vec3 calculateDimensions( std::vector<WMath::vec3>& vertices )

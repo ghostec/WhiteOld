@@ -9,16 +9,13 @@ Body::Body( std::shared_ptr<SGNode> sg_node, bool is_static )
 
   std::shared_ptr<Model> model = sg_node->getModel();
 
-  const std::vector< std::array< GLushort, 3 > > elements =
-    model->getMesh()->getElements();
-
   const std::vector< WMath::vec3 > vertices = model->getMesh()->getVertices();
 
   for( int i = 0; i < model->getMesh()->getVerticesCount(); i += 3 )
   {
-    WMath::vec3 v1 = vertices[ elements[ i ][0] ];
-    WMath::vec3 v2 = vertices[ elements[ i + 1 ][0] ];
-    WMath::vec3 v3 = vertices[ elements[ i + 2 ][0] ];
+    WMath::vec3 v1 = vertices[ i ];
+    WMath::vec3 v2 = vertices[ i + 1 ];
+    WMath::vec3 v3 = vertices[ i + 2 ];
 
     btVector3 bv1 = btVector3( v1[0], v1[1], v1[2] );
     btVector3 bv2 = btVector3( v2[0], v2[1], v2[2] );

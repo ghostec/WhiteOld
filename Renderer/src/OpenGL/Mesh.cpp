@@ -1,8 +1,9 @@
 #include "Renderer/OpenGL/Mesh.h"
 
-Mesh::Mesh( MeshType type )
+Mesh::Mesh( MeshType type, MeshIndexingType indexing_type )
 {
   this->type = type;
+  this->indexing_type = indexing_type;
   glGenVertexArrays(1, &this->vao);
   glGenBuffers(1, &this->vbo);
 }
@@ -10,13 +11,16 @@ Mesh::Mesh( MeshType type )
 Mesh::Mesh( std::string file_path )
 {
   this->type = MESH_V3NT;
+  this->indexing_type = MESH_NOT_INDEXED;
 
   glGenVertexArrays(1, &this->vao);
   glGenBuffers(1, &this->vbo);
 
+  std::vector< std::array<GLushort, 3> > elements;
+
   file_path = "../assets/models/" + file_path;
   ModelAssetHelper::ImportOBJ( file_path.c_str(),
-    this->vertices, this->uvs, this->normals, this->elements );
+    this->vertices, this->uvs, this->normals, elements );
 
   this->dimensions = ModelAssetHelper::calculateDimensions( vertices );
 
@@ -30,19 +34,17 @@ void Mesh::resetVBO()
 
   if( this->type == MESH_V3NT )
   {
-    std::vector< WMath::vec3 > new_vertices;
-    for( int i = 0; i < elements.size(); i++ )
+    std::vector< WMath::vec3 > data;
+    for( int i = 0; i < this->vertices.size(); i++ )
     {
-      new_vertices.push_back( vertices.at( elements.at( i )[0] ) );
-      new_vertices.push_back( uvs.at( elements.at( i )[1] ) );
-      new_vertices.push_back( normals.at( elements.at( i )[2] ) );
+      data.push_back( this->vertices[ i ] );
+      data.push_back( this->uvs[ i ] );
+      data.push_back( this->normals[ i ] );
     }
 
-    this->vertices_count = elements.size();
-
     glBufferData( GL_ARRAY_BUFFER,
-        elements.size() * ( 3 * sizeof( WMath::vec3 ) ),
-        &new_vertices[0], GL_STATIC_DRAW );
+        data.size() * sizeof( WMath::vec3 ),
+        &data[0], GL_STATIC_DRAW );
   }
   else if( this->type == MESH_V2T )
   {
@@ -55,8 +57,6 @@ void Mesh::resetVBO()
           this->uvs[i][0], this->uvs[i][1] );
       data.push_back( v );
     }
-
-    this->vertices_count = vertices.size();
 
     glBufferData( GL_ARRAY_BUFFER,
         this->vertices.size() * ( sizeof( WMath::vec4 ) ),

@@ -155,7 +155,7 @@ int main()
   ApplicationHelper::g_job_dispatcher = &job_dispatcher;
 
   gt_position->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
-  gt_position_x->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
+  gt_position_x->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 1.0f, 0.0f, 1.0f ) );
   gt_position_y->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
   gt_position_z->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
 

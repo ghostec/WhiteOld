@@ -16,6 +16,11 @@
 
 namespace ModelAssetHelper
 {
+  void indexedToNotIndexed( std::vector<WMath::vec3>& vertices,
+    std::vector<WMath::vec3>& uvs,
+    std::vector<WMath::vec3>& normals,
+    std::vector< std::array<GLushort, 3> > &elements );
+
   void ImportOBJ( const char* filename, std::vector<WMath::vec3> &vertices,
                   std::vector<WMath::vec3>& uvs,
                   std::vector<WMath::vec3>& normals,

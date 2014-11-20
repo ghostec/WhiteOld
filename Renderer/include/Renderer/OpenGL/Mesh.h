@@ -13,6 +13,11 @@
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"
 
+enum MeshIndexingType
+{
+  MESH_INDEXED, MESH_NOT_INDEXED
+};
+
 enum MeshType
 {
   MESH_V2, MESH_V2N, MESH_V2T, MESH_V2NT,
@@ -22,33 +27,37 @@ enum MeshType
 class Mesh
 {
   private:
-    GLuint vao, vbo;
-    int vertices_count;
+    GLuint vao, vbo, ebo;
     std::vector< WMath::vec3 > vertices, normals, uvs;
-    std::vector< std::array<GLushort, 3> > elements;
+    std::vector< int > indices;
     WMath::vec3 dimensions;
     MeshType type;
+    MeshIndexingType indexing_type;
     // methods
   public:
-    Mesh( MeshType type );
+    Mesh( MeshType type, MeshIndexingType indexing_type );
     Mesh( std::string file_path );
     void use();
     void unuse();
     void resetVBO();
     // setters
     void setType( MeshType type ) { this->type = type; };
+    void setIndexingType( MeshIndexingType indexing_type )
+    { this->indexing_type = indexing_type; }
     void setVertices( std::vector< WMath::vec3 > v ) { this->vertices = v; }
     void setUVs( std::vector< WMath::vec3 > uvs ) { this->uvs = uvs; }
+    void setIndices( std::vector< int > indices ) { this->indices = indices; }
     // getters
     GLuint getVAO() { return this->vao; }
     GLuint getVBO() { return this->vbo; }
-    const std::vector< WMath::vec3 > getVertices() { return this->vertices; }
-    const std::vector< WMath::vec3 > getUVs() { return this->uvs; }
-    const std::vector< std::array< GLushort, 3 > > getElements()
-      { return this->elements; }
-    int getVerticesCount() { return this->vertices_count; }
+    GLuint getEBO() { return this->ebo; }
+    std::vector< WMath::vec3 >& getVertices() { return this->vertices; }
+    std::vector< WMath::vec3 >& getUVs() { return this->uvs; }
+    std::vector< int >& getIndices() { return this->indices; }
+    int getVerticesCount() { return this->vertices.size(); }
     WMath::vec3 getDimensions() { return this->dimensions; }
     MeshType getType() { return this->type; }
+    MeshIndexingType getIndexingType() { return this->indexing_type; }
 };
 
 #endif
