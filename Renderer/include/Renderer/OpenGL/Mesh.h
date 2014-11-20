@@ -8,7 +8,7 @@
 #include <vector>
 #include "Renderer/Vertex.h"
 #include "Renderer/Shader.h"
-#include "Renderer/Helpers/ModelAssetHelper.h"
+#include "Renderer/Helpers/MeshHelper.h"
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 #include "Helpers/Application.h"

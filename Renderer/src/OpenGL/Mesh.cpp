@@ -19,10 +19,10 @@ Mesh::Mesh( std::string file_path )
   std::vector< std::array<GLushort, 3> > elements;
 
   file_path = "../assets/models/" + file_path;
-  ModelAssetHelper::ImportOBJ( file_path.c_str(),
+  MeshHelper::ImportOBJ( file_path.c_str(),
     this->vertices, this->uvs, this->normals, elements );
 
-  this->dimensions = ModelAssetHelper::calculateDimensions( vertices );
+  this->dimensions = MeshHelper::calculateDimensions( vertices );
 
   this->resetVBO();
 }

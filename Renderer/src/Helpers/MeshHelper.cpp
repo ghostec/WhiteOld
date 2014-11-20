@@ -1,6 +1,6 @@
-#include "Renderer/Helpers/ModelAssetHelper.h"
+#include "Renderer/Helpers/MeshHelper.h"
 
-namespace ModelAssetHelper
+namespace MeshHelper
 {
   void indexedToNotIndexed( std::vector<WMath::vec3>& vertices,
       std::vector<WMath::vec3>& uvs,

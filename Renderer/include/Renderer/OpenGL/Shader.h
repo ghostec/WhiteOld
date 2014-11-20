@@ -4,7 +4,7 @@
 #include <string>
 #include "Renderer/Light.h"
 #include "Renderer/Camera.h"
-#include "Renderer/Helpers/ModelAssetHelper.h"
+#include "Renderer/Helpers/MeshHelper.h"
 #include "WMath/WMath.h"
 
 class Shader

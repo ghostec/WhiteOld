@@ -1,5 +1,5 @@
-#ifndef __RENDERER_MODELHELPER__
-#define __RENDERER_MODELHELPER__
+#ifndef __WHITE_RENDERER_MESHHELPER__
+#define __WHITE_RENDERER_MESHHELPER__
 
 #include <iostream>
 #include <string>
@@ -14,7 +14,7 @@
 #include "WMath/WMath.h"
 #include "Helpers/Application.h"
 
-namespace ModelAssetHelper
+namespace MeshHelper
 {
   void indexedToNotIndexed( std::vector<WMath::vec3>& vertices,
     std::vector<WMath::vec3>& uvs,

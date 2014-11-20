@@ -2,7 +2,7 @@
 
 Shader::Shader( std::string name )
 {
-  this->shader = ModelAssetHelper::OpenGL::CreateShaderProgram(
+  this->shader = MeshHelper::OpenGL::CreateShaderProgram(
     "../assets/shaders/" + name + "/vertex.glsl",
     "../assets/shaders/" + name + "/fragment.glsl",
     "../assets/shaders/" + name + "/geometry.glsl" );
