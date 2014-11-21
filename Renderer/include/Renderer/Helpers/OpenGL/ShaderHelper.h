@@ -8,6 +8,7 @@
 #include "Renderer/Light.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Mesh.h"
+#include "Renderer/Model.h"
 #include "Renderer/Material.h"
 #include "Renderer/ModelData.h"
 

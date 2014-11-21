@@ -31,6 +31,14 @@ void Shader::setVertexAttribute(  std::string name, int count, int stride,
   glUseProgram(0);
 }
 
+void Shader::setUniform( std::string name, const int value )
+{
+  glUseProgram( this->shader );
+  GLint uniform = glGetUniformLocation( this->shader, name.c_str() );
+  glUniform1i( uniform, value );
+  glUseProgram( 0 );
+}
+
 void Shader::setUniform( std::string name, const float value )
 {
   glUseProgram( this->shader );

@@ -33,6 +33,7 @@ namespace RendererHelper
     else shader = &*model->getShader();
 
     ShaderHelper::setModelData( shader, &*model->getModelData() );
+    ShaderHelper::setMaterial( shader, &*model->getMaterial() );
 
     WMath::mat4 world_transform = n->getWorldTransformM();
 
