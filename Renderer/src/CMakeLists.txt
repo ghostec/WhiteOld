@@ -109,6 +109,7 @@ SET(
   Light.h
   Shader.h
   Window.h
+  DataHolder.h
   ModelData.h
   Model.h
   Vertex.h
