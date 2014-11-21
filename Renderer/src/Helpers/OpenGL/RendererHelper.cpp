@@ -53,11 +53,13 @@ namespace RendererHelper
       glDrawArrays( GL_TRIANGLES, 0, mesh->getVerticesCount() );
     else if( mesh->getIndexingType() == MESH_INDEXED )
     {
-      
+      int width, height;
+      width = 512;
+      height = 512;
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, mesh->getEBO() );
       glEnable( GL_PRIMITIVE_RESTART );
-      glPrimitiveRestartIndex( 512*512 );
-      glDrawElements( GL_TRIANGLE_STRIP, 523775, GL_UNSIGNED_INT, 0 );
+      glPrimitiveRestartIndex( width * height );
+      glDrawElements( GL_TRIANGLE_STRIP, (height-1)*width*2+height-1, GL_UNSIGNED_INT, 0 );
       glDisable( GL_PRIMITIVE_RESTART );
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       
