@@ -65,6 +65,10 @@ namespace ShaderHelper
 
   void setMaterial( Shader* shader, Material* material )
   {
+    if( !material ) return;
+    shader->setUniform( "material.activate_texture", (int) material->isTextureActivated() );
     shader->setUniform( "material.texture", 0 );
+    shader->setUniform( "material.activate_color", (int) material->isColorActivated() );
+    shader->setUniform( "material.color", material->getColor() );
   }
 }

@@ -9,7 +9,7 @@ class Material
 {
   private:
     std::shared_ptr<Texture> texture;
-    WMath::vec4 color;
+    WMath::vec4 color = WMath::vec4(1.0f);
     bool activate_texture, activate_color;
   public:
     Material();
@@ -23,6 +23,8 @@ class Material
     // getters
     std::shared_ptr<Texture> getTexture() { return this->texture; }
     WMath::vec4 getColor() { return this->color; }
+    bool isTextureActivated() { return this->activate_texture; }
+    bool isColorActivated() { return this->activate_color; }
 };
 
 #endif
