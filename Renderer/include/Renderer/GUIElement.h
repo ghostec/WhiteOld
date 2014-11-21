@@ -31,7 +31,7 @@ class GUIElement : public Containable<GUIElement>
     std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
     std::shared_ptr<Model> getModel() { return this->model; }
     std::shared_ptr<Mesh> getMesh() { return this->model->getMesh(); }
-    std::shared_ptr<Texture> getTexture() { return this->model->getTexture(); }
+    std::shared_ptr<Texture> getTexture() { return this->model->getMaterial()->getTexture(); }
 };
 
 #endif

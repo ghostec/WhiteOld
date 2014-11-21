@@ -7,6 +7,7 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Mesh.h"
+#include "Renderer/Material.h"
 #include "Renderer/Model.h"
 #include "Renderer/ModelData.h"
 #include "Renderer/GUIElement.h"
@@ -22,12 +23,18 @@ class ResourceManager
     ResourceMap<Texture> texture;
     ResourceMap<Mesh> mesh;
     ResourceMap<Model> model;
+    ResourceMap<Material> material;
   public:
     void addShader( std::string name, std::shared_ptr<Shader> shader )
       { this->shader[name] = shader; }
 
     void addTexture( std::string name, std::shared_ptr<Texture> texture )
       { this->texture[name] = texture; }
+
+    void addMaterial( std::string name, std::shared_ptr<Material> material )
+    {
+      this->material[ name ] = material;
+    }
 
     void addMesh( std::string name,
       std::shared_ptr<Mesh> mesh )
@@ -42,6 +49,9 @@ class ResourceManager
 
     std::shared_ptr<Texture> getTexture( std::string name )
       { return this->texture[name]; }
+
+    std::shared_ptr<Material> getMaterial( std::string name )
+      { return this->material[ name ]; }
 
     std::shared_ptr<Mesh> getMesh( std::string name )
       { return this->mesh[name]; }

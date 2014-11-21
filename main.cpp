@@ -154,10 +154,12 @@ int main()
   std::shared_ptr<Model> hm_model( new Model( "heightmap", heightmap->getMesh() ) );
   std::shared_ptr<Shader> hm_shader( new Shader( "standard" ) );
   std::shared_ptr<Texture> hm_texture( new Texture( "terrain.jpg" ) );
+  std::shared_ptr<Material> hm_material( new Material() );
+  hm_material->setTexture( hm_texture );
   hm_model->setShader( hm_shader );
-  hm_model->setTexture( hm_texture );
+  hm_model->setMaterial( hm_material );
   std::shared_ptr<SGNode> hm_node( new SGNode( "heightmap", hm_model ) );
-  scene->getSceneGraph()->getRootSGNode()->addChild( hm_node );
+  //scene->getSceneGraph()->getRootSGNode()->addChild( hm_node );
   SGNodeWorldTransform hm_transform;
   hm_transform.data.position = WMath::vec3( 0.0f, 2.0f, 0.0f );
   hm_transform.data.scale = WMath::vec3( 100.0f, 10.0f, 100.0f );

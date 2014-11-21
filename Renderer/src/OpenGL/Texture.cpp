@@ -70,10 +70,9 @@ void Texture::load( std::string name )
   glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
-void Texture::use( std::shared_ptr<Shader> shader )
+void Texture::use()
 {
   glBindTexture( GL_TEXTURE_2D, this->texture );
-  glUniform1i( glGetUniformLocation( shader->shader, "materialTex" ), 0 );
 }
 
 void Texture::unuse()

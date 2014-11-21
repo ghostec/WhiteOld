@@ -57,4 +57,8 @@ namespace ShaderHelper
     for( auto& o : model_data->get< WMath::vec4 >() )
       shader->setUniform( o.first, o.second );
   }
+  void setMaterial( Shader * shader, Material * material )
+  {
+    glUniform1i( glGetUniformLocation( shader->shader, "materialTex" ), 0 );
+  }
 }

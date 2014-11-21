@@ -7,6 +7,7 @@
 #include "tinyxml2.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Mesh.h"
+#include "Renderer/Material.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Model.h"
 #include "Renderer/ResourceManager.h"
@@ -16,6 +17,8 @@ namespace XMLHelper
   void importShader( tinyxml2::XMLElement* el,
     std::shared_ptr<ResourceManager> resource_manager );
   void importTexture( tinyxml2::XMLElement* el,
+    std::shared_ptr<ResourceManager> resource_manager );
+  void importMaterial( tinyxml2::XMLElement* el,
     std::shared_ptr<ResourceManager> resource_manager );
   void importMesh( tinyxml2::XMLElement* el,
     std::shared_ptr<ResourceManager> resource_manager );

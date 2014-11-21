@@ -18,12 +18,12 @@ void Model::use()
 {
   ShaderHelper::setMesh( &*shader, &*this->mesh );
   this->mesh->use();
-  if( this->texture ) this->texture->use( this->shader );
+  if( this->material ) this->material->use();
   ShaderHelper::setModelData( &*this->shader, &*this->model_data );
 }
 
 void Model::unuse()
 {
-  if( this->texture ) this->texture->unuse();
+  if( this->material ) this->material->unuse();
   this->mesh->unuse();
 }

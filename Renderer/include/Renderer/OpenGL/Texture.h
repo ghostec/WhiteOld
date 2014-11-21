@@ -16,7 +16,7 @@ class Texture
     Texture( WMath::vec2 dimensions );
     Texture( std::string name );
     void load( std::string name );
-    void use( std::shared_ptr<Shader> shader );
+    void use();
     void unuse();
 };
 

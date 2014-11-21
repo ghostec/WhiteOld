@@ -111,7 +111,7 @@ void SceneEditor::selectSGNode( std::shared_ptr<SGNode> sg_node )
     this->selected_sg_node = sg_node;
     std::shared_ptr<Model> modified_model( new Model( old_selected_model->getName(), old_selected_model->getMesh() ) );
     modified_model->setShader( this->shader );
-    modified_model->setTexture( old_selected_model->getTexture() );
+    modified_model->getMaterial()->setTexture( old_selected_model->getMaterial()->getTexture() );
     this->selected_sg_node->setModel( modified_model );
     showMoveArrows();
     this->state = MODEL_SELECTED;
@@ -160,7 +160,7 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
 
   if( sg_node_hovered )
   {
-    sg_node_hovered->getModel()->setTexture( texture_hovered );
+    sg_node_hovered->getModel()->getMaterial()->setTexture( texture_hovered );
     sg_node_hovered = nullptr; texture_hovered = nullptr;
   }
 
@@ -171,8 +171,8 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
     || sg_node->getName() == "arrow_z" ) )
   {
     sg_node_hovered = sg_node;
-    texture_hovered = sg_node->getModel()->getTexture();
-    sg_node->getModel()->setTexture( resource_manager->getTexture( "yellow" ) );
+    texture_hovered = sg_node->getModel()->getMaterial()->getTexture();
+    sg_node->getModel()->getMaterial()->setTexture( resource_manager->getTexture( "yellow" ) );
   }
 
   if( active_input->hasInput( std::set<int>{ GLFW_KEY_UP }, HOLD ) )
@@ -252,11 +252,11 @@ void SceneEditor::update_MOVING_MODEL()
   else
   {
     resource_manager->getModel( "SceneEditor_arrow_x" )
-      ->setTexture( resource_manager->getTexture( "red" ) );
+      ->getMaterial()->setTexture( resource_manager->getTexture( "red" ) );
     resource_manager->getModel( "SceneEditor_arrow_y" )
-      ->setTexture( resource_manager->getTexture( "blue" ) );
+      ->getMaterial()->setTexture( resource_manager->getTexture( "blue" ) );
     resource_manager->getModel( "SceneEditor_arrow_z" )
-      ->setTexture( resource_manager->getTexture( "green" ) );
+      ->getMaterial()->setTexture( resource_manager->getTexture( "green" ) );
     this->state = MODEL_SELECTED;
   }
 }

@@ -80,6 +80,7 @@ SET(
   Camera.cpp
   Scene.cpp
   Light.cpp
+  Material.cpp
   Model.cpp
   ModelData.cpp
   Vertex.cpp
@@ -111,6 +112,7 @@ SET(
   Window.h
   DataHolder.h
   ModelData.h
+  Material.h
   Model.h
   Vertex.h
   MousePicking.h

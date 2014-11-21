@@ -28,6 +28,17 @@ namespace XMLHelper
     resource_manager->addTexture( name, texture );
   }
 
+  void importMaterial( tinyxml2::XMLElement* el,
+    std::shared_ptr<ResourceManager> resource_manager )
+  {
+    const char* name = el->FirstChildElement( "name" )->GetText();
+    const char* texture_name = el->FirstChildElement( "texture" )->GetText();
+    std::shared_ptr<Texture> texture = resource_manager->getTexture( texture_name );
+    std::shared_ptr<Material> material( new Material() );
+    material->setTexture( texture );
+    resource_manager->addMaterial( name, material );
+  }
+
   void importModel( tinyxml2::XMLElement* el,
     std::shared_ptr<ResourceManager> resource_manager )
   {
@@ -42,10 +53,10 @@ namespace XMLHelper
       resource_manager->getShader( shader_name );
     model->setShader( shader );
 
-    if( el->FirstChildElement( "texture" ) )
+    if( el->FirstChildElement( "material" ) )
     {
-      const char* texture_name = el->FirstChildElement( "texture" )->GetText();
-      model->setTexture( resource_manager->getTexture( texture_name ) );
+      const char* material_name = el->FirstChildElement( "material" )->GetText();
+      model->setMaterial( resource_manager->getMaterial( material_name ) );
     }
 
     resource_manager->addModel( name, model );
@@ -64,11 +75,13 @@ namespace XMLHelper
     {
       if( strcmp( el->Name(), "shader" ) == 0 )
         importShader( el, resource_manager );
-      if( strcmp( el->Name( ), "texture" ) == 0 )
+      if( strcmp( el->Name(), "texture" ) == 0 )
         importTexture( el, resource_manager );
-      if( strcmp( el->Name( ), "mesh" ) == 0 )
+      if( strcmp( el->Name(), "material" ) == 0 )
+        importMaterial( el, resource_manager );
+      if( strcmp( el->Name(), "mesh" ) == 0 )
         importMesh( el, resource_manager );
-      if( strcmp( el->Name( ), "model" ) == 0 )
+      if( strcmp( el->Name(), "model" ) == 0 )
         importModel( el, resource_manager );
       el = el->NextSiblingElement();
     }
