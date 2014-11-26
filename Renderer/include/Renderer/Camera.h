@@ -8,9 +8,15 @@
 #include "WMath/WMath.h"
 #include "WMath/transformations.h"
 
+enum CameraProjectionType
+{
+  CAMERA_PROJECTION_PERSPECTIVE, CAMERA_PROJECTION_ORTHOGRAPHIC
+};
+
 class Camera
 {
   private:
+    CameraProjectionType proj_type;
     WMath::mat4 view;
     WMath::mat4 proj;
     bool dirty;
@@ -20,10 +26,12 @@ class Camera
     void setView( WMath::mat4 view ) { this->view = view; }
     void setProj( WMath::mat4 proj ) { this->proj = proj; }
     void setDirty( bool value ) { this->dirty = value; };
+    void setProjectionType( CameraProjectionType t );
     // getters
     WMath::mat4* getView() { return &this->view; };
     WMath::mat4* getProj( ) { return &this->proj; };
     bool getDirty() { return this->dirty; };
+    CameraProjectionType getProjectionType() { return this->proj_type; }
 };
 
 #endif

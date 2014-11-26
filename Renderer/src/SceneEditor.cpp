@@ -13,14 +13,17 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
 
   std::shared_ptr<Model> model_arrow_x =
     resource_manager->get< std::shared_ptr< Model > >( "SceneEditor_arrow_x" );
+  model_arrow_x->setType( MODEL_3D_NO_DEPTH_TEST );
   this->data.arrow_x.reset( new SGNode( "arrow_x", model_arrow_x ) );
 
   std::shared_ptr<Model> model_arrow_y =
     resource_manager->get< std::shared_ptr< Model > >( "SceneEditor_arrow_y" );
+  model_arrow_y->setType( MODEL_3D_NO_DEPTH_TEST );
   this->data.arrow_y.reset( new SGNode( "arrow_y", model_arrow_y ) );
 
   std::shared_ptr<Model> model_arrow_z =
     resource_manager->get< std::shared_ptr< Model > >( "SceneEditor_arrow_z" );
+  model_arrow_z->setType( MODEL_3D_NO_DEPTH_TEST );
   this->data.arrow_z.reset( new SGNode( "arrow_z", model_arrow_z ) );
 
   this->locked_sg_nodes.insert( data.arrow_x );
@@ -183,6 +186,8 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
   }
 
   std::shared_ptr<SGNode> sg_node = active_mouse_picking->pick();
+
+  if( sg_node ) std::cout << sg_node->getName() << std::endl;
 
   if( active_input->hasInput( std::set<int>{ GLFW_KEY_UP }, HOLD ) )
   {

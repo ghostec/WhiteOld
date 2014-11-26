@@ -37,7 +37,8 @@ namespace RendererHelper
 
     WMath::mat4 world_transform = n->getWorldTransformM();
 
-    if( model->getModelType() == MODEL_2D )
+    if( model->getType() == MODEL_2D ||
+      model->getType() == MODEL_3D_NO_DEPTH_TEST )
     {
       glDisable( GL_DEPTH_TEST );
     }

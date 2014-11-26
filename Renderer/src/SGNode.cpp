@@ -8,6 +8,11 @@ SGNode::SGNode( std::string name, std::shared_ptr<Model> model )
 
 void SGNode::addChild( std::shared_ptr<SGNode> child )
 {
+  SGNodeTransformData pr = this->propagation;
+  pr.position = pr.position + this->world_transform.data.position;
+  pr.scale = this->world_transform.data.scale;
+  pr.rotate = this->world_transform.data.rotate;
+  child->setPropagation( pr );
   this->children.push_back( child );
 }
 
@@ -69,17 +74,17 @@ SGNode* SGNodeIterator::next()
   if( n->isWorldTransformDirty() )
   {
     SGNodeWorldTransform w = n->getWorldTransform();
-    SGNodePropagation pr = n->getPropagation();
+    SGNodeTransformData pr = n->getPropagation();
 
     // TODO: fix propagation
 
-    pr.t_node.position = pr.t_node.position + w.data.position;
-    pr.t_node.scale = w.data.scale;
-    pr.t_node.rotate = w.data.rotate;
+    pr.position = pr.position + w.data.position;
+    pr.scale = w.data.scale;
+    pr.rotate = w.data.rotate;
 
-    WMath::mat4 t = WMath::scaleM( pr.t_node.scale )
-      * WMath::rotateM( pr.t_node.rotate )
-      * WMath::translateM( pr.t_node.position );
+    WMath::mat4 t = WMath::scaleM( pr.scale )
+      * WMath::rotateM( pr.rotate )
+      * WMath::translateM( pr.position );
     n->setWorldTransform( t );
 
     for( auto c : n->getChildren() ) c->setPropagation( pr );

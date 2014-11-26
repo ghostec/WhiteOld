@@ -1,10 +1,10 @@
 #include "Renderer/Model.h"
 
-Model::Model( std::string name, std::shared_ptr<Mesh> mesh, ModelType model_type )
+Model::Model( std::string name, std::shared_ptr<Mesh> mesh, ModelType type )
 {
   this->name = name;
   this->mesh = mesh;
-  this->model_type = model_type;
+  this->type = type;
   this->model_data.reset( new ModelData() );
 }
 

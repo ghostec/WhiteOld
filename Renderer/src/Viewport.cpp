@@ -15,7 +15,9 @@ void Viewport::setContainableCachedData( ContainableCachedData cached_data )
 
   for( auto scene : this->scenes )
   {
-    CameraHelper::setAspectRatio( &*scene->getCamera(),
+    Camera* camera = &*scene->getCamera();
+    if( camera->getProjectionType() == CAMERA_PROJECTION_PERSPECTIVE )
+    CameraHelper::setAspectRatio( camera,
       cached_data.dimensions[0] / cached_data.dimensions[1] );
   }
 }

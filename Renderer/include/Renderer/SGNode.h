@@ -24,11 +24,6 @@ struct SGNodeWorldTransform
   WMath::mat4 transform;
 };
 
-struct SGNodePropagation
-{
-  SGNodeTransformData t_path, t_node;
-};
-
 typedef enum _PropagationType
 {
   NORMAL
@@ -42,7 +37,7 @@ class SGNode
     std::vector< std::shared_ptr<SGNode> > children;
     SGNodeWorldTransform world_transform;
     bool world_transform_dirty;
-    SGNodePropagation propagation;
+    SGNodeTransformData propagation;
   public:
     SGNode( std::string name, std::shared_ptr<Model> model );
     void addChild( std::shared_ptr<SGNode> child );
@@ -54,7 +49,7 @@ class SGNode
     SGNodeWorldTransform getWorldTransform() { return this->world_transform; }
     WMath::mat4 getWorldTransformM() { return this->world_transform.transform; }
     std::shared_ptr<Model> getModel() { return this->model; }
-    SGNodePropagation getPropagation() { return this->propagation; }
+    SGNodeTransformData getPropagation() { return this->propagation; }
     std::vector< std::shared_ptr<SGNode> > getChildren()
       { return this->children; }
     //setters
@@ -62,7 +57,7 @@ class SGNode
     void setWorldTransform( SGNodeWorldTransform world_transform );
     void setWorldTransform( WMath::mat4 world_transform );
     void setModel( std::shared_ptr<Model> model );
-    void setPropagation( SGNodePropagation p ) { this->propagation = p; }
+    void setPropagation( SGNodeTransformData p ) { this->propagation = p; }
 };
 
 class SGNodeIterator

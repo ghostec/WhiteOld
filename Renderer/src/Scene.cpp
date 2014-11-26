@@ -4,6 +4,7 @@ Scene::Scene( std::string name )
 {
   this->name = name;
   this->camera.reset( new Camera() );
+  this->camera->setProjectionType( CAMERA_PROJECTION_ORTHOGRAPHIC );
 }
 
 void Scene::update()
