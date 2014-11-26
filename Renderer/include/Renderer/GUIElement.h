@@ -24,14 +24,15 @@ class GUIElement : public Containable<GUIElement>
     GUIElement( std::string name, ContainableData data );
     // setters
     void setShader( std::shared_ptr<Shader> shader );
-    void setTexture( std::shared_ptr<Texture> texture );
+    void setMaterial( std::shared_ptr<Material> m )
+      { this->model->setMaterial( m ); }
     void setLeftChild( std::shared_ptr<GUIElement> child );
     void setRightChild( std::shared_ptr<GUIElement> child );
     // getters
     std::shared_ptr<SGNode> getSGNode() { return this->sg_node; }
     std::shared_ptr<Model> getModel() { return this->model; }
     std::shared_ptr<Mesh> getMesh() { return this->model->getMesh(); }
-    std::shared_ptr<Texture> getTexture() { return this->model->getMaterial()->getTexture(); }
+    std::shared_ptr<Material> getMaterial() { return this->model->getMaterial(); }
 };
 
 #endif

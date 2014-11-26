@@ -17,7 +17,7 @@ GUIText::GUIText( std::string name, std::shared_ptr<GUITextFont> font,
 
   this->gui_element.reset( new GUIElement( name, data ) );
   this->gui_element->getMesh()->setType( MESH_V2T );
-  this->gui_element->setTexture( font->texture_atlas );
+  this->gui_element->setMaterial( font->material_atlas );
 
   std::shared_ptr<Shader> shader( new Shader( "text" ) );
   this->gui_element->setShader( shader );

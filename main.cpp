@@ -67,7 +67,7 @@ int main()
 
 	ContainableData viewport_window_left_data;
 	viewport_window_left_data.mode = CONTAINABLE_MODE_FULL;
-	viewport_window_left_data.background = WMath::vec3(0.9f);
+	viewport_window_left_data.background = WMath::vec3(64.0f/255.0f);
 	std::shared_ptr<Viewport> viewport_window_left(new Viewport(viewport_window_left_data));
 
 	ContainableData viewport_window_right_data;
@@ -98,11 +98,11 @@ int main()
 	ge_position_data.mode = CONTAINABLE_MODE_BOX;
 	ge_position_data.mode_data.box.anchor_position = CONTAINABLE_ANCHOR_TOP_LEFT;
 	ge_position_data.mode_data.box.anchor_mode = CONTAINABLE_ANCHOR_MODE_ABSOLUTE;
-	ge_position_data.mode_data.box.anchor_x = 20;
-	ge_position_data.mode_data.box.anchor_y = 20;
+	ge_position_data.mode_data.box.anchor_x = 8;
+	ge_position_data.mode_data.box.anchor_y = 8;
 	ge_position_data.mode_data.box.dimensions_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-	ge_position_data.mode_data.box.smaller_dimension = 72.0f;
-	ge_position_data.mode_data.box.aspect_ratio = 220.0f / 72.0f;
+	ge_position_data.mode_data.box.smaller_dimension = 36.0f;
+	ge_position_data.mode_data.box.aspect_ratio = 244.0f / 32.0f;
 	std::shared_ptr<GUIElement> ge_position
 		( new GUIElement( "ge_position", ge_position_data ) );
 
@@ -110,7 +110,7 @@ int main()
   ge_position_box_data.mode = CONTAINABLE_MODE_HSPLIT;
   ge_position_box_data.mode_data.hsplit.side = CONTAINABLE_SIDE_TOP;
   ge_position_box_data.mode_data.hsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-  ge_position_box_data.mode_data.hsplit.size = 36.0f;
+  ge_position_box_data.mode_data.hsplit.size = 20.0f;
   std::shared_ptr<GUIElement> ge_position_box
     ( new GUIElement( "ge_position_box", ge_position_box_data ) );
 
@@ -118,7 +118,7 @@ int main()
   ge_position_x_yz_data.mode = CONTAINABLE_MODE_VSPLIT;
   ge_position_x_yz_data.mode_data.hsplit.side = CONTAINABLE_SIDE_LEFT;
   ge_position_x_yz_data.mode_data.hsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-  ge_position_x_yz_data.mode_data.hsplit.size = 220.0f / 3.0f;
+  ge_position_x_yz_data.mode_data.hsplit.size = 244.0f / 3.0f;
   std::shared_ptr<GUIElement> ge_position_x_yz
     ( new GUIElement( "ge_position_x_yz", ge_position_x_yz_data ) );
 
@@ -126,16 +126,16 @@ int main()
   ge_position_y_z_data.mode = CONTAINABLE_MODE_VSPLIT;
   ge_position_y_z_data.mode_data.hsplit.side = CONTAINABLE_SIDE_LEFT;
   ge_position_y_z_data.mode_data.hsplit.dimension_mode = CONTAINABLE_DIMENSIONS_MODE_ABSOLUTE;
-  ge_position_y_z_data.mode_data.hsplit.size = 220.0f / 3.0f;
+  ge_position_y_z_data.mode_data.hsplit.size = 244.0f / 3.0f;
   std::shared_ptr<GUIElement> ge_position_y_z
     ( new GUIElement( "ge_position_y_z", ge_position_y_z_data ) );
 
   std::shared_ptr<GUITextManager> gui_text_manager( new GUITextManager() );
 
-  std::shared_ptr<GUIText> gt_position = gui_text_manager->makeGUIText( "position_label", "liberation", 36.0f, "POSITION", nullptr, viewport_window_right );
-  std::shared_ptr<GUIText> gt_position_x = gui_text_manager->makeGUIText( "position_x", "liberation", 36.0f, "X", nullptr, viewport_window_right );
-  std::shared_ptr<GUIText> gt_position_y = gui_text_manager->makeGUIText( "position_y", "liberation", 36.0f, "Y", nullptr, viewport_window_right );
-  std::shared_ptr<GUIText> gt_position_z = gui_text_manager->makeGUIText( "position_z", "liberation", 36.0f, "Z", nullptr, viewport_window_right );
+  std::shared_ptr<GUIText> gt_position = gui_text_manager->makeGUIText( "position_label", "liberation", 16.0f, "POSITION", nullptr, viewport_window_right );
+  std::shared_ptr<GUIText> gt_position_x = gui_text_manager->makeGUIText( "position_x", "liberation", 16.0f, "X", nullptr, viewport_window_right );
+  std::shared_ptr<GUIText> gt_position_y = gui_text_manager->makeGUIText( "position_y", "liberation", 16.0f, "Y", nullptr, viewport_window_right );
+  std::shared_ptr<GUIText> gt_position_z = gui_text_manager->makeGUIText( "position_z", "liberation", 16.0f, "Z", nullptr, viewport_window_right );
 
   ge_position->setLeftChild( ge_position_box );
   ge_position_box->setLeftChild( gt_position->getGUIElement() );
@@ -177,10 +177,10 @@ int main()
   ApplicationHelper::JobDispatcher job_dispatcher;
   ApplicationHelper::g_job_dispatcher = &job_dispatcher;
 
-  gt_position->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
-  gt_position_x->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 1.0f, 0.0f, 1.0f ) );
-  gt_position_y->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
-  gt_position_z->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 1.0f, 0.0f, 0.0f, 1.0f ) );
+  gt_position->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 0.0f, 0.0f, 0.0f, 1.0f ) );
+  gt_position_x->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 211.0f/255.0f, 47.0f/255.0f, 0.0f, 1.0f ) );
+  gt_position_y->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 7.0f/255.0f, 90.0f / 255.0f, 134.0f / 255.0f, 1.0f ) );
+  gt_position_z->getGUIElement()->getModel()->getModelData()->set( "color", WMath::vec4( 0.0f, 149.0f/255.0f, 69.0f/255.0f, 1.0f ) );
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 

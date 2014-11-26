@@ -10,9 +10,9 @@ GUIElement::GUIElement( std::string name, ContainableData data ) : Containable( 
   else
   {
     std::shared_ptr<Mesh> mesh( new Mesh( "gui.obj" ) );
-    std::shared_ptr<Texture> texture( new Texture( "square.png" ) );
     std::shared_ptr<Material> material( new Material() );
-    material->setTexture( texture );
+    material->activateColor( false );
+    material->activateTexture( false );
     std::shared_ptr<Shader> shader( new Shader( "gui" ) );
 
     this->model.reset( new Model( "gui_model", mesh, MODEL_2D ) );
@@ -40,9 +40,4 @@ void GUIElement::setRightChild( std::shared_ptr<GUIElement> child )
 void GUIElement::setShader( std::shared_ptr<Shader> shader )
 {
   this->model->setShader( shader );
-}
-
-void GUIElement::setTexture( std::shared_ptr<Texture> texture )
-{
-  this->model->getMaterial()->setTexture( texture );
 }

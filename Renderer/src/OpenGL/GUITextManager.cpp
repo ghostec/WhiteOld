@@ -39,11 +39,14 @@ std::shared_ptr<GUITextFont> GUITextManager::getGUITextFont( std::string name, f
 
   std::shared_ptr<Texture> texture_atlas
     ( new Texture( WMath::vec2( ( float ) w, ( float ) h ) ) );
+  std::shared_ptr<Material> material_atlas( new Material() );
+  material_atlas->setTexture( texture_atlas );
+  material_atlas->activateColor( false );
 
   int x = 0;
 
   font->name = name;
-  font->texture_atlas = texture_atlas;
+  font->material_atlas = material_atlas;
   font->atlas_width = w;
   font->atlas_height = h;
 
