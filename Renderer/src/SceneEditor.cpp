@@ -63,21 +63,24 @@ void SceneEditor::showMoveArrows()
   
   float dx = 0.5f * ( model_dimensions[0] +
     this->data.arrow_x->getDimensions()[0] );
-  wt.data.position = n_wt.data.position;
+  //wt.data.position = n_wt.data.position;
+  wt.data.position = WMath::vec3( 0 );
   wt.data.position[ 0 ] += dx;
   wt.data.rotate = WMath::quaternion( 0, 0, 1, 180 );
   this->data.arrow_x->setWorldTransform( wt );
 
   float dy = 0.5f * ( model_dimensions[1] +
     this->data.arrow_y->getDimensions()[1] );
-  wt.data.position = n_wt.data.position;
+  //wt.data.position = n_wt.data.position;
+  wt.data.position = WMath::vec3( 0 );
   wt.data.position[ 1 ] += dy;
   wt.data.rotate = WMath::quaternion();
   this->data.arrow_y->setWorldTransform( wt );
 
   float dz = 0.5f * ( model_dimensions[2] +
     this->data.arrow_z->getDimensions()[2] );
-  wt.data.position = n_wt.data.position;
+  //wt.data.position = n_wt.data.position;
+  wt.data.position = WMath::vec3( 0 );
   wt.data.position[ 2 ] += dz;
   wt.data.rotate = WMath::quaternion( 1, 0, 0, 0 );
   this->data.arrow_z->setWorldTransform( wt );
@@ -109,18 +112,6 @@ void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
     SGNodeWorldTransform wt = this->selected_sg_node->getWorldTransform();
     wt.data.position += dT;
     this->selected_sg_node->setWorldTransform( wt );
-
-    SGNodeWorldTransform arrow_wt;
-
-    arrow_wt = this->data.arrow_x->getWorldTransform();
-    arrow_wt.data.position += dT;
-    this->data.arrow_x->setWorldTransform( arrow_wt );
-    arrow_wt = this->data.arrow_y->getWorldTransform();
-    arrow_wt.data.position += dT;
-    this->data.arrow_y->setWorldTransform( arrow_wt );
-    arrow_wt = this->data.arrow_z->getWorldTransform();
-    arrow_wt.data.position += dT;
-    this->data.arrow_z->setWorldTransform( arrow_wt );
 
     last_cursor_pos = cursor_pos;
   }
