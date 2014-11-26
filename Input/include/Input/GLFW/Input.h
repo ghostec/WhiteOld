@@ -5,10 +5,12 @@
 #include <thread>
 #include <chrono>
 #include <set>
+#include <functional>
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Window.h"
 #include "Helpers/Observable.h"
 #include "WMath/WMath.h"
+#include "Helpers/Application.h"
 
 template<typename T>
 bool isSubset( std::set<T> subset, std::set<T> set );
@@ -32,6 +34,7 @@ class Input : public Observable<std::string>
     const WMath::vec2 getMouseScroll() { return this->mouse_scroll_offset; }
     void addInput( int i ); void removeInput( int i );
     bool hasInput( std::set<int> input, InputState state = PRESS );
+    std::set<int> getInput( InputState state );
 };
 
 extern Input* active_input;

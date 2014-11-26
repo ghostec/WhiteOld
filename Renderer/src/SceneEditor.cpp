@@ -11,13 +11,16 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   this->resource_manager = resource_manager;
   XMLHelper::importAssets( "assets_SceneEditor", resource_manager );
 
-  std::shared_ptr<Model> model_arrow_x = resource_manager->getModel( "SceneEditor_arrow_x" );
+  std::shared_ptr<Model> model_arrow_x =
+    resource_manager->get< std::shared_ptr< Model > >( "SceneEditor_arrow_x" );
   this->data.arrow_x.reset( new SGNode( "arrow_x", model_arrow_x ) );
 
-  std::shared_ptr<Model> model_arrow_y = resource_manager->getModel( "SceneEditor_arrow_y" );
+  std::shared_ptr<Model> model_arrow_y =
+    resource_manager->get< std::shared_ptr< Model > >( "SceneEditor_arrow_y" );
   this->data.arrow_y.reset( new SGNode( "arrow_y", model_arrow_y ) );
 
-  std::shared_ptr<Model> model_arrow_z = resource_manager->getModel( "SceneEditor_arrow_z" );
+  std::shared_ptr<Model> model_arrow_z =
+    resource_manager->get< std::shared_ptr< Model > >( "SceneEditor_arrow_z" );
   this->data.arrow_z.reset( new SGNode( "arrow_z", model_arrow_z ) );
 
   this->locked_sg_nodes.insert( data.arrow_x );
@@ -27,7 +30,7 @@ SceneEditor::SceneEditor( std::shared_ptr<Scene> scene,
   active_window->registerObserver( "RESIZE",
     std::bind( &MousePicking::reset, active_mouse_picking ), "MousePicking" );
 
-  this->state = NO_SELECTION;
+  this->state = SE_INITIAL;
 }
 
 void SceneEditor::initialize()
@@ -48,6 +51,7 @@ void SceneEditor::hideMoveArrows()
 void SceneEditor::showMoveArrows()
 {
   std::shared_ptr<SGNode> n = this->getSelectedSGNode();
+  SGNodeWorldTransform n_wt = n->getWorldTransform();
   n->addChild( this->data.arrow_x );
   n->addChild( this->data.arrow_y );
   n->addChild( this->data.arrow_z );
@@ -55,18 +59,28 @@ void SceneEditor::showMoveArrows()
   std::shared_ptr<Model> model = n->getModel();
   WMath::vec3 model_dimensions = n->getDimensions();
 
+  SGNodeWorldTransform wt;
+  
   float dx = 0.5f * ( model_dimensions[0] +
     this->data.arrow_x->getDimensions()[0] );
-  //this->data.arrow_x->setPosition( WMath::vec3( dx, 0, 0 ) );
-  //this->data.arrow_x->setRotate( WMath::quaternion(0,0,1,180) );
+  wt.data.position = n_wt.data.position;
+  wt.data.position[ 0 ] += dx;
+  wt.data.rotate = WMath::quaternion( 0, 0, 1, 180 );
+  this->data.arrow_x->setWorldTransform( wt );
 
   float dy = 0.5f * ( model_dimensions[1] +
     this->data.arrow_y->getDimensions()[1] );
-  //this->data.arrow_y->setPosition( WMath::vec3( 0, dy, 0 ) );
+  wt.data.position = n_wt.data.position;
+  wt.data.position[ 1 ] += dy;
+  wt.data.rotate = WMath::quaternion();
+  this->data.arrow_y->setWorldTransform( wt );
 
   float dz = 0.5f * ( model_dimensions[2] +
-    this->data.arrow_z->getDimensions()[0] );
-  //this->data.arrow_z->setPosition( WMath::vec3( 0, 0, dz ) );
+    this->data.arrow_z->getDimensions()[2] );
+  wt.data.position = n_wt.data.position;
+  wt.data.position[ 2 ] += dz;
+  wt.data.rotate = WMath::quaternion( 1, 0, 0, 0 );
+  this->data.arrow_z->setWorldTransform( wt );
 }
 
 void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
@@ -74,11 +88,11 @@ void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
   static WMath::vec2 last_cursor_pos;
   static SceneEditorAxis dir;
 
-  if( this->state != MOVING_MODEL )
+  if( this->state != SE_MOVING_MODEL )
   {
     dir = direction;
     last_cursor_pos = active_input->getMousePos();
-    this->state = MOVING_MODEL;
+    this->state = SE_MOVING_MODEL;
   }
   else
   {
@@ -92,7 +106,22 @@ void SceneEditor::moveSelectedSGNode( SceneEditorAxis direction )
     else if( dir == SEA_Y ) dT[1] = value;
     else if( dir == SEA_Z ) dT[2] = -value;
 
-    //this->selected_sg_node->setPosition( this->selected_sg_node->getPosition() + dT );
+    SGNodeWorldTransform wt = this->selected_sg_node->getWorldTransform();
+    wt.data.position += dT;
+    this->selected_sg_node->setWorldTransform( wt );
+
+    SGNodeWorldTransform arrow_wt;
+
+    arrow_wt = this->data.arrow_x->getWorldTransform();
+    arrow_wt.data.position += dT;
+    this->data.arrow_x->setWorldTransform( arrow_wt );
+    arrow_wt = this->data.arrow_y->getWorldTransform();
+    arrow_wt.data.position += dT;
+    this->data.arrow_y->setWorldTransform( arrow_wt );
+    arrow_wt = this->data.arrow_z->getWorldTransform();
+    arrow_wt.data.position += dT;
+    this->data.arrow_z->setWorldTransform( arrow_wt );
+
     last_cursor_pos = cursor_pos;
   }
 }
@@ -103,7 +132,7 @@ void SceneEditor::selectSGNode( std::shared_ptr<SGNode> sg_node )
   {
     this->selected_sg_node->setModel( this->old_selected_model );
     hideMoveArrows();
-    this->state = NO_SELECTION;
+    this->state = SE_INITIAL;
   }
   if( sg_node )
   {
@@ -111,10 +140,10 @@ void SceneEditor::selectSGNode( std::shared_ptr<SGNode> sg_node )
     this->selected_sg_node = sg_node;
     std::shared_ptr<Model> modified_model( new Model( old_selected_model->getName(), old_selected_model->getMesh() ) );
     modified_model->setShader( this->shader );
-    modified_model->getMaterial()->setTexture( old_selected_model->getMaterial()->getTexture() );
+    modified_model->setMaterial( old_selected_model->getMaterial() );
     this->selected_sg_node->setModel( modified_model );
     showMoveArrows();
-    this->state = MODEL_SELECTED;
+    this->state = SE_MODEL_SELECTED;
   } 
 }
 
@@ -135,10 +164,10 @@ void SceneEditor::mouseScroll()
 void rotateCamera( Camera* camera, SceneEditor* scene_editor )
 {
   static WMath::vec2 last_cursor_pos;
-  if( scene_editor->getState() != ROTATING_CAMERA )
+  if( scene_editor->getState() != SE_ROTATING_CAMERA )
   {
     last_cursor_pos = active_input->getMousePos();
-    scene_editor->setState( ROTATING_CAMERA );
+    scene_editor->setState( SE_ROTATING_CAMERA );
   }
   else
   {
@@ -156,24 +185,13 @@ void SceneEditor::update_NO_SELECTION__MODEL_SELECTED()
 {
   Camera* camera = &*this->scene->getCamera();
   static std::shared_ptr<SGNode> sg_node_hovered = nullptr;
-  static std::shared_ptr<Texture> texture_hovered = nullptr;
 
   if( sg_node_hovered )
   {
-    sg_node_hovered->getModel()->getMaterial()->setTexture( texture_hovered );
-    sg_node_hovered = nullptr; texture_hovered = nullptr;
+    sg_node_hovered = nullptr;
   }
 
   std::shared_ptr<SGNode> sg_node = active_mouse_picking->pick();
-  
-  if( sg_node && ( sg_node->getName() == "arrow_x" 
-    || sg_node->getName() == "arrow_y"
-    || sg_node->getName() == "arrow_z" ) )
-  {
-    sg_node_hovered = sg_node;
-    texture_hovered = sg_node->getModel()->getMaterial()->getTexture();
-    sg_node->getModel()->getMaterial()->setTexture( resource_manager->getTexture( "yellow" ) );
-  }
 
   if( active_input->hasInput( std::set<int>{ GLFW_KEY_UP }, HOLD ) )
   {
@@ -235,8 +253,8 @@ void SceneEditor::update_ROTATING_CAMERA()
   }
   else
   {
-    if( this->selected_sg_node ) this->state = MODEL_SELECTED;
-    else this->state = NO_SELECTION;
+    if( this->selected_sg_node ) this->state = SE_MODEL_SELECTED;
+    else this->state = SE_INITIAL;
   }
 }
 
@@ -246,27 +264,20 @@ void SceneEditor::update_MOVING_MODEL()
 
   if( active_input->hasInput( std::set<int>{ GLFW_MOUSE_BUTTON_1 }, HOLD ) )
   {
-    // select model
     this->moveSelectedSGNode();
   }
   else
   {
-    resource_manager->getModel( "SceneEditor_arrow_x" )
-      ->getMaterial()->setTexture( resource_manager->getTexture( "red" ) );
-    resource_manager->getModel( "SceneEditor_arrow_y" )
-      ->getMaterial()->setTexture( resource_manager->getTexture( "blue" ) );
-    resource_manager->getModel( "SceneEditor_arrow_z" )
-      ->getMaterial()->setTexture( resource_manager->getTexture( "green" ) );
-    this->state = MODEL_SELECTED;
+    this->state = SE_MODEL_SELECTED;
   }
 }
 
 void SceneEditor::update()
 {
-  if( this->state == NO_SELECTION || this->state == MODEL_SELECTED )
+  if( this->state == SE_INITIAL || this->state == SE_MODEL_SELECTED )
     update_NO_SELECTION__MODEL_SELECTED();
-  else if( this->state == ROTATING_CAMERA )
+  else if( this->state == SE_ROTATING_CAMERA )
     update_ROTATING_CAMERA();
-  else if( this->state == MOVING_MODEL )
+  else if( this->state == SE_MOVING_MODEL )
     update_MOVING_MODEL();
 }

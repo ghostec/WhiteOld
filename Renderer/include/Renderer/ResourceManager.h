@@ -10,6 +10,7 @@
 #include "Renderer/Material.h"
 #include "Renderer/Model.h"
 #include "Renderer/ModelData.h"
+#include "Renderer/ModelData.h"
 #include "Renderer/GUIElement.h"
 #include <typeinfo>
 
@@ -19,45 +20,40 @@ using ResourceMap = std::map< std::string, std::shared_ptr<T> >;
 class ResourceManager
 {
   private:
-    ResourceMap<Shader> shader;
-    ResourceMap<Texture> texture;
-    ResourceMap<Mesh> mesh;
-    ResourceMap<Model> model;
-    ResourceMap<Material> material;
+    struct DataHolders : DataHolder< std::shared_ptr< Shader > >,
+      DataHolder< std::shared_ptr< Texture > >,
+      DataHolder< std::shared_ptr < Material > >,
+      DataHolder< std::shared_ptr< Mesh > >,
+      DataHolder< std::shared_ptr< Model > > {};
+    DataHolders data_holders;
   public:
-    void addShader( std::string name, std::shared_ptr<Shader> shader )
-      { this->shader[name] = shader; }
-
-    void addTexture( std::string name, std::shared_ptr<Texture> texture )
-      { this->texture[name] = texture; }
-
-    void addMaterial( std::string name, std::shared_ptr<Material> material )
-    {
-      this->material[ name ] = material;
-    }
-
-    void addMesh( std::string name,
-      std::shared_ptr<Mesh> mesh )
-      { this->mesh[name] = mesh; }
-
-    void addModel( std::string name,
-      std::shared_ptr<Model> model )
-      { this->model[name] = model; }
-
-    std::shared_ptr<Shader> getShader( std::string name )
-      { return this->shader[name]; }
-
-    std::shared_ptr<Texture> getTexture( std::string name )
-      { return this->texture[name]; }
-
-    std::shared_ptr<Material> getMaterial( std::string name )
-      { return this->material[ name ]; }
-
-    std::shared_ptr<Mesh> getMesh( std::string name )
-      { return this->mesh[name]; }
-
-    std::shared_ptr<Model> getModel( std::string name )
-      { return this->model[name]; }
+    template< typename T >
+    T& get( std::string name );
+    template< typename T >
+    std::vector< std::pair< std::string, T > >& get();
+    template< typename T >
+    void set( std::string name, T value );
 };
+
+template<typename T>
+inline T & ResourceManager::get( std::string name )
+{
+  DataHolder<T>& o = this->data_holders;
+  return o.get( name );
+}
+
+template<typename T>
+inline std::vector< std::pair< std::string, T > >& ResourceManager::get()
+{
+  DataHolder<T>& o = this->data_holders;
+  return o.get();
+}
+
+template<typename T>
+inline void ResourceManager::set( std::string name, T value )
+{
+  DataHolder<T>& o = this->data_holders;
+  return o.set( name, value );
+}
 
 #endif

@@ -40,7 +40,7 @@ namespace XMLHelper
   {
     const char* name = el->FirstChildElement( "name" )->GetText();
     const char* model_name = el->FirstChildElement( "model" )->GetText();
-    std::shared_ptr<Model> model = resource_manager->getModel( model_name );
+    std::shared_ptr<Model> model = resource_manager->get< std::shared_ptr< Model > >( model_name );
 
     SGNodeWorldTransform world_transform;
 

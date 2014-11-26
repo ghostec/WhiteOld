@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <memory>
+#include <functional>
 #include "Renderer/Helpers/GLFW.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Window.h"
